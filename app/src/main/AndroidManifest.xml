@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.labs.corobox.corobox">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,5 +23,4 @@
             android:value="eb30435776d7378abe1afbc4dfc6d5760c699990" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
