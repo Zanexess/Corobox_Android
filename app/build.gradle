@@ -1,0 +1,156 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+import org.ajoberstar.grgit.Grgit
+
+
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+apply plugin: "org.ajoberstar.grgit"
+
+def gitNumOfTags() {
+    ext.repo = Grgit.open(project.file('..'))
+
+    def numOfTags = ext.repo.tag.list().size()
+    return numOfTags
+}
+
+def gitTag() {
+    ext.repo = Grgit.open(project.file('..'))
+    return ext.repo.tag.list().last().getName()
+}
+
+def currentBranch() {
+    ext.repo = Grgit.open(project.file('..'))
+    return ext.repo.branch.current().name
+}
+
+def gitCommitCount = "git rev-list HEAD --count".execute().text.trim()
+def gitBranchDebug = gitTag() != -1 ? gitTag() : currentBranch()
+def gitDescribe = "git describe --tags".execute().text
+def gitHead = "git rev-parse --abbrev-ref HEAD".execute().text
+def gitBranch = gitHead.indexOf("/") == -1 ?
+        (gitHead.trim().equals("HEAD") ?
+                System.getenv("bamboo_repository_branch_name") != null ? System.getenv("bamboo_repository_branch_name").substring(System.getenv("bamboo_repository_branch_name").indexOf("/") + 1).trim() : gitTag
+                : gitHead.trim())
+        :
+        gitHead.substring(gitHead.indexOf("/") + 1).trim()
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "me.labs.corobox.corobox"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName ""
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'test'
+            keyPassword 'password'
+            storeFile file('../keystore.jks')
+            storePassword 'password'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        def flavor = variant.mergedFlavor
+        def versionCode = flavor.versionCode
+        versionCode += gitNumOfTags() as Integer
+        flavor.versionCode = versionCode
+    }
+
+    buildTypes {
+
+
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix "${gitBranchDebug}" + '-debug' + "${gitCommitCount}"
+        }
+
+
+        devp {
+            applicationIdSuffix '.devp'
+            versionNameSuffix "${gitBranchDebug}" + '-dev-p' + "${gitCommitCount}"
+            signingConfig signingConfigs.release
+        }
+
+        dev {
+            applicationIdSuffix '.dev'
+            versionNameSuffix "${gitBranchDebug}" + '-dev' + "${gitCommitCount}"
+            signingConfig signingConfigs.release
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            versionNameSuffix "${gitBranch}"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        rc {
+            applicationIdSuffix '.rc'
+            versionNameSuffix "${gitBranch}" + '-rc' + "${gitCommitCount}"
+            signingConfig signingConfigs.release
+        }
+
+        rct {
+            applicationIdSuffix '.rct'
+            versionNameSuffix "${gitBranch}" + '-rc-t' + "${gitCommitCount}"
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+        transitive = true;
+    }
+
+    // Support
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    // Dagger
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
+    compile 'com.google.dagger:dagger:2.8'
+    // Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    // RxJava
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    // EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
+    // okhttp3
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+}

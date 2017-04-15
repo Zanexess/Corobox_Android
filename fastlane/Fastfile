@@ -1,0 +1,60 @@
+# Customise this file, documentation can be found here:
+# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.19.3"
+
+default_platform :android
+
+platform :android do
+  lane :dev do
+      gradle(task: "clean assembleDev")
+
+    crashlytics(api_token: "eb30435776d7378abe1afbc4dfc6d5760c699990",
+             build_secret: "9f2e60b9c26621be6413d21daa90b88b3f9ffa0e5a7b5c6aa00ba5d96614c49e",
+             apk_path: File.expand_path("..", Dir.pwd) + "/app/build/outputs/apk/app-dev.apk"
+    )
+
+   end
+
+  lane :devp do
+       gradle(task: "clean assembleDevp")
+       crashlytics(api_token: "eb30435776d7378abe1afbc4dfc6d5760c699990",
+            build_secret: "9f2e60b9c26621be6413d21daa90b88b3f9ffa0e5a7b5c6aa00ba5d96614c49e",
+   	        apk_path: File.expand_path("..", Dir.pwd) + "/app/build/outputs/apk/app-devp.apk"
+       )
+  end
+
+  lane :rc do
+      gradle(task: "clean assembleRc")
+      crashlytics(api_token: "eb30435776d7378abe1afbc4dfc6d5760c699990",
+        build_secret: "9f2e60b9c26621be6413d21daa90b88b3f9ffa0e5a7b5c6aa00ba5d96614c49e",
+  	    apk_path: File.expand_path("..", Dir.pwd) + "/app/build/outputs/apk/app-rc.apk"
+      )
+  end
+
+  lane :rct do
+        gradle(task: "clean assembleRct")
+        crashlytics(api_token: "eb30435776d7378abe1afbc4dfc6d5760c699990",
+            build_secret: "9f2e60b9c26621be6413d21daa90b88b3f9ffa0e5a7b5c6aa00ba5d96614c49e",
+    	    apk_path: File.expand_path("..", Dir.pwd) + "/app/build/outputs/apk/app-rct.apk"
+        )
+  end
+
+  lane :release do
+       gradle(task: "clean assembleRelease")
+       crashlytics(api_token: "eb30435776d7378abe1afbc4dfc6d5760c699990",
+             build_secret: "9f2e60b9c26621be6413d21daa90b88b3f9ffa0e5a7b5c6aa00ba5d96614c49e"
+       )
+  end
+
+end
