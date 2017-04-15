@@ -20,12 +20,8 @@ repositories {
 apply plugin: "org.ajoberstar.grgit"
 
 def gitNumOfTags() {
-    // current dir is <your proj>/app, so it's likely that all your git repo files are in the dir
-    // above.
     ext.repo = Grgit.open(project.file('..'))
 
-    // should result in the same value as running
-    // git tag -l | wc -l or git tag -l | grep -c ".*" -
     def numOfTags = ext.repo.tag.list().size()
     return numOfTags
 }
@@ -127,10 +123,34 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
     testCompile 'junit:junit:4.12'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
+
+    // Support
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    // Dagger
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
+    compile 'com.google.dagger:dagger:2.8'
+    // Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    // RxJava
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    // EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
+    // okhttp3
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
 }
