@@ -1,0 +1,71 @@
+package me.labs.corobox.corobox.app;
+
+import android.app.Application;
+import android.content.Context;
+import com.crashlytics.android.Crashlytics;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
+
+import io.fabric.sdk.android.Fabric;
+import me.labs.corobox.corobox.di.components.DaggerIApiComponent;
+import me.labs.corobox.corobox.di.components.DaggerICoroboxAppComponent;
+import me.labs.corobox.corobox.di.components.DaggerINetworkComponent;
+import me.labs.corobox.corobox.di.components.IApiComponent;
+import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
+import me.labs.corobox.corobox.di.components.INetworkComponent;
+import me.labs.corobox.corobox.di.modules.CoroboxAppModule;
+import me.labs.corobox.corobox.di.modules.NetworkModule;
+
+public class CoroboxApp extends Application {
+
+    private ICoroboxAppComponent appComponent;
+    private INetworkComponent networkComponent;
+    private IApiComponent apiComponent;
+
+    public static CoroboxApp get(Context context) {
+        return (CoroboxApp) context.getApplicationContext();
+    }
+
+    public void  buildGraphAndInject() {
+        appComponent = DaggerICoroboxAppComponent.builder()
+                .coroboxAppModule(new CoroboxAppModule(this))
+                .build();
+        appComponent.inject(this);
+
+
+        networkComponent = DaggerINetworkComponent.builder()
+                .networkModule(new NetworkModule("TODO"))
+                .coroboxAppModule(new CoroboxAppModule(this))
+                .build();
+
+        apiComponent = DaggerIApiComponent.builder().iNetworkComponent(networkComponent)
+                .build();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Fabric.with(this, new Crashlytics());
+
+        buildGraphAndInject();
+
+        try {
+            Picasso picasso = new Picasso.Builder(getApplicationContext()).downloader(new OkHttp3Downloader(getApplicationContext(), 10 * 1024 * 1024)).build();
+            Picasso.setSingletonInstance(picasso);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public ICoroboxAppComponent getAppComponent() {
+        return appComponent;
+    }
+
+    public INetworkComponent getNetworkComponent() {
+        return networkComponent;
+    }
+
+    public IApiComponent getApiComponent() {
+        return apiComponent;
+    }
+}
