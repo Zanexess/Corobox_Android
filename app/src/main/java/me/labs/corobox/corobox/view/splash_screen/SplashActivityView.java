@@ -1,15 +1,13 @@
-package me.labs.corobox.corobox.view;
+package me.labs.corobox.corobox.view.splash_screen;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 
-import me.labs.corobox.corobox.MainActivity;
-import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseActivity;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
+import me.labs.corobox.corobox.view.main_screen.MainActivityView;
 
 public class SplashActivityView extends BaseActivity implements ISplashActivityView {
 
@@ -24,7 +22,7 @@ public class SplashActivityView extends BaseActivity implements ISplashActivityV
             e.printStackTrace();
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivityView.class);
         startActivity(intent);
         finish();
     }

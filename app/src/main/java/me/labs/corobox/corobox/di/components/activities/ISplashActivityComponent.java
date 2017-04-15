@@ -1,7 +1,8 @@
-package me.labs.corobox.corobox.di.components;
+package me.labs.corobox.corobox.di.components.activities;
 
 import dagger.Component;
-import me.labs.corobox.corobox.di.modules.activity.SplashActivityModule;
+import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
+import me.labs.corobox.corobox.di.modules.activities.SplashActivityModule;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
 
 @ActivityScope

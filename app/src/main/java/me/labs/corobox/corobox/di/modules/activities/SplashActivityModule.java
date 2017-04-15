@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.di.modules.activity;
+package me.labs.corobox.corobox.di.modules.activities;
 
 import javax.inject.Inject;
 
@@ -6,8 +6,8 @@ import dagger.Module;
 import dagger.Provides;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
-import me.labs.corobox.corobox.presenter.SplashActivityPresenter;
-import me.labs.corobox.corobox.view.ISplashActivityView;
+import me.labs.corobox.corobox.presenter.splash_screen.SplashActivityPresenter;
+import me.labs.corobox.corobox.view.splash_screen.ISplashActivityView;
 
 @Module
 public class SplashActivityModule {
