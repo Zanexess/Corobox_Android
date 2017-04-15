@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_new_box"
+            android:title="New box" />
+        <item
+            android:id="@+id/nav_cart"
+            android:title="My Cart" />
+        <item
+            android:id="@+id/nav_my_boxes"
+            android:title="My boxes" />
+        <item
+            android:id="@+id/nav_history"
+            android:title="History" />
+        <item
+            android:id="@+id/nav_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_terms_of_use"
+            android:title="Terms of use" />
+    </group>
+
+</menu>

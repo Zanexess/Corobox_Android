@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".view.main_screen.MainActivityView"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".view.splash_screen.SplashActivityView"
