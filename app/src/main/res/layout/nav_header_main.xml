@@ -18,14 +18,14 @@
         android:layout_marginLeft="-6dp"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingTop="22dp"
         app:srcCompat="@drawable/account" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Eduard Poyda"
+        android:text="Эдуард Пойда"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView

@@ -6,7 +6,10 @@ import dagger.Module;
 import dagger.Provides;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
+import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.BoxesFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 
 @Module
@@ -31,13 +34,13 @@ public class MainActivityModule {
 
     @Provides
     @ActivityScope
-    public MainActivityPresenter provideMainActivityPresenter(IMainActivityView view) {
+    public IMainActivityPresenter provideMainActivityPresenter(IMainActivityView view) {
         return new MainActivityPresenter(view);
     }
 
-//    @Provides
-//    @ActivityScope
-//    public IMainFragmentPresenter provideStripFragmentPresenter() {
-//        return new MainFragmentPresenter();
-//    }
+    @Provides
+    @ActivityScope
+    public IBoxesFragmentPresenter provideStripFragmentPresenter() {
+        return new BoxesFragmentPresenter();
+    }
 }

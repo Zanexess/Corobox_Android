@@ -1,5 +1,6 @@
 package me.labs.corobox.corobox.view.main_screen;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -15,27 +16,40 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.crashlytics.android.Crashlytics;
+
+import javax.inject.Inject;
+
 import io.fabric.sdk.android.Fabric;
 import me.labs.corobox.corobox.BuildConfig;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseActivity;
+import me.labs.corobox.corobox.common.FragmentType;
+import me.labs.corobox.corobox.di.IHasComponent;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.activities.DaggerIMainActivityComponent;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.di.modules.activities.MainActivityModule;
+import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
 
-public class MainActivityView extends BaseActivity implements IMainActivityView, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivityView extends BaseActivity implements IMainActivityView, IHasComponent<IMainActivityComponent>, NavigationView.OnNavigationItemSelectedListener {
 
     private IMainActivityComponent mainActivityComponent;
+    private NavigationView navigationView;
+    @Inject
+    IMainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainActivityComponent.inject(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -43,9 +57,11 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        presenter.changeFragment(FragmentType.BOXES);
+        navigationView.setCheckedItem(R.id.nav_my_boxes);
     }
 
     @Override
@@ -57,8 +73,8 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     }
 
     @Override
-    public Context getContext() {
-        return getApplicationContext();
+    public Activity getActivity() {
+        return this;
     }
 
     @Override
@@ -84,7 +100,7 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
         int id = item.getItemId();
 
         if (id == R.id.nav_my_boxes) {
-
+            presenter.changeFragment(FragmentType.BOXES);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -100,5 +116,10 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public IMainActivityComponent getComponent() {
+        return mainActivityComponent;
     }
 }

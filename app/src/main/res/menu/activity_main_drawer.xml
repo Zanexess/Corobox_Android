@@ -4,22 +4,22 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_new_box"
-            android:title="New box" />
+            android:title="@string/new_box" />
         <item
             android:id="@+id/nav_cart"
-            android:title="My Cart" />
+            android:title="@string/cart" />
         <item
             android:id="@+id/nav_my_boxes"
-            android:title="My boxes" />
+            android:title="@string/my_boxes" />
         <item
             android:id="@+id/nav_history"
-            android:title="History" />
+            android:title="@string/history" />
         <item
             android:id="@+id/nav_settings"
-            android:title="Settings" />
+            android:title="@string/settings" />
         <item
             android:id="@+id/nav_terms_of_use"
-            android:title="Terms of use" />
+            android:title="@string/terms_of_use" />
     </group>
 
 </menu>
