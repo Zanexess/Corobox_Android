@@ -39,6 +39,7 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
 
     private IMainActivityComponent mainActivityComponent;
     private NavigationView navigationView;
+
     @Inject
     IMainActivityPresenter presenter;
 

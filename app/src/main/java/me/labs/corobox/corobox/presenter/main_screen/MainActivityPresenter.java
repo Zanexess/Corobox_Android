@@ -15,6 +15,7 @@ import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView
 public class MainActivityPresenter implements IMainActivityPresenter {
 
     private IMainActivityView view;
+    private FragmentType currentType;
 
     @Inject
     public MainActivityPresenter(IMainActivityView view) {
@@ -22,16 +23,19 @@ public class MainActivityPresenter implements IMainActivityPresenter {
     }
 
     @Override
-    public void changeFragment(FragmentType boxes) {
-        FragmentManager fm = ((AppCompatActivity)view.getActivity()).getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        switch (boxes) {
-            case BOXES:
-                changeTitle(view.getActivity().getString(R.string.my_boxes));
-                ft.replace(R.id.frame_layout, new BoxesFragmentView());
-                break;
+    public void changeFragment(FragmentType type) {
+        if (currentType != type) {
+            currentType = type;
+            FragmentManager fm = ((AppCompatActivity) view.getActivity()).getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            switch (type) {
+                case BOXES:
+                    changeTitle(view.getActivity().getString(R.string.my_boxes));
+                    ft.replace(R.id.frame_layout, new BoxesFragmentView());
+                    break;
+            }
+            ft.commit();
         }
-        ft.commit();
     }
 
     @Override
