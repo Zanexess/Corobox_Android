@@ -9,4 +9,6 @@
     <string name="settings">Настройки</string>
     <string name="terms_of_use">Условия использования</string>
     <string name="ready">Вернуть</string>
+    <string name="sent_to_stock">Отправить на склад</string>
+    <string name="what_do_you_want_to_store">Что вы хотите найти?</string>
 </resources>

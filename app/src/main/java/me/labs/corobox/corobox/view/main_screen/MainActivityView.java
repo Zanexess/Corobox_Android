@@ -15,10 +15,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.actionitembadge.library.ActionItemBadgeAdder;
 
 import javax.inject.Inject;
 
@@ -39,6 +42,8 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
 
     private IMainActivityComponent mainActivityComponent;
     private NavigationView navigationView;
+    private MenuItem deliveryMenu;
+    private int badgeCount = 0;
 
     @Inject
     IMainActivityPresenter presenter;
@@ -79,8 +84,28 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     }
 
     @Override
+    public void updateMenu(int badgeCount) {
+        this.badgeCount = this.badgeCount + badgeCount;
+        ActionItemBadge.update(deliveryMenu, this.badgeCount);
+        if (this.badgeCount == 0)
+            ActionItemBadge.hide(deliveryMenu);
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void setVisibilityDeliveryMenu(boolean isVisible) {
+        // TODO Check
+        if (deliveryMenu != null) {
+            ActionItemBadge.hide(deliveryMenu);
+            invalidateOptionsMenu();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        ActionItemBadge.update(this, menu.findItem(R.id.truck), getDrawable(R.drawable.ic_truck), ActionItemBadge.BadgeStyles.DARK_GREY, badgeCount);
+        deliveryMenu = menu.findItem(R.id.truck);
         return true;
     }
 
@@ -88,12 +113,19 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.truck) {
+            if (badgeCount > 0) {
+                Toast.makeText(this, "Открываем корзину", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Вы не выбрали ни одного товара", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -102,6 +134,8 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
 
         if (id == R.id.nav_my_boxes) {
             presenter.changeFragment(FragmentType.BOXES);
+        } else if (id == R.id.nav_new_box) {
+            presenter.changeFragment(FragmentType.NEW_BOX);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -10,6 +10,8 @@ import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.BoxesFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.CategoryFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 
 @Module
@@ -40,7 +42,13 @@ public class MainActivityModule {
 
     @Provides
     @ActivityScope
-    public IBoxesFragmentPresenter provideStripFragmentPresenter() {
+    public IBoxesFragmentPresenter provideBoxesFragmentPresenter() {
         return new BoxesFragmentPresenter();
+    }
+
+    @Provides
+    @ActivityScope
+    public ICategoryFragmentPresenter provideCategoriesFragmentPresenter() {
+        return new CategoryFragmentPresenter();
     }
 }
