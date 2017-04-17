@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -92,12 +93,25 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
         categories.add(new Category("Шины", 280, "Wheels", R.drawable.wheel_q));
         categories.add(new Category("Лыжи", 200, "Skiing", R.drawable.skiing_q));
 
-        categoriesAdapter = new CategoriesAdapter(categories, presenter, presenterActivity);
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        for (Category category : categories) {
+            hashMap.put(category.getId(), 0);
+        }
+        presenterActivity.setHashMap(hashMap);
+
+        categoriesAdapter = new CategoriesAdapter(categories, hashMap, presenter, presenterActivity);
         recyclerView.setAdapter(categoriesAdapter);
     }
 
     @Override
     public Activity provideActivity() {
         return getActivity();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        categoriesAdapter.clearAll();
+        presenterActivity.setDeliveryBadgeCount(0);
     }
 }

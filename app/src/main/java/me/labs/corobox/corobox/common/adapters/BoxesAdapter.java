@@ -63,6 +63,5 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             });
         }
-
     }
 }

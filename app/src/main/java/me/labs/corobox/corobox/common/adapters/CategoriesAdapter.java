@@ -30,15 +30,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private IMainActivityPresenter presenterActivity;
     private CategoriesFilter categoriesFilter;
 
-    public CategoriesAdapter(ArrayList<Category> categories, ICategoryFragmentPresenter presenter, IMainActivityPresenter presenterActivity) {
+    public CategoriesAdapter(ArrayList<Category> categories, HashMap<String, Integer> hashMap, ICategoryFragmentPresenter presenter, IMainActivityPresenter presenterActivity) {
         this.categories = categories;
         this.categoriesFiltered = new ArrayList<>();
         this.presenter = presenter;
         this.presenterActivity = presenterActivity;
-        this.hashMap = new HashMap<>();
-        for (Category category : categories) {
-            hashMap.put(category.getId(), 0);
-        }
+        this.hashMap = hashMap;
     }
 
     public ArrayList<Category> getCategoriesFiltered() {
@@ -71,6 +68,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private class CategoryHolder extends RecyclerView.ViewHolder {
+
+        // TODO Refactor this holder;
 
         ImageView deleteButton;
         ImageView addButton;
@@ -139,7 +138,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             });
         }
 
-        public void bindModel(int position) {
+        private void bindModel(int position) {
             ArrayList<Category> categories = categoriesFiltered.size() == 0 ?
                     CategoriesAdapter.this.categories :
                     categoriesFiltered;
@@ -157,5 +156,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else
                 constraintLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void clearAll() {
+        categoriesFiltered.clear();
+        categories.clear();
+        hashMap.clear();
     }
 }

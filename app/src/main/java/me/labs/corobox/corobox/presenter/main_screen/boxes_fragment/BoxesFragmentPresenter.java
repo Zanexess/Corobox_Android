@@ -23,12 +23,12 @@ public class BoxesFragmentPresenter implements IBoxesFragmentPresenter {
 
     @Override
     public void onResume() {
-        Toast.makeText(activity, "onResume!", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onPause() {
-        Toast.makeText(activity, "onPause!", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
