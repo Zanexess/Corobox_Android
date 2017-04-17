@@ -3,9 +3,7 @@ package me.labs.corobox.corobox.presenter.main_screen.terms_of_use;
 import android.app.Activity;
 
 import me.labs.corobox.corobox.app.CoroboxApp;
-import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
-import me.labs.corobox.corobox.view.main_screen.categories_fragment.ICategoryFragmentView;
-import me.labs.corobox.corobox.view.main_screen.terms_of_use_screen.ITermsFragmentView;
+import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.ITermsFragmentView;
 
 public class TermsFragmentPresenter implements ITermsFragmentPresenter {
 

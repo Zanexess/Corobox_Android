@@ -3,7 +3,6 @@ package me.labs.corobox.corobox.presenter.main_screen;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -16,7 +15,8 @@ import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
-import me.labs.corobox.corobox.view.main_screen.terms_of_use_screen.TermsFragmentView;
+import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
+import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
 
 public class MainActivityPresenter implements IMainActivityPresenter {
 
@@ -38,18 +38,23 @@ public class MainActivityPresenter implements IMainActivityPresenter {
             FragmentTransaction ft = fm.beginTransaction();
             switch (type) {
                 case BOXES:
-                    changeTitle(view.getActivity().getString(R.string.my_boxes));
+                    changeTitle(view.getActivity().getString(R.string.my_boxes_title));
                     ft.replace(R.id.frame_layout, new BoxesFragmentView());
                     setVisibilityDeliveryMenu(false);
                     break;
                 case NEW_BOX:
-                    changeTitle(view.getActivity().getString(R.string.sent_to_stock));
+                    changeTitle(view.getActivity().getString(R.string.sent_to_stock_title));
                     ft.replace(R.id.frame_layout, new CategoryFragmentView());
                     setVisibilityDeliveryMenu(true);
                     break;
                 case TERMS:
                     changeTitle(view.getActivity().getString(R.string.terms_title));
                     ft.replace(R.id.frame_layout, new TermsFragmentView());
+                    setVisibilityDeliveryMenu(false);
+                    break;
+                case SETTINGS:
+                    changeTitle(view.getActivity().getString(R.string.settings_title));
+                    ft.replace(R.id.frame_layout, new SettingsFragmentView());
                     setVisibilityDeliveryMenu(false);
                     break;
             }

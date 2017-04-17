@@ -140,6 +140,8 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
             presenter.changeFragment(FragmentType.NEW_BOX);
         } else if (id == R.id.nav_terms_of_use) {
             presenter.changeFragment(FragmentType.TERMS);
+        } else if (id == R.id.nav_settings) {
+            presenter.changeFragment(FragmentType.SETTINGS);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
