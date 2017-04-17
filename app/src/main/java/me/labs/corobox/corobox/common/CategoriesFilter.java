@@ -47,8 +47,8 @@ public class CategoriesFilter extends Filter {
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-//        adapter.getFilteredCategoriesList().clear();
-//        adapter.getFilteredCategoriesList().addAll((ArrayList<Category>) results.values);
-//        adapter.notifyDataSetChanged();
+        adapter.getCategoriesFiltered().clear();
+        adapter.getCategoriesFiltered().addAll((ArrayList<Category>) results.values);
+        adapter.notifyDataSetChanged();
     }
 }

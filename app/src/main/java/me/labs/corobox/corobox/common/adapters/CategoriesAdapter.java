@@ -11,6 +11,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,47 +21,54 @@ import me.labs.corobox.corobox.model.Category;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
 
-public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
     private ArrayList<Category> categories;
-    private SparseIntArray hashMap;
+    private ArrayList<Category> categoriesFiltered;
+    private HashMap<String, Integer> hashMap;
     private ICategoryFragmentPresenter presenter;
     private IMainActivityPresenter presenterActivity;
     private CategoriesFilter categoriesFilter;
 
     public CategoriesAdapter(ArrayList<Category> categories, ICategoryFragmentPresenter presenter, IMainActivityPresenter presenterActivity) {
         this.categories = categories;
+        this.categoriesFiltered = new ArrayList<>();
         this.presenter = presenter;
         this.presenterActivity = presenterActivity;
-        this.hashMap = new SparseIntArray();
+        this.hashMap = new HashMap<>();
+        for (Category category : categories) {
+            hashMap.put(category.getId(), 0);
+        }
+    }
+
+    public ArrayList<Category> getCategoriesFiltered() {
+        return categoriesFiltered;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v;
-        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
         return new CategoryHolder(v);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         CategoryHolder categoryHolder = ((CategoryHolder)holder);
-        categoryHolder.title.setText(categories.get(position).getTitle());
-        categoryHolder.imageView.setImageResource(categories.get(position).getPicture());
+        categoryHolder.bindModel(position);
     }
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return categoriesFiltered.size() != 0 ? categoriesFiltered.size() : categories.size();
     }
 
-//    @Override
-//    public Filter getFilter() {
-//        if (categoriesFilter == null) {
-//            categoriesFilter = new CategoriesFilter(this, categories);
-//        }
-//        return categoriesFilter;
-//    }
+    @Override
+    public Filter getFilter() {
+        if (categoriesFilter == null) {
+            categoriesFilter = new CategoriesFilter(this, categories);
+        }
+        return categoriesFilter;
+    }
 
     private class CategoryHolder extends RecyclerView.ViewHolder {
 
@@ -79,20 +87,23 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             number = (TextView) itemView.findViewById(R.id.number);
             title = (TextView) itemView.findViewById(R.id.title_category);
             price = (TextView) itemView.findViewById(R.id.price);
-
             imageView = (ImageView) itemView.findViewById(R.id.image_category);
-
             constraintLayout = (ConstraintLayout) itemView.findViewById(R.id.constraint_layout);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (hashMap.get(getAdapterPosition()) == 0) {
-                        hashMap.put(getAdapterPosition(), 1);
+                    ArrayList<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
+                    String key = categories.get(getAdapterPosition()).getId();
+                    Integer value = hashMap.get(key);
+
+                    if (value == 0) {
+                        hashMap.put(key, 1);
                         presenterActivity.updateBadgeCounter(1);
+                        price.setText(String.valueOf(categories.get(getAdapterPosition()).getPrice()));
                         constraintLayout.setVisibility(View.VISIBLE);
-                        number.setText(1 + " шт.");
-                        price.setText("" + categories.get(getAdapterPosition()).getPrice());
+                        number.setText("1 шт.");
+
                     }
                 }
             });
@@ -100,27 +111,51 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int numberInt = hashMap.get(getAdapterPosition());
-                    hashMap.put(getAdapterPosition(), numberInt + 1);
+                    ArrayList<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
+                    String key = categories.get(getAdapterPosition()).getId();
+                    Integer value = hashMap.get(key);
+                    hashMap.put(key, value + 1);
                     presenterActivity.updateBadgeCounter(1);
-                    number.setText((numberInt + 1) + " шт.");
-                    price.setText("" + (numberInt + 1) * categories.get(getAdapterPosition()).getPrice());
+                    price.setText(String.valueOf(categories.get(getAdapterPosition()).getPrice() * (value + 1)));
+                    number.setText((value + 1) + " шт.");
+
                 }
             });
 
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int numberInt = hashMap.get(getAdapterPosition());
-                    hashMap.put(getAdapterPosition(), numberInt - 1);
+                    ArrayList<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
+                    String key = categories.get(getAdapterPosition()).getId();
+                    Integer value = hashMap.get(key);
+                    hashMap.put(key, value - 1);
                     presenterActivity.updateBadgeCounter(-1);
-                    number.setText((numberInt - 1) + " шт.");
-                    price.setText("" + (numberInt - 1) * categories.get(getAdapterPosition()).getPrice());
-                    if (numberInt - 1 == 0) {
+                    price.setText(String.valueOf(categories.get(getAdapterPosition()).getPrice() * (value - 1)));
+                    number.setText((value - 1) + " шт.");
+
+                    if (value - 1 == 0)
                         constraintLayout.setVisibility(View.GONE);
-                    }
                 }
             });
+        }
+
+        public void bindModel(int position) {
+            ArrayList<Category> categories = categoriesFiltered.size() == 0 ?
+                    CategoriesAdapter.this.categories :
+                    categoriesFiltered;
+
+            String key = categories.get(position).getId();
+            Integer value = hashMap.get(key);
+
+            price.setText(String.valueOf(categories.get(position).getPrice() * value));
+            number.setText((value) + " шт.");
+            title.setText(categories.get(position).getTitle());
+            imageView.setImageResource(categories.get(position).getPicture());
+
+            if (value == 0)
+                constraintLayout.setVisibility(View.GONE);
+            else
+                constraintLayout.setVisibility(View.VISIBLE);
         }
     }
 }

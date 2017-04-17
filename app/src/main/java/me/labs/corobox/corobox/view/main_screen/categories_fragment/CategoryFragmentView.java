@@ -68,7 +68,7 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                categoriesAdapter.getFilter().filter(newText);
+                categoriesAdapter.getFilter().filter(newText);
                 return true;
             }
         });
