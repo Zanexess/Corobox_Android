@@ -16,6 +16,7 @@ import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
+import me.labs.corobox.corobox.view.main_screen.terms_of_use_screen.TermsFragmentView;
 
 public class MainActivityPresenter implements IMainActivityPresenter {
 
@@ -45,6 +46,11 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                     changeTitle(view.getActivity().getString(R.string.sent_to_stock));
                     ft.replace(R.id.frame_layout, new CategoryFragmentView());
                     setVisibilityDeliveryMenu(true);
+                    break;
+                case TERMS:
+                    changeTitle(view.getActivity().getString(R.string.terms_title));
+                    ft.replace(R.id.frame_layout, new TermsFragmentView());
+                    setVisibilityDeliveryMenu(false);
                     break;
             }
             ft.commit();

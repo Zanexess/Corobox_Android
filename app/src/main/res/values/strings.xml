@@ -11,4 +11,5 @@
     <string name="ready">Вернуть</string>
     <string name="sent_to_stock">Отправить на склад</string>
     <string name="what_do_you_want_to_store">Что вы хотите найти?</string>
+    <string name="terms_title">Условия использования</string>
 </resources>
