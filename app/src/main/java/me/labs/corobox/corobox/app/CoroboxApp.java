@@ -7,6 +7,7 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
 import me.labs.corobox.corobox.di.components.DaggerIApiComponent;
 import me.labs.corobox.corobox.di.components.DaggerICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.DaggerINetworkComponent;
@@ -48,6 +49,7 @@ public class CoroboxApp extends Application {
         Fabric.with(this, new Crashlytics());
 
         buildGraphAndInject();
+        Realm.init(getApplicationContext());
 
         try {
             Picasso picasso = new Picasso.Builder(getApplicationContext()).downloader(new OkHttp3Downloader(getApplicationContext(), 10 * 1024 * 1024)).build();

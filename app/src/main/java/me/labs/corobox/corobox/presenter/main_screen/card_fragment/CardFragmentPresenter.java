@@ -19,4 +19,8 @@ public class CardFragmentPresenter implements ICardFragmentPresenter {
         CoroboxApp.get(activity).getApiComponent().inject(this);
     }
 
+    @Override
+    public void deleteCard(String uuid) {
+        view.deleteCard(uuid);
+    }
 }

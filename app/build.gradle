@@ -12,6 +12,8 @@ import org.ajoberstar.grgit.Grgit
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'realm-android'
+
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -53,7 +55,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "me.labs.corobox.corobox"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName ""
@@ -158,4 +160,7 @@ dependencies {
 
     compile 'com.mikepenz:actionitembadge:3.3.1@aar'
     compile 'com.mikepenz:iconics-core:2.8.1@aar'
+    compile 'com.braintreepayments:card-form:3.0.5'
+
+    compile 'io.realm:android-adapters:2.0.0'
 }
