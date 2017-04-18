@@ -8,8 +8,12 @@ import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_fragment.AddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.BoxesFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.card_fragment.CardFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.CategoryFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.settings.ISettingsFragmentPresenter;
@@ -66,5 +70,17 @@ public class MainActivityModule {
     @ActivityScope
     public ISettingsFragmentPresenter provideSettingsFragmentPresenter() {
         return new SettingsFragmentPresenter();
+    }
+
+    @Provides
+    @ActivityScope
+    public IAddressFragmentPresenter provideAddressFragmentPresenter() {
+        return new AddressFragmentPresenter();
+    }
+
+    @Provides
+    @ActivityScope
+    public ICardFragmentPresenter provideCardFragmentPresenter() {
+        return new CardFragmentPresenter();
     }
 }

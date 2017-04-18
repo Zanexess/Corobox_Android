@@ -17,4 +17,6 @@
     <string name="add_address">Добавить адрес</string>
     <string name="add_card">Добавить способ оплаты</string>
     <string name="change_avatar">Сменить аватар</string>
+    <string name="add_card_title">Добавление карты</string>
+    <string name="add_address_title">Добавление адреса</string>
 </resources>

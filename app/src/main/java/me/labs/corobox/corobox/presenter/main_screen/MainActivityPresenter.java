@@ -13,7 +13,9 @@ import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
+import me.labs.corobox.corobox.view.main_screen.address_fragment.AddressFragmentView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
+import me.labs.corobox.corobox.view.main_screen.card_screen.CardFragmentView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
 import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
@@ -55,6 +57,16 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                 case SETTINGS:
                     changeTitle(view.getActivity().getString(R.string.settings_title));
                     ft.replace(R.id.frame_layout, new SettingsFragmentView());
+                    setVisibilityDeliveryMenu(false);
+                    break;
+                case ADDRESS:
+                    changeTitle(view.getActivity().getString(R.string.add_address_title));
+                    ft.replace(R.id.frame_layout, new AddressFragmentView());
+                    setVisibilityDeliveryMenu(false);
+                    break;
+                case CARD:
+                    changeTitle(view.getActivity().getString(R.string.add_card_title));
+                    ft.replace(R.id.frame_layout, new CardFragmentView());
                     setVisibilityDeliveryMenu(false);
                     break;
             }
@@ -105,5 +117,10 @@ public class MainActivityPresenter implements IMainActivityPresenter {
     @Override
     public HashMap<String, Integer> getHashMap() {
         return hashMap;
+    }
+
+    @Override
+    public FragmentType getCurrentType() {
+        return currentType;
     }
 }

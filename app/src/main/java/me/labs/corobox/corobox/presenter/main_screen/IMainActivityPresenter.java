@@ -14,4 +14,5 @@ public interface IMainActivityPresenter {
     HashMap<String, Integer> getHashMap();
     void setHashMap(HashMap<String, Integer> hashMap);
     void openCart(HashMap<String, Integer> hashMap);
+    FragmentType getCurrentType();
 }

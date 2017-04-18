@@ -3,7 +3,9 @@ package me.labs.corobox.corobox.di.components;
 import dagger.Component;
 import me.labs.corobox.corobox.di.modules.ApiModule;
 import me.labs.corobox.corobox.di.scope.ApiScope;
+import me.labs.corobox.corobox.presenter.main_screen.address_fragment.AddressFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.BoxesFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.card_fragment.CardFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.CategoryFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.settings.SettingsFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.terms_of_use.TermsFragmentPresenter;
@@ -18,5 +20,7 @@ public interface IApiComponent {
     void inject(CategoryFragmentPresenter categoryFragmentPresenter);
     void inject(TermsFragmentPresenter termsFragmentPresenter);
     void inject(SettingsFragmentPresenter settingsFragmentPresenter);
+    void inject(AddressFragmentPresenter addressFragmentPresenter);
+    void inject(CardFragmentPresenter cardFragmentPresenter);
 }
 

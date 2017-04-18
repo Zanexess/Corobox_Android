@@ -67,8 +67,10 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        presenter.changeFragment(FragmentType.BOXES);
-        navigationView.setCheckedItem(R.id.nav_my_boxes);
+        if (presenter.getCurrentType() == null) {
+            presenter.changeFragment(FragmentType.BOXES);
+            navigationView.setCheckedItem(R.id.nav_my_boxes);
+        }
     }
 
     @Override
