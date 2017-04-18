@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.BoxesAdapter;
+import me.labs.corobox.corobox.di.components.activities.IAddressActivityComponent;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.model.Box;
 import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressFragmentPresenter;
@@ -52,7 +53,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.getComponent(IMainActivityComponent.class).inject(this);
+        this.getComponent(IAddressActivityComponent.class).inject(this);
         presenter.init(this);
 
     }

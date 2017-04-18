@@ -23,5 +23,4 @@ public interface IMainActivityComponent {
     void inject(CategoryFragmentView categoryFragmentView);
     void inject(TermsFragmentView termsFragmentView);
     void inject(SettingsFragmentView settingsFragmentView);
-    void inject(AddressFragmentView addressFragmentView);
 }

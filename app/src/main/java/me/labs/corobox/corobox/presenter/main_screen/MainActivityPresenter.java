@@ -14,6 +14,7 @@ import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
+import me.labs.corobox.corobox.view.main_screen.address_fragment.AddressActivityView;
 import me.labs.corobox.corobox.view.main_screen.address_fragment.AddressFragmentView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardActivityView;
@@ -62,13 +63,12 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                     setVisibilityDeliveryMenu(false);
                     break;
                 case ADDRESS:
-                    changeTitle(view.getActivity().getString(R.string.add_address_title));
-                    ft.replace(R.id.frame_layout, new AddressFragmentView());
-                    setVisibilityDeliveryMenu(false);
+                    Intent intent = new Intent(view.getActivity(), AddressActivityView.class);
+                    view.getActivity().startActivity(intent);
                     break;
                 case CARD:
-                    Intent intent = new Intent(view.getActivity(), CardActivityView.class);
-                    view.getActivity().startActivity(intent);
+                    Intent intent1 = new Intent(view.getActivity(), CardActivityView.class);
+                    view.getActivity().startActivity(intent1);
                     break;
             }
             ft.commit();
