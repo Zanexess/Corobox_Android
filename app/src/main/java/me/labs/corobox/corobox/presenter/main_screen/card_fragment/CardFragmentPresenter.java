@@ -23,4 +23,9 @@ public class CardFragmentPresenter implements ICardFragmentPresenter {
     public void deleteCard(String uuid) {
         view.deleteCard(uuid);
     }
+
+    @Override
+    public void setDefaultCard(String uuid) {
+        view.setDefaultCard(uuid);
+    }
 }

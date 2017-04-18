@@ -14,6 +14,7 @@ public class CardModel extends RealmObject {
     private String expirationYear;
     private String cvv;
     private String mobileNumber;
+    private boolean useAsDefault;
 
     public String getUuid() {
         return uuid;
@@ -61,5 +62,13 @@ public class CardModel extends RealmObject {
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public boolean isUseAsDefault() {
+        return useAsDefault;
+    }
+
+    public void setUseAsDefault(boolean useAsDefault) {
+        this.useAsDefault = useAsDefault;
     }
 }

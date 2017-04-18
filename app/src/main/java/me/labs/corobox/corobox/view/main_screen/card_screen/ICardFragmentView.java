@@ -5,4 +5,5 @@ import android.app.Activity;
 public interface ICardFragmentView {
     Activity provideActivity();
     void deleteCard(String uuid);
+    void setDefaultCard(String uuid);
 }

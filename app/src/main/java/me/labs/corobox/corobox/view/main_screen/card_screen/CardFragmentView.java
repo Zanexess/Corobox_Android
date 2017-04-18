@@ -78,10 +78,19 @@ public class CardFragmentView extends BaseFragment implements ICardFragmentView 
                 realm.copyToRealm(cardModel);
                 realm.commitTransaction();
 
+                setDefaultCard(cardModel.getUuid());
+
                 RealmResults<CardModel> cards = realm.where(CardModel.class).findAll();
                 cardsAdapter = new CardRealmAdapter(cards.createSnapshot(), false, presenter);
                 recyclerView.setAdapter(cardsAdapter);
                 cardsAdapter.notifyDataSetChanged();
+
+                cardForm.closeSoftKeyboard();
+                cardForm.getCardEditText().setText("");
+                cardForm.getCvvEditText().setText("");
+                cardForm.getMobileNumberEditText().setText("");
+                cardForm.getCountryCodeEditText().setText("");
+                cardForm.getExpirationDateEditText().setText("");
 
                 Toast.makeText(getContext(), "Карта сохранена!", Toast.LENGTH_SHORT).show();
             }
@@ -131,6 +140,27 @@ public class CardFragmentView extends BaseFragment implements ICardFragmentView 
             public void execute(Realm realm) {
                 RealmResults<CardModel> results = realm.where(CardModel.class).equalTo("uuid", uuid).findAll();
                 results.deleteAllFromRealm();
+                RealmResults<CardModel> cards = realm.where(CardModel.class).findAll();
+                cardsAdapter = new CardRealmAdapter(cards.createSnapshot(), false, presenter);
+                recyclerView.setAdapter(cardsAdapter);
+                cardsAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void setDefaultCard(final String uuid) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<CardModel> results = realm.where(CardModel.class).findAll();
+                for (CardModel card : results)
+                    card.setUseAsDefault(false);
+
+                RealmResults<CardModel> resultsuuid = realm.where(CardModel.class).equalTo("uuid", uuid).findAll();
+                resultsuuid.get(0).setUseAsDefault(true);
+
                 RealmResults<CardModel> cards = realm.where(CardModel.class).findAll();
                 cardsAdapter = new CardRealmAdapter(cards.createSnapshot(), false, presenter);
                 recyclerView.setAdapter(cardsAdapter);
