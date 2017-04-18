@@ -26,6 +26,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".view.main_screen.card_screen.CardActivityView"
+            android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="eb30435776d7378abe1afbc4dfc6d5760c699990" />

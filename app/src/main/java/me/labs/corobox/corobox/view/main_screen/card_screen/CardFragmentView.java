@@ -24,6 +24,7 @@ import io.realm.RealmResults;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.CardRealmAdapter;
+import me.labs.corobox.corobox.di.components.activities.ICardActivityComponent;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.model.realm.CardModel;
 import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressFragmentPresenter;
@@ -119,7 +120,7 @@ public class CardFragmentView extends BaseFragment implements ICardFragmentView 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.getComponent(IMainActivityComponent.class).inject(this);
+        this.getComponent(ICardActivityComponent.class).inject(this);
         presenter.init(this);
 
         RealmResults<CardModel> cards = Realm.getDefaultInstance().where(CardModel.class).findAll();

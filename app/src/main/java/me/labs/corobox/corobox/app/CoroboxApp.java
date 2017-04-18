@@ -8,6 +8,7 @@ import com.squareup.picasso.Picasso;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
+import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.di.components.DaggerIApiComponent;
 import me.labs.corobox.corobox.di.components.DaggerICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.DaggerINetworkComponent;
@@ -22,6 +23,7 @@ public class CoroboxApp extends Application {
     private ICoroboxAppComponent appComponent;
     private INetworkComponent networkComponent;
     private IApiComponent apiComponent;
+    public static FragmentType  type = FragmentType.BOXES;
 
     public static CoroboxApp get(Context context) {
         return (CoroboxApp) context.getApplicationContext();

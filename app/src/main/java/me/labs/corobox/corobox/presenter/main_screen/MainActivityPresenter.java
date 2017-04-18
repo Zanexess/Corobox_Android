@@ -1,5 +1,6 @@
 package me.labs.corobox.corobox.presenter.main_screen;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
 import me.labs.corobox.corobox.view.main_screen.address_fragment.AddressFragmentView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
+import me.labs.corobox.corobox.view.main_screen.card_screen.CardActivityView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardFragmentView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
@@ -65,9 +67,8 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                     setVisibilityDeliveryMenu(false);
                     break;
                 case CARD:
-                    changeTitle(view.getActivity().getString(R.string.add_card_title));
-                    ft.replace(R.id.frame_layout, new CardFragmentView());
-                    setVisibilityDeliveryMenu(false);
+                    Intent intent = new Intent(view.getActivity(), CardActivityView.class);
+                    view.getActivity().startActivity(intent);
                     break;
             }
             ft.commit();

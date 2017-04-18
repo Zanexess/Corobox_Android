@@ -77,10 +77,4 @@ public class MainActivityModule {
     public IAddressFragmentPresenter provideAddressFragmentPresenter() {
         return new AddressFragmentPresenter();
     }
-
-    @Provides
-    @ActivityScope
-    public ICardFragmentPresenter provideCardFragmentPresenter() {
-        return new CardFragmentPresenter();
-    }
 }

@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import io.fabric.sdk.android.Fabric;
 import me.labs.corobox.corobox.BuildConfig;
 import me.labs.corobox.corobox.R;
+import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.common.BaseActivity;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.di.IHasComponent;
@@ -67,10 +68,8 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (presenter.getCurrentType() == null) {
-            presenter.changeFragment(FragmentType.BOXES);
-            navigationView.setCheckedItem(R.id.nav_my_boxes);
-        }
+        presenter.changeFragment(CoroboxApp.type);
+        navigationView.setCheckedItem(R.id.nav_my_boxes);
     }
 
     @Override
