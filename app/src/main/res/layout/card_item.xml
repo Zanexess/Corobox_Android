@@ -20,7 +20,7 @@
                 android:id="@+id/card_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="left"
                 android:padding="16dp"
                 android:text="4276 2828 2424 2144"
                 android:textSize="22sp" />
@@ -43,7 +43,7 @@
                     android:id="@+id/date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:padding="16dp"
                     android:text="09 / 21"
                     android:textSize="22sp" />

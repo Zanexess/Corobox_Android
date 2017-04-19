@@ -5,5 +5,6 @@ import me.labs.corobox.corobox.view.main_screen.address_fragment.IAddressFragmen
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.ISettingsFragmentView;
 
 public interface IAddressFragmentPresenter extends BaseFragmentPresenter<IAddressFragmentView> {
-
+    void deleteAddress(String uuid);
+    void setDefaultAddress(String uuid);
 }

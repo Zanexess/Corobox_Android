@@ -19,4 +19,13 @@ public class AddressFragmentPresenter implements IAddressFragmentPresenter {
         CoroboxApp.get(activity).getApiComponent().inject(this);
     }
 
+    @Override
+    public void deleteAddress(String uuid) {
+        view.deleteAddress(uuid);
+    }
+
+    @Override
+    public void setDefaultAddress(String uuid) {
+        view.setDefaultAddress(uuid);
+    }
 }

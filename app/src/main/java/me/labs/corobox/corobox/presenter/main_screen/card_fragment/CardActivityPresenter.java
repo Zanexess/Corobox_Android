@@ -26,7 +26,6 @@ public class CardActivityPresenter implements ICardActivityPresenter {
 
     private ICardActivityView view;
     private FragmentType currentType;
-    private int badgeCount = 0;
 
     @Inject
     public CardActivityPresenter(ICardActivityView view) {

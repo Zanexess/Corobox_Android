@@ -4,4 +4,6 @@ import android.app.Activity;
 
 public interface IAddressFragmentView {
     Activity provideActivity();
+    void setDefaultAddress(String uuid);
+    void deleteAddress(String uuid);
 }
