@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import me.labs.corobox.corobox.R;
+import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
@@ -62,16 +63,22 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                     ft.replace(R.id.frame_layout, new SettingsFragmentView());
                     setVisibilityDeliveryMenu(false);
                     break;
-                case ADDRESS:
-                    Intent intent = new Intent(view.getActivity(), AddressActivityView.class);
-                    view.getActivity().startActivity(intent);
-                    break;
-                case CARD:
-                    Intent intent1 = new Intent(view.getActivity(), CardActivityView.class);
-                    view.getActivity().startActivity(intent1);
-                    break;
             }
             ft.commit();
+        }
+    }
+
+    @Override
+    public void changeActivity(ActivityType type) {
+        switch (type) {
+            case ADDRESS:
+                Intent intent = new Intent(view.getActivity(), AddressActivityView.class);
+                view.getActivity().startActivity(intent);
+                break;
+            case CARD:
+                Intent intent1 = new Intent(view.getActivity(), CardActivityView.class);
+                view.getActivity().startActivity(intent1);
+                break;
         }
     }
 

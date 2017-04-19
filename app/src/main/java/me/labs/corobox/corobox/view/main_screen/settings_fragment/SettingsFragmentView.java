@@ -16,6 +16,7 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import me.labs.corobox.corobox.R;
+import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
@@ -79,14 +80,14 @@ public class SettingsFragmentView extends BaseFragment implements ISettingsFragm
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenterActivity.changeFragment(FragmentType.CARD);
+                presenterActivity.changeActivity(ActivityType.CARD);
             }
         });
 
         addAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenterActivity.changeFragment(FragmentType.ADDRESS);
+                presenterActivity.changeActivity(ActivityType.ADDRESS);
             }
         });
 

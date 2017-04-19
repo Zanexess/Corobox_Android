@@ -2,10 +2,12 @@ package me.labs.corobox.corobox.presenter.main_screen;
 
 import java.util.HashMap;
 
+import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.FragmentType;
 
 public interface IMainActivityPresenter {
-    void changeFragment(FragmentType boxes);
+    void changeFragment(FragmentType type);
+    void changeActivity(ActivityType type);
     void changeTitle(String title);
     void updateBadgeCounter(int i);
     void setVisibilityDeliveryMenu(boolean isVisible);

@@ -7,6 +7,7 @@ public enum FragmentType {
     HISTORY,
     SETTINGS,
     TERMS,
+
     ADDRESS,
     CARD
 }
