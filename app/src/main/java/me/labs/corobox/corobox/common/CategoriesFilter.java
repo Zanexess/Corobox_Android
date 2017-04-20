@@ -1,6 +1,5 @@
 package me.labs.corobox.corobox.common;
 
-import android.util.Log;
 import android.widget.Filter;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import me.labs.corobox.corobox.common.adapters.CategoriesAdapter;
-import me.labs.corobox.corobox.model.Category;
+import me.labs.corobox.corobox.model.realm.Category;
 
 public class CategoriesFilter extends Filter {
 

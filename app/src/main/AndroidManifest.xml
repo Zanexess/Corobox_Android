@@ -29,7 +29,7 @@
         <activity android:name=".view.main_screen.card_screen.CardActivityView"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.main_screen.address_fragment.AddressActivityView"
+        <activity android:name=".view.main_screen.address_screen.AddressActivityView"
             android:screenOrientation="portrait"/>
 
 

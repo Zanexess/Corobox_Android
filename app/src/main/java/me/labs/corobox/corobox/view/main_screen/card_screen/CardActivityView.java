@@ -2,17 +2,6 @@ package me.labs.corobox.corobox.view.main_screen.card_screen;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import javax.inject.Inject;
 
@@ -23,14 +12,9 @@ import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.di.IHasComponent;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.activities.DaggerICardActivityComponent;
-import me.labs.corobox.corobox.di.components.activities.DaggerIMainActivityComponent;
 import me.labs.corobox.corobox.di.components.activities.ICardActivityComponent;
-import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.di.modules.activities.CardActivityModule;
-import me.labs.corobox.corobox.di.modules.activities.MainActivityModule;
-import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardActivityPresenter;
-import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
+import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardActivityPresenter;
 
 public class CardActivityView extends BaseActivity implements ICardActivityView, IHasComponent<ICardActivityComponent> {
 

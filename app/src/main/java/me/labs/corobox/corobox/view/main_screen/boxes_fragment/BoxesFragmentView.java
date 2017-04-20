@@ -18,7 +18,7 @@ import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.BoxesAdapter;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
-import me.labs.corobox.corobox.model.Box;
+import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
 
 public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentView {

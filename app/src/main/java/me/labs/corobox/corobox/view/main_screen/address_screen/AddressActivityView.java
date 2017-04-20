@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.view.main_screen.address_fragment;
+package me.labs.corobox.corobox.view.main_screen.address_screen;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,13 +12,9 @@ import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.di.IHasComponent;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.activities.DaggerIAddressActivityComponent;
-import me.labs.corobox.corobox.di.components.activities.DaggerICardActivityComponent;
 import me.labs.corobox.corobox.di.components.activities.IAddressActivityComponent;
-import me.labs.corobox.corobox.di.components.activities.ICardActivityComponent;
 import me.labs.corobox.corobox.di.modules.activities.AddressActivityModule;
-import me.labs.corobox.corobox.di.modules.activities.CardActivityModule;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressActivityPresenter;
 
 public class AddressActivityView extends BaseActivity implements IAddressActivityView, IHasComponent<IAddressActivityComponent> {
 

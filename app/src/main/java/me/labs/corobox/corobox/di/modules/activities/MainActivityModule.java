@@ -8,14 +8,14 @@ import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.AddressFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.BoxesFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.CardFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.CategoryFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.orders_screen.IOrdersFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.orders_screen.OrdersFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.settings.ISettingsFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.settings.SettingsFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.terms_of_use.ITermsFragmentPresenter;
@@ -76,5 +76,11 @@ public class MainActivityModule {
     @ActivityScope
     public IAddressFragmentPresenter provideAddressFragmentPresenter() {
         return new AddressFragmentPresenter();
+    }
+
+    @Provides
+    @ActivityScope
+    public IOrdersFragmentPresenter provideOrderFragmentPresenter() {
+        return new OrdersFragmentPresenter();
     }
 }

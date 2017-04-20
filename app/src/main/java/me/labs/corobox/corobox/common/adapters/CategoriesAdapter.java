@@ -1,8 +1,8 @@
 package me.labs.corobox.corobox.common.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +11,14 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.CategoriesFilter;
-import me.labs.corobox.corobox.model.Category;
+import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
 
@@ -149,7 +150,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             price.setText(String.valueOf(categories.get(position).getPrice() * value));
             number.setText((value) + " шт.");
             title.setText(categories.get(position).getTitle());
-            imageView.setImageResource(categories.get(position).getPicture());
+
+            try {
+                InputStream ims = imageView.getContext().getAssets().open(categories.get(position).getPicture());
+                Drawable d = Drawable.createFromStream(ims, null);
+                imageView.setImageDrawable(d);
+            }
+            catch(IOException ex) {
+                return;
+            }
 
             if (value == 0)
                 constraintLayout.setVisibility(View.GONE);

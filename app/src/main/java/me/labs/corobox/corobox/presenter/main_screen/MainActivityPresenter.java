@@ -6,21 +6,30 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.FragmentType;
+import me.labs.corobox.corobox.model.eventbus.UpdateCategoriesMessage;
+import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
-import me.labs.corobox.corobox.view.main_screen.address_fragment.AddressActivityView;
-import me.labs.corobox.corobox.view.main_screen.address_fragment.AddressFragmentView;
+import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardActivityView;
-import me.labs.corobox.corobox.view.main_screen.card_screen.CardFragmentView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
+import me.labs.corobox.corobox.view.main_screen.orders_screen.OrdersFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
 import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
 
@@ -61,6 +70,11 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                 case SETTINGS:
                     changeTitle(view.getActivity().getString(R.string.settings_title));
                     ft.replace(R.id.frame_layout, new SettingsFragmentView());
+                    setVisibilityDeliveryMenu(false);
+                    break;
+                case HISTORY:
+                    changeTitle("Статус заказов");
+                    ft.replace(R.id.frame_layout, new OrdersFragmentView());
                     setVisibilityDeliveryMenu(false);
                     break;
             }
@@ -115,11 +129,38 @@ public class MainActivityPresenter implements IMainActivityPresenter {
 
     @Override
     public void openCart(HashMap<String, Integer> hashMap) {
-        for (String key :hashMap.keySet()) {
-            if (hashMap.get(key) != 0) {
-                Toast.makeText(view.getActivity(), key + " " + hashMap.get(key), Toast.LENGTH_SHORT).show();
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmList<Category> realmList = new RealmList<>();
+        for (Map.Entry<String, Integer> entry :hashMap.entrySet()) {
+            if (entry.getValue() != 0) {
+                realmList.add(realm.where(Category.class).equalTo("id", entry.getKey()).findFirst());
             }
         }
+        String uuid = UUID.randomUUID().toString();
+
+        realm.beginTransaction();
+        realm.where(OrderModelTo.class).equalTo("status", "STARTED").findAll().deleteAllFromRealm();
+        realm.commitTransaction();
+
+        OrderModelTo orderModelTo = new OrderModelTo();
+        orderModelTo.setUUID(uuid);
+        orderModelTo.setList(realmList);
+        orderModelTo.setStatus("STARTED");
+
+        realm.beginTransaction();
+        realm.copyToRealm(orderModelTo);
+        realm.commitTransaction();
+
+        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+            entry.setValue(0);
+        }
+        badgeCount = 0;
+        setDeliveryBadgeCount(0);
+        updateBadgeCounter(0);
+        EventBus.getDefault().post(new UpdateCategoriesMessage());
+
+
     }
 
     @Override

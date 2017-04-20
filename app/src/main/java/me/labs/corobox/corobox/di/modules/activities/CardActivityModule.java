@@ -6,13 +6,10 @@ import dagger.Module;
 import dagger.Provides;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
-import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.CardActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.CardFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardFragmentPresenter;
-import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
+import me.labs.corobox.corobox.presenter.main_screen.card_screen.CardActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.card_screen.CardFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardFragmentPresenter;
 import me.labs.corobox.corobox.view.main_screen.card_screen.ICardActivityView;
 
 @Module

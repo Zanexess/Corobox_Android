@@ -24,12 +24,15 @@ import com.crashlytics.android.Crashlytics;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.ActionItemBadgeAdder;
 
+import java.util.UUID;
+
 import javax.inject.Inject;
 
 import io.fabric.sdk.android.Fabric;
 import me.labs.corobox.corobox.BuildConfig;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.app.CoroboxApp;
+import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.BaseActivity;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.di.IHasComponent;
@@ -143,6 +146,8 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
             presenter.changeFragment(FragmentType.TERMS);
         } else if (id == R.id.nav_settings) {
             presenter.changeFragment(FragmentType.SETTINGS);
+        } else if (id == R.id.nav_history) {
+            presenter.changeFragment(FragmentType.HISTORY);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

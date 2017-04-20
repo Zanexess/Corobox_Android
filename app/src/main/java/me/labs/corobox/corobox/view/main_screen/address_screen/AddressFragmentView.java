@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.view.main_screen.address_fragment;
+package me.labs.corobox.corobox.view.main_screen.address_screen;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,16 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -26,16 +23,9 @@ import io.realm.RealmResults;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.AddressRealmAdapter;
-import me.labs.corobox.corobox.common.adapters.BoxesAdapter;
-import me.labs.corobox.corobox.common.adapters.CardRealmAdapter;
 import me.labs.corobox.corobox.di.components.activities.IAddressActivityComponent;
-import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
-import me.labs.corobox.corobox.model.Box;
 import me.labs.corobox.corobox.model.realm.AddressModel;
-import me.labs.corobox.corobox.model.realm.CardModel;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
-import me.labs.corobox.corobox.view.main_screen.boxes_fragment.IBoxesFragmentView;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressFragmentPresenter;
 
 public class AddressFragmentView extends BaseFragment implements IAddressFragmentView {
 

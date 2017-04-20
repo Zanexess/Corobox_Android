@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.presenter.main_screen.address_fragment;
+package me.labs.corobox.corobox.presenter.main_screen.card_screen;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,20 +8,16 @@ import javax.inject.Inject;
 
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.FragmentType;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardActivityPresenter;
-import me.labs.corobox.corobox.view.main_screen.address_fragment.AddressFragmentView;
-import me.labs.corobox.corobox.view.main_screen.address_fragment.IAddressActivityView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardFragmentView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.ICardActivityView;
 
-public class AddressActivityPresenter implements IAddressActivityPresenter {
+public class CardActivityPresenter implements ICardActivityPresenter {
 
-    private IAddressActivityView view;
+    private ICardActivityView view;
     private FragmentType currentType;
-    private int badgeCount = 0;
 
     @Inject
-    public AddressActivityPresenter(IAddressActivityView view) {
+    public CardActivityPresenter(ICardActivityView view) {
         this.view = view;
     }
 
@@ -32,9 +28,9 @@ public class AddressActivityPresenter implements IAddressActivityPresenter {
             FragmentManager fm = ((AppCompatActivity) view.getActivity()).getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             switch (type) {
-                case ADDRESS:
-                    changeTitle(view.getActivity().getString(R.string.add_address_title));
-                    ft.replace(R.id.frame_layout, new AddressFragmentView());
+                case CARD:
+                    changeTitle(view.getActivity().getString(R.string.add_card_title));
+                    ft.replace(R.id.frame_layout, new CardFragmentView());
                     break;
             }
             ft.commit();

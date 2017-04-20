@@ -1,19 +1,20 @@
-package me.labs.corobox.corobox.model;
+package me.labs.corobox.corobox.model.realm;
 
-public class Category {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
+
+@RealmClass
+public class Category extends RealmObject {
+
+    @PrimaryKey
+    private String id;
     private String title;
     private Integer price;
-    private String id;
-    private Integer picture;
+    private String picture;
 
     public Category() {
-    }
 
-    public Category(String title, Integer price, String id, Integer picture) {
-        this.title = title;
-        this.price = price;
-        this.id = id;
-        this.picture = picture;
     }
 
     public String getTitle() {
@@ -40,11 +41,11 @@ public class Category {
         this.id = id;
     }
 
-    public Integer getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(Integer picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 }

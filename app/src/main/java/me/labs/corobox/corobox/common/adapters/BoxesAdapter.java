@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import me.labs.corobox.corobox.R;
-import me.labs.corobox.corobox.model.Box;
+import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
 
 public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

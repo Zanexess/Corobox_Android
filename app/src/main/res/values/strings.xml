@@ -2,7 +2,7 @@
     <string name="app_name">Corobox</string>
     <string name="navigation_drawer_open">Открыть навигационное меню</string>
     <string name="navigation_drawer_close">Закрыть навигационное меню</string>
-    <string name="new_box">Новый заказ</string>
+    <string name="new_box">Отправить на склад</string>
     <string name="cart">Корзина</string>
     <string name="my_boxes_title">Мои вещи</string>
     <string name="history">История заказов</string>

@@ -12,7 +12,7 @@ import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.realm.AddressModel;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressFragmentPresenter;
 
 public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, RecyclerView.ViewHolder> {
 

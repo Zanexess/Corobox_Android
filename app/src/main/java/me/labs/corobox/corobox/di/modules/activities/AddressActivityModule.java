@@ -6,16 +6,11 @@ import dagger.Module;
 import dagger.Provides;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.AddressActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.AddressFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_fragment.IAddressFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.CardActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.CardFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardFragmentPresenter;
-import me.labs.corobox.corobox.view.main_screen.address_fragment.IAddressActivityView;
-import me.labs.corobox.corobox.view.main_screen.card_screen.ICardActivityView;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressFragmentPresenter;
+import me.labs.corobox.corobox.view.main_screen.address_screen.IAddressActivityView;
 
 @Module
 public class AddressActivityModule {

@@ -6,9 +6,6 @@
             android:id="@+id/nav_new_box"
             android:title="@string/new_box" />
         <item
-            android:id="@+id/nav_cart"
-            android:title="@string/cart" />
-        <item
             android:id="@+id/nav_my_boxes"
             android:title="@string/my_boxes_title" />
         <item

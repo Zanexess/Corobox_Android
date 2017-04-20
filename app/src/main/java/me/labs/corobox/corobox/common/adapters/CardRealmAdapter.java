@@ -12,7 +12,7 @@ import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.realm.CardModel;
-import me.labs.corobox.corobox.presenter.main_screen.card_fragment.ICardFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardFragmentPresenter;
 
 public class CardRealmAdapter extends RealmRecyclerViewAdapter<CardModel, RecyclerView.ViewHolder> {
 

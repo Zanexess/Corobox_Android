@@ -1,10 +1,8 @@
-package me.labs.corobox.corobox.presenter.main_screen.card_fragment;
-
-import java.util.HashMap;
+package me.labs.corobox.corobox.presenter.main_screen.address_screen;
 
 import me.labs.corobox.corobox.common.FragmentType;
 
-public interface ICardActivityPresenter {
+public interface IAddressActivityPresenter {
     void changeFragment(FragmentType boxes);
     void changeTitle(String title);
     FragmentType getCurrentType();
