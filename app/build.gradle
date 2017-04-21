@@ -62,6 +62,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    lintOptions {
+        disable
+    }
+
     signingConfigs {
         release {
             keyAlias 'test'
