@@ -124,6 +124,11 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
         this.getComponent(IAddressActivityComponent.class).inject(this);
         presenter.init(this);
 
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<AddressModel> addresses = realm.where(AddressModel.class).findAll();
+        addressAdapter = new AddressRealmAdapter(addresses.createSnapshot(), false, presenter);
+        recyclerView.setAdapter(addressAdapter);
+        addressAdapter.notifyDataSetChanged();
     }
 
     @Override

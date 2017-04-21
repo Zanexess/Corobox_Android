@@ -23,12 +23,14 @@ import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.model.eventbus.UpdateCategoriesMessage;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
+import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
 import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardActivityView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
+import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActivityView;
 import me.labs.corobox.corobox.view.main_screen.orders_screen.OrdersFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
 import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
@@ -132,9 +134,13 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         Realm realm = Realm.getDefaultInstance();
 
         RealmList<Category> realmList = new RealmList<>();
+        RealmList<IntegerWrap> realmList1 = new RealmList<>();
         for (Map.Entry<String, Integer> entry :hashMap.entrySet()) {
             if (entry.getValue() != 0) {
                 realmList.add(realm.where(Category.class).equalTo("id", entry.getKey()).findFirst());
+                IntegerWrap integerWrap = new IntegerWrap();
+                integerWrap.setCount(entry.getValue());
+                realmList1.add(integerWrap);
             }
         }
         String uuid = UUID.randomUUID().toString();
@@ -146,6 +152,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         OrderModelTo orderModelTo = new OrderModelTo();
         orderModelTo.setUUID(uuid);
         orderModelTo.setList(realmList);
+        orderModelTo.setCount(realmList1);
         orderModelTo.setStatus("STARTED");
 
         realm.beginTransaction();
@@ -160,7 +167,9 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         updateBadgeCounter(0);
         EventBus.getDefault().post(new UpdateCategoriesMessage());
 
-
+        Intent intent = new Intent(view.getActivity(), MakeOrderActivityView.class);
+        intent.putExtra("uuid", uuid);
+        view.getActivity().startActivity(intent);
     }
 
     @Override

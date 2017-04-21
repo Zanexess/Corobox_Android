@@ -23,7 +23,7 @@ public class CoroboxApp extends Application {
     private ICoroboxAppComponent appComponent;
     private INetworkComponent networkComponent;
     private IApiComponent apiComponent;
-    public static FragmentType  type = FragmentType.BOXES;
+    public static FragmentType  type = FragmentType.NEW_BOX;
 
     public static CoroboxApp get(Context context) {
         return (CoroboxApp) context.getApplicationContext();
