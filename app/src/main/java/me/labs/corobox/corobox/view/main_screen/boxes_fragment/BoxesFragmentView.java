@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     private View view;
     private RecyclerView recyclerView;
     private Button readyButton;
+    private TextView noData;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,7 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     private void initComponents() {
         readyButton = (Button) view.findViewById(R.id.button_ok);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        noData = (TextView) view.findViewById(R.id.no_stuff);
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(llm);
     }
@@ -59,8 +62,12 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
         presenter.init(this);
 
         ArrayList<Box> boxes = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            boxes.add(new Box());
+        if (boxes.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
         }
         recyclerView.setAdapter(new BoxesAdapter(boxes, presenter));
     }

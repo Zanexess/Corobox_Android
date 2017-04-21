@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -19,7 +20,7 @@ public class OrderFragment extends Fragment {
 
     private View view;
     private RecyclerView recyclerView;
-
+    private TextView textView;
 
     public static OrderFragment newInstance(String type) {
 
@@ -44,12 +45,16 @@ public class OrderFragment extends Fragment {
     private void initComponents() {
         String type = getArguments().getString("type");
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        textView = (TextView) view.findViewById(R.id.no_stuff);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         if (type.equals("FROM")) {
             Realm realm = Realm.getDefaultInstance();
             RealmResults<OrderModelTo> orderModelTos = realm.where(OrderModelTo.class).equalTo("status", "ORDERED").equalTo("type", "FROM").findAll();
             recyclerView.setAdapter(new OrderRealmAdapter(orderModelTos.createSnapshot(), false));
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
         }
     }
 
