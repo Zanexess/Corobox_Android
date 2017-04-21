@@ -8,11 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
+import me.labs.corobox.corobox.model.eventbus.UpdateOrdersMessage;
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
+import me.labs.corobox.corobox.presenter.main_screen.orders_screen.IOrdersFragmentPresenter;
 
 public class OrderRealmAdapter extends RealmRecyclerViewAdapter<OrderModelTo, RecyclerView.ViewHolder> {
 
@@ -55,10 +60,21 @@ public class OrderRealmAdapter extends RealmRecyclerViewAdapter<OrderModelTo, Re
             address = (TextView) itemView.findViewById(R.id.address);
             recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    realm.where(OrderModelTo.class).equalTo("UUID", orders.get(getAdapterPosition()).getUUID()).findAll().deleteAllFromRealm();
+                    realm.commitTransaction();
+                    EventBus.getDefault().post(new UpdateOrdersMessage());
+                    return true;
+                }
+            });
         }
 
         private void bind(int position) {
-            number.setText("Заказ # " + orders.get(getAdapterPosition()).getUUID().substring(0, 7));
+            number.setText("Заказ #" + orders.get(getAdapterPosition()).getUUID().substring(0, 7));
             date.setText(orders.get(getAdapterPosition()).getDate());
             AddressModel addressModel = orders.get(getAdapterPosition()).getAddressModel();
             try {

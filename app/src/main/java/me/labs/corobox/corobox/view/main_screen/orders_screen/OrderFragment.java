@@ -10,10 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.adapters.OrderRealmAdapter;
+import me.labs.corobox.corobox.model.eventbus.UpdateOrdersMessage;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 
 public class OrderFragment extends Fragment {
@@ -21,6 +25,9 @@ public class OrderFragment extends Fragment {
     private View view;
     private RecyclerView recyclerView;
     private TextView textView;
+    private EventBus bus = EventBus.getDefault();
+    private OrderRealmAdapter adapter;
+
 
     public static OrderFragment newInstance(String type) {
 
@@ -31,6 +38,23 @@ public class OrderFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Subscribe
+    public void onMessage(UpdateOrdersMessage message) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (adapter != null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    RealmResults<OrderModelTo> orderModelTos = realm.where(OrderModelTo.class).equalTo("status", "ORDERED").equalTo("type", "FROM").findAll();
+                    adapter = new OrderRealmAdapter(orderModelTos.createSnapshot(), false);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
 
     @Nullable
     @Override
@@ -43,6 +67,7 @@ public class OrderFragment extends Fragment {
     }
 
     private void initComponents() {
+        bus.register(this);
         String type = getArguments().getString("type");
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         textView = (TextView) view.findViewById(R.id.no_stuff);
@@ -51,12 +76,18 @@ public class OrderFragment extends Fragment {
         if (type.equals("FROM")) {
             Realm realm = Realm.getDefaultInstance();
             RealmResults<OrderModelTo> orderModelTos = realm.where(OrderModelTo.class).equalTo("status", "ORDERED").equalTo("type", "FROM").findAll();
-            recyclerView.setAdapter(new OrderRealmAdapter(orderModelTos.createSnapshot(), false));
+            adapter = new OrderRealmAdapter(orderModelTos.createSnapshot(), false);
+            recyclerView.setAdapter(adapter);
         } else {
             recyclerView.setVisibility(View.GONE);
             textView.setVisibility(View.VISIBLE);
         }
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (bus.isRegistered(this))
+            bus.unregister(this);
+    }
 }
