@@ -66,8 +66,8 @@ public class OrdersFragmentView extends BaseFragment implements IOrdersFragmentV
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(((AppCompatActivity)provideActivity()).getSupportFragmentManager());
-        adapter.addFragment(new OrderFragment(), "От меня");
-        adapter.addFragment(new OrderFragment(), "Ко мне");
+        adapter.addFragment(OrderFragment.newInstance("FROM"), "От меня");
+        adapter.addFragment(OrderFragment.newInstance("TO"), "Ко мне");
         viewPager.setAdapter(adapter);
     }
 

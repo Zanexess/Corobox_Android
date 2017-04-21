@@ -76,18 +76,24 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
             plus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    count.get(getAdapterPosition()).setCount(count.get(getAdapterPosition()).getCount() + 1);
-                    realm.commitTransaction();
-                    presenter.countAll(categories, count);
-                    presenter.updateList();
+                    try {
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+                        IntegerWrap integerWrap = count.get(getAdapterPosition());
+                        integerWrap.setCount(integerWrap.getCount() + 1);
+                        realm.commitTransaction();
+                        presenter.countAll(categories, count);
+                        presenter.updateList();
+                    } catch (Exception e) {
+
+                    }
                 }
             });
 
             minus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
                     if (count.get(getAdapterPosition()).getCount() == 1) {
@@ -101,6 +107,7 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
                         presenter.finish();
                     }
                     presenter.updateList();
+
                 }
             });
 

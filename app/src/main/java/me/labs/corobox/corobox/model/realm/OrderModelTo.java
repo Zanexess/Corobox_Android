@@ -8,7 +8,6 @@ import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 @RealmClass
 public class OrderModelTo extends RealmObject {
 
-    @PrimaryKey
     private String UUID;
     private RealmList<Category> list = new RealmList<>();
     private RealmList<IntegerWrap> count = new RealmList<>();

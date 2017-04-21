@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.UUID;
+
 import javax.inject.Inject;
 
 import io.realm.Realm;
@@ -150,6 +152,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                 Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("UUID", uuid).findFirst();
+                orderModel.setUUID(UUID.randomUUID().toString());
                 AddressModel addressModel = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
                 orderModel.setAddressModel(addressModel);
                 CardModel cardModel = realm.where(CardModel.class).equalTo("useAsDefault", true).findFirst();
@@ -157,7 +160,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                 orderModel.setType("FROM");
                 orderModel.setDate(date.getText().toString() + " " + time.getText().toString());
                 orderModel.setStatus("ORDERED");
-                realm.copyToRealmOrUpdate(orderModel);
+                realm.copyToRealm(orderModel);
                 realm.commitTransaction();
                 Toast.makeText(this, "Заказ передан в обработку", Toast.LENGTH_SHORT).show();
                 finish();
