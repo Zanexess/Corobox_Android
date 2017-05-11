@@ -21,9 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.ActionItemBadgeAdder;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -45,6 +49,7 @@ import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
 
 public class MainActivityView extends BaseActivity implements IMainActivityView, IHasComponent<IMainActivityComponent>, NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int RC_SIGN_IN = 1;
     private IMainActivityComponent mainActivityComponent;
     private NavigationView navigationView;
     private MenuItem deliveryMenu;
@@ -57,6 +62,7 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         mainActivityComponent.inject(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -73,7 +79,9 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
 
         presenter.changeFragment(CoroboxApp.type);
         navigationView.setCheckedItem(R.id.nav_my_boxes);
+
     }
+
 
     @Override
     protected void setupComponent(ICoroboxAppComponent appComponent) {

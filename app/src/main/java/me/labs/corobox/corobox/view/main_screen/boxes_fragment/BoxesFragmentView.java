@@ -62,6 +62,20 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
         presenter.init(this);
 
         ArrayList<Box> boxes = new ArrayList<>();
+        Box box1 = new Box();
+        box1.setTitle("Сноуборд");
+        box1.setPrice(250);
+        box1.setUrl("snowboard.png");
+
+        Box box2 = new Box();
+        box2.setTitle("Велосипед");
+        box2.setPrice(300);
+        box2.setUrl("bycicle.png");
+
+
+        boxes.add(box1);
+        boxes.add(box2);
+
         if (boxes.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             noData.setVisibility(View.VISIBLE);

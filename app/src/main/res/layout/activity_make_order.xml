@@ -59,7 +59,7 @@
                 android:id="@+id/date"
                 android:textSize="22sp"
                 android:gravity="left"
-                android:text="21/04"
+                android:text="12/05"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="me.labs.corobox.corobox">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -38,7 +39,14 @@
             android:parentActivityName=".view.main_screen.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>
 
+        <service android:name=".common.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
+            tools:replace="android:value"
             android:name="io.fabric.ApiKey"
             android:value="eb30435776d7378abe1afbc4dfc6d5760c699990" />
     </application>

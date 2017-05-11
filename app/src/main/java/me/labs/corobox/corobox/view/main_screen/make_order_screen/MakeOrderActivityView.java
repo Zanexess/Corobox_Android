@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -80,6 +81,8 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
         date = (TextView) findViewById(R.id.date);
         time = (TextView) findViewById(R.id.time);
 
+        final Calendar rightNow = Calendar.getInstance();
+
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +91,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         time.setText(hourOfDay + ":" + minute);
                     }
-                }, 20, 00, true);
+                }, rightNow.get(Calendar.HOUR_OF_DAY) + 1, 00, true);
                 tpd.show();
             }
         });
@@ -101,7 +104,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         date.setText(dayOfMonth + "/" + month);
                     }
-                }, 2017, 04, 21);
+                }, 2017, 05, 12);
                 tpd.show();
             }
 

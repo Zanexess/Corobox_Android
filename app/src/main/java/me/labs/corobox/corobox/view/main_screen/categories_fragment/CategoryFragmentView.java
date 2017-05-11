@@ -141,6 +141,18 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
         category6.setId("Shoes");
         category6.setPicture("shoes_q.png");
 
+        final Category category7 = new Category();
+        category7.setTitle("Книги");
+        category7.setPrice(100);
+        category7.setId("Books");
+        category7.setPicture("books_q.png");
+
+        final Category category8 = new Category();
+        category8.setTitle("Клюшка");
+        category8.setPrice(100);
+        category8.setId("Hockey");
+        category8.setPicture("hockey_q.png");
+
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -151,6 +163,8 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
                 realm.copyToRealmOrUpdate(category4);
                 realm.copyToRealmOrUpdate(category5);
                 realm.copyToRealmOrUpdate(category6);
+                realm.copyToRealmOrUpdate(category7);
+                realm.copyToRealmOrUpdate(category8);
             }
         });
 
@@ -160,6 +174,8 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
         categories.add(category4);
         categories.add(category5);
         categories.add(category6);
+        categories.add(category7);
+        categories.add(category8);
 
         HashMap<String, Integer> hashMap = new HashMap<>();
         for (Category category : categories) {
