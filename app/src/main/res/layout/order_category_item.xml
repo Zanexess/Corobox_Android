@@ -16,7 +16,6 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:padding="8dp"
-        android:text="Велосипед"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -31,7 +30,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="24dp"
         android:paddingLeft="8dp"
-        android:text="250р"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -41,7 +39,6 @@
 
     <TextView
         android:id="@+id/count"
-        android:text="1 штука"
         android:textSize="14sp"
         android:paddingLeft="8dp"
         android:layout_width="wrap_content"

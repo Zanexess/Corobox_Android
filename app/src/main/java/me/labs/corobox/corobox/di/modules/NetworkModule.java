@@ -23,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetworkModule {
 
-    String mBaseUrl;
+    private String mBaseUrl;
 
     public NetworkModule(String mBaseUrl) {
         this.mBaseUrl = mBaseUrl;
@@ -55,11 +55,11 @@ public class NetworkModule {
     @Singleton
     OkHttpClient provideOkHttpClient(Cache cache) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        if (BuildConfig.BUILD_TYPE.contentEquals("release")) {
-            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
-        } else {
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        }
+//        if (BuildConfig.BUILD_TYPE.contentEquals("release")) {
+//            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+//        } else {
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        }
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .cache(cache)

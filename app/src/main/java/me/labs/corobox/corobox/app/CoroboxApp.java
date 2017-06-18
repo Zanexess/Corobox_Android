@@ -3,6 +3,7 @@ package me.labs.corobox.corobox.app;
 import android.app.Application;
 import android.content.Context;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +38,7 @@ public class CoroboxApp extends Application {
 
 
         networkComponent = DaggerINetworkComponent.builder()
-                .networkModule(new NetworkModule("TODO"))
+                .networkModule(new NetworkModule("http://185.143.172.79:8000/"))
                 .coroboxAppModule(new CoroboxAppModule(this))
                 .build();
 
@@ -52,6 +53,7 @@ public class CoroboxApp extends Application {
 
         buildGraphAndInject();
         Realm.init(getApplicationContext());
+
 
         try {
             Picasso picasso = new Picasso.Builder(getApplicationContext()).downloader(new OkHttp3Downloader(getApplicationContext(), 10 * 1024 * 1024)).build();

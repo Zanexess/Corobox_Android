@@ -9,12 +9,14 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,6 +29,8 @@ import me.labs.corobox.corobox.model.eventbus.UpdateCategoriesMessage;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
+import retrofit2.Response;
+import rx.functions.Func1;
 
 public class CategoryFragmentView extends BaseFragment implements ICategoryFragmentView {
 
@@ -102,69 +106,21 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
         super.onActivityCreated(savedInstanceState);
         this.getComponent(IMainActivityComponent.class).inject(this);
         presenter.init(this);
+        presenter.fetchData();
+    }
 
-        ArrayList<Category> categories = new ArrayList<>();
+    @Override
+    public Activity provideActivity() {
+        return getActivity();
+    }
 
-        final Category category1 = new Category();
-        category1.setTitle("Рюкзак");
-        category1.setPrice(200);
-        category1.setId("Bag");
-        category1.setPicture("bag_q.png");
-
-        final Category category2 = new Category();
-        category2.setTitle("Велосипед");
-        category2.setPrice(300);
-        category2.setId("Bycicle");
-        category2.setPicture("bycicle_q.png");
-
-        final Category category3 = new Category();
-        category3.setTitle("Сноуборд");
-        category3.setPrice(250);
-        category3.setId("Snowboard");
-        category3.setPicture("snowboard_q.png");
-
-        final Category category4 = new Category();
-        category4.setTitle("Шины");
-        category4.setPrice(280);
-        category4.setId("Wheels");
-        category4.setPicture("wheel_q.png");
-
-        final Category category5 = new Category();
-        category5.setTitle("Лыжи");
-        category5.setPrice(200);
-        category5.setId("Skiing");
-        category5.setPicture("skiing_q.png");
-
-        final Category category6 = new Category();
-        category6.setTitle("Обувь");
-        category6.setPrice(100);
-        category6.setId("Shoes");
-        category6.setPicture("shoes_q.png");
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(category1);
-                realm.copyToRealmOrUpdate(category2);
-                realm.copyToRealmOrUpdate(category3);
-                realm.copyToRealmOrUpdate(category4);
-                realm.copyToRealmOrUpdate(category5);
-                realm.copyToRealmOrUpdate(category6);
-            }
-        });
-
-        categories.add(category1);
-        categories.add(category2);
-        categories.add(category3);
-        categories.add(category4);
-        categories.add(category5);
-        categories.add(category6);
-
+    @Override
+    public void showData(final List<Category> categories) {
         HashMap<String, Integer> hashMap = new HashMap<>();
         for (Category category : categories) {
-            hashMap.put(category.getId(), 0);
+            hashMap.put(category.getCategory_id(), 0);
         }
+
         presenterActivity.setHashMap(hashMap);
 
         categoriesAdapter = new CategoriesAdapter(categories, hashMap, presenter, presenterActivity);
@@ -172,8 +128,8 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
     }
 
     @Override
-    public Activity provideActivity() {
-        return getActivity();
+    public void showEmptyData() {
+        Toast.makeText(getContext(), "Данные не получены. Проверьте ваше интернет соединение", Toast.LENGTH_SHORT).show();
     }
 
     @Override

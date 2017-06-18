@@ -11,10 +11,13 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.CategoriesFilter;
@@ -24,14 +27,14 @@ import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICatego
 
 public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-    private ArrayList<Category> categories;
-    private ArrayList<Category> categoriesFiltered;
+    private List<Category> categories;
+    private List<Category> categoriesFiltered;
     private HashMap<String, Integer> hashMap;
     private ICategoryFragmentPresenter presenter;
     private IMainActivityPresenter presenterActivity;
     private CategoriesFilter categoriesFilter;
 
-    public CategoriesAdapter(ArrayList<Category> categories, HashMap<String, Integer> hashMap, ICategoryFragmentPresenter presenter, IMainActivityPresenter presenterActivity) {
+    public CategoriesAdapter(List<Category> categories, HashMap<String, Integer> hashMap, ICategoryFragmentPresenter presenter, IMainActivityPresenter presenterActivity) {
         this.categories = categories;
         this.categoriesFiltered = new ArrayList<>();
         this.presenter = presenter;
@@ -39,7 +42,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.hashMap = hashMap;
     }
 
-    public ArrayList<Category> getCategoriesFiltered() {
+    public List<Category> getCategoriesFiltered() {
         return categoriesFiltered;
     }
 
@@ -69,9 +72,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private class CategoryHolder extends RecyclerView.ViewHolder {
-
-        // TODO Refactor this holder;
-
         ImageView deleteButton;
         ImageView addButton;
         ImageView imageView;
@@ -93,8 +93,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
-                    String key = categories.get(getAdapterPosition()).getId();
+                    List<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
+                    String key = categories.get(getAdapterPosition()).getCategory_id();
                     Integer value = hashMap.get(key);
 
                     if (value == 0) {
@@ -103,7 +103,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         price.setText(String.valueOf(categories.get(getAdapterPosition()).getPrice()));
                         constraintLayout.setVisibility(View.VISIBLE);
                         number.setText("1 шт.");
-
                     }
                 }
             });
@@ -111,8 +110,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
-                    String key = categories.get(getAdapterPosition()).getId();
+                    List<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
+                    String key = categories.get(getAdapterPosition()).getCategory_id();
                     Integer value = hashMap.get(key);
                     hashMap.put(key, value + 1);
                     presenterActivity.updateBadgeCounter(1);
@@ -125,8 +124,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
-                    String key = categories.get(getAdapterPosition()).getId();
+                    List<Category> categories = categoriesFiltered.size() == 0 ? CategoriesAdapter.this.categories : categoriesFiltered;
+                    String key = categories.get(getAdapterPosition()).getCategory_id();
                     Integer value = hashMap.get(key);
                     hashMap.put(key, value - 1);
                     presenterActivity.updateBadgeCounter(-1);
@@ -140,25 +139,21 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         private void bindModel(int position) {
-            ArrayList<Category> categories = categoriesFiltered.size() == 0 ?
+            List<Category> categories = categoriesFiltered.size() == 0 ?
                     CategoriesAdapter.this.categories :
                     categoriesFiltered;
 
-            String key = categories.get(position).getId();
+            String key = categories.get(position).getCategory_id();
             Integer value = hashMap.get(key);
 
             price.setText(String.valueOf(categories.get(position).getPrice() * value));
             number.setText((value) + " шт.");
             title.setText(categories.get(position).getTitle());
 
-            try {
-                InputStream ims = imageView.getContext().getAssets().open(categories.get(position).getPicture());
-                Drawable d = Drawable.createFromStream(ims, null);
-                imageView.setImageDrawable(d);
-            }
-            catch(IOException ex) {
-                return;
-            }
+            Picasso.with(imageView.getContext())
+                    .load(categories.get(position).getPicture())
+                    .error(R.drawable.error_placeholder)
+                    .into(imageView);
 
             if (value == 0)
                 constraintLayout.setVisibility(View.GONE);
@@ -169,7 +164,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void clearAll() {
         categoriesFiltered.clear();
-        categories.clear();
+//        categories.clear();
         hashMap.clear();
     }
 }

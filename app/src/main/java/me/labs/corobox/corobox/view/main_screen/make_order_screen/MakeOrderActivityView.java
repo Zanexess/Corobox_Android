@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,7 +123,13 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
         }
 
         OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("UUID", uuid).findFirst();
-        categoriesOrderRealmAdapter = new CategoriesOrderRealmAdapter(orderModel.getList().createSnapshot(), orderModel.getCount().createSnapshot(), presenter, false);
+
+        for (int i = 0; i < orderModel.getList().size(); i++) {
+            Log.v(orderModel.getList().get(i).getCategory_id(), orderModel.getCount().get(i).getCount().toString());
+        }
+
+        categoriesOrderRealmAdapter = new CategoriesOrderRealmAdapter(orderModel.getList().createSnapshot(),
+                orderModel.getCount().createSnapshot(), presenter, false);
 
         recyclerView.setAdapter(categoriesOrderRealmAdapter);
     }

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -116,14 +118,11 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
         private void bind(int position) {
             Category category = categories.get(position);
             Integer counter = count.get(position).getCount();
-            try {
-                InputStream ims = image.getContext().getAssets().open(category.getPicture());
-                Drawable d = Drawable.createFromStream(ims, null);
-                image.setImageDrawable(d);
-            }
-            catch(IOException ex) {
-                return;
-            }
+
+            Picasso.with(itemView.getContext())
+                    .load(categories.get(position).getPicture())
+                    .error(R.drawable.error_placeholder)
+                    .into(image);
 
             title.setText(category.getTitle());
             price.setText(String.valueOf(category.getPrice() + "р месяц"));

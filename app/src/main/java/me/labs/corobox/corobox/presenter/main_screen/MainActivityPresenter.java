@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -135,9 +136,9 @@ public class MainActivityPresenter implements IMainActivityPresenter {
 
         RealmList<Category> realmList = new RealmList<>();
         RealmList<IntegerWrap> realmList1 = new RealmList<>();
-        for (Map.Entry<String, Integer> entry :hashMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
             if (entry.getValue() != 0) {
-                realmList.add(realm.where(Category.class).equalTo("id", entry.getKey()).findFirst());
+                realmList.add(realm.where(Category.class).equalTo("category_id", entry.getKey()).findFirst());
                 IntegerWrap integerWrap = new IntegerWrap();
                 integerWrap.setCount(entry.getValue());
                 realmList1.add(integerWrap);
