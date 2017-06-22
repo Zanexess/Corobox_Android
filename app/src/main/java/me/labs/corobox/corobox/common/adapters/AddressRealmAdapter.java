@@ -1,6 +1,8 @@
 package me.labs.corobox.corobox.common.adapters;
 
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +49,7 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
         private TextView date;
         private ImageView defaultCard;
 
-        private AddressHolder(View itemView) {
+        private AddressHolder(final View itemView) {
             super(itemView);
             number = (TextView) itemView.findViewById(R.id.card_number);
             date = (TextView) itemView.findViewById(R.id.date);
@@ -56,7 +58,24 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    presenter.deleteAddress(addressModels.get(getAdapterPosition()).getId());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+                    builder.setTitle("Удалить адрес")
+                            .setMessage("Вы действительно хотите удалить этот адрес?")
+                            .setCancelable(false)
+                            .setPositiveButton("Да, удалить", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    presenter.deleteAddress(addressModels.get(getAdapterPosition()).getId());
+                                }
+                            })
+                            .setNegativeButton("Нет",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                     return true;
                 }
             });
@@ -78,7 +97,5 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
                 defaultCard.setVisibility(View.GONE);
             }
         }
-
-
     }
 }

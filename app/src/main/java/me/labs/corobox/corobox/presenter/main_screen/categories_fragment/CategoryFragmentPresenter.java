@@ -35,7 +35,7 @@ public class CategoryFragmentPresenter implements ICategoryFragmentPresenter {
 
     @Override
     public void fetchData() {
-        apiInterface.getCategories("Token e4668dfe95fab640344fe580f543ef3e56d3a7c5")
+        apiInterface.getCategories(CoroboxApp.AUTH_KEY)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<List<Category>>>() {

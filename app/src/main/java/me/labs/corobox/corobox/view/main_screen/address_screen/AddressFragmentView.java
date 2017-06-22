@@ -10,14 +10,18 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import me.labs.corobox.corobox.R;
@@ -33,12 +37,13 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
     IAddressFragmentPresenter presenter;
 
     private View view;
-    private EditText addressStreet;
-    private EditText addressFloor;
-    private EditText addressAccess;
-    private EditText addressFlat;
-    private Button saveButton;
-    private RecyclerView recyclerView;
+    @BindView(R.id.address_street) EditText addressStreet;
+    @BindView(R.id.address_floor) EditText addressFloor;
+    @BindView(R.id.address_access) EditText addressAccess;
+    @BindView(R.id.address_flat) EditText addressFlat;
+    @BindView(R.id.button) Button saveButton;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     private AddressRealmAdapter addressAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -51,17 +56,14 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_address, container, false);
+            ButterKnife.bind(this, view);
             initComponents();
         }
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         return view;
     }
 
     private void initComponents() {
-        addressAccess = (EditText) view.findViewById(R.id.address_access);
-        addressFlat = (EditText) view.findViewById(R.id.address_flat);
-        addressFloor = (EditText) view.findViewById(R.id.address_floor);
-        addressStreet = (EditText) view.findViewById(R.id.address_street);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         addressFlat.addTextChangedListener(new TextWatcher() {
@@ -85,35 +87,18 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
             }
         });
 
-        saveButton = (Button) view.findViewById(R.id.button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AddressModel addressModel = new AddressModel();
-                addressModel.setId(UUID.randomUUID().toString());
+
+                addressModel.setCity("Москва");
                 addressModel.setAddress(addressStreet.getText().toString());
                 addressModel.setFlat(addressFlat.getText().toString());
                 addressModel.setAccess(addressAccess.getText().toString());
                 addressModel.setFloor(addressFloor.getText().toString());
 
-                Realm realm = Realm.getDefaultInstance();
-                realm.beginTransaction();
-                realm.copyToRealm(addressModel);
-                realm.commitTransaction();
-
-                setDefaultAddress(addressModel.getId());
-
-                RealmResults<AddressModel> addresses = realm.where(AddressModel.class).findAll();
-                addressAdapter = new AddressRealmAdapter(addresses.createSnapshot(), false, presenter);
-                recyclerView.setAdapter(addressAdapter);
-                addressAdapter.notifyDataSetChanged();
-
-                addressFlat.setText("");
-                addressStreet.setText("");
-                addressFloor.setText("");
-                addressAccess.setText("");
-
-                Toast.makeText(getContext(), "Адрес сохранен!", Toast.LENGTH_SHORT).show();
+                presenter.putAddress(addressModel);
             }
         });
     }
@@ -123,12 +108,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
         super.onActivityCreated(savedInstanceState);
         this.getComponent(IAddressActivityComponent.class).inject(this);
         presenter.init(this);
-
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<AddressModel> addresses = realm.where(AddressModel.class).findAll();
-        addressAdapter = new AddressRealmAdapter(addresses.createSnapshot(), false, presenter);
-        recyclerView.setAdapter(addressAdapter);
-        addressAdapter.notifyDataSetChanged();
+        presenter.fetchData();
     }
 
     @Override
@@ -137,7 +117,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
     }
 
     @Override
-    public void setDefaultAddress(final String uuid) {
+    public void setDefaultAddress(final Integer id) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -146,7 +126,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
                 for (AddressModel addressModel : results)
                     addressModel.setUseAsDefault(false);
 
-                RealmResults<AddressModel> resultsuuid = realm.where(AddressModel.class).equalTo("id", uuid).findAll();
+                RealmResults<AddressModel> resultsuuid = realm.where(AddressModel.class).equalTo("id", id).findAll();
                 resultsuuid.get(0).setUseAsDefault(true);
 
                 RealmResults<AddressModel> addressModels = realm.where(AddressModel.class).findAll();
@@ -158,12 +138,12 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
     }
 
     @Override
-    public void deleteAddress(final String uuid) {
+    public void deleteAddress(final Integer id) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<AddressModel> results = realm.where(AddressModel.class).equalTo("uuid", uuid).findAll();
+                RealmResults<AddressModel> results = realm.where(AddressModel.class).equalTo("id", id).findAll();
                 results.deleteAllFromRealm();
                 RealmResults<AddressModel> address = realm.where(AddressModel.class).findAll();
                 addressAdapter = new AddressRealmAdapter(address.createSnapshot(), false, presenter);
@@ -173,4 +153,35 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
         });
     }
 
+    @Override
+    public void showData(List<AddressModel> body) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<AddressModel> addresses = realm.where(AddressModel.class).findAll();
+        addressAdapter = new AddressRealmAdapter(addresses.createSnapshot(), false, presenter);
+        recyclerView.setAdapter(addressAdapter);
+        addressAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showEmptyData() {
+        Toast.makeText(getContext(), "Нет данных", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    @Override
+    public void putSuccess() {
+        addressFlat.setText("");
+        addressStreet.setText("");
+        addressFloor.setText("");
+        addressAccess.setText("");
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        Toast.makeText(getContext(), "Адрес сохранен!", Toast.LENGTH_SHORT).show();
+    }
 }

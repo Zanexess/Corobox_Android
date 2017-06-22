@@ -10,9 +10,10 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class AddressModel extends RealmObject {
 
+    @PrimaryKey
     @SerializedName("id")
     @Expose
-    private String id;
+    private Integer id;
     @SerializedName("city")
     @Expose
     private String city;
@@ -31,11 +32,11 @@ public class AddressModel extends RealmObject {
 
     private boolean useAsDefault;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

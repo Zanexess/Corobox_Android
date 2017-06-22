@@ -33,9 +33,9 @@ public class OrderModelTo extends RealmObject {
     @Expose
     private RealmList<CategoryNumberModel> categoryNumberModel = new RealmList<>();
 
-    private transient CardModel cardModel;
-    private transient String type;
-    private transient String date;
+    private CardModel cardModel;
+    private String type;
+    private String date;
 
     public String getDate() {
         return date;
