@@ -9,4 +9,5 @@ public interface IBoxesFragmentPresenter extends BaseFragmentPresenter<IBoxesFra
     void onResume();
     void onPause();
     void readyForOrder(HashSet<Integer> selected);
+    void fetchData();
 }

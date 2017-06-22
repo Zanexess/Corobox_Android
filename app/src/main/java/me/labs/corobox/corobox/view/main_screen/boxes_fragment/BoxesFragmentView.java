@@ -12,9 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.BoxesAdapter;
@@ -28,9 +31,9 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     IBoxesFragmentPresenter presenter;
 
     private View view;
-    private RecyclerView recyclerView;
-    private Button readyButton;
-    private TextView noData;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.button_ok) Button readyButton;
+    @BindView(R.id.no_stuff) TextView noData;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +45,13 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_boxes, container, false);
+            ButterKnife.bind(this, view);
             initComponents();
         }
         return view;
     }
 
     private void initComponents() {
-        readyButton = (Button) view.findViewById(R.id.button_ok);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        noData = (TextView) view.findViewById(R.id.no_stuff);
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(llm);
     }
@@ -60,16 +61,7 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
         super.onActivityCreated(savedInstanceState);
         this.getComponent(IMainActivityComponent.class).inject(this);
         presenter.init(this);
-
-        ArrayList<Box> boxes = new ArrayList<>();
-        if (boxes.size() == 0) {
-            recyclerView.setVisibility(View.GONE);
-            noData.setVisibility(View.VISIBLE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            noData.setVisibility(View.GONE);
-        }
-        recyclerView.setAdapter(new BoxesAdapter(boxes, presenter));
+        presenter.fetchData();
     }
 
     @Override
@@ -92,5 +84,18 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     @Override
     public void setReadyButtonVisibility(int visible) {
         readyButton.setVisibility(visible);
+    }
+
+    @Override
+    public void showData(List<Box> boxes) {
+        recyclerView.setVisibility(View.VISIBLE);
+        noData.setVisibility(View.GONE);
+        recyclerView.setAdapter(new BoxesAdapter(boxes, presenter));
+    }
+
+    @Override
+    public void showEmptyData() {
+        recyclerView.setVisibility(View.GONE);
+        noData.setVisibility(View.VISIBLE);
     }
 }

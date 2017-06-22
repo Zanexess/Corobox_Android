@@ -1,25 +1,34 @@
 package me.labs.corobox.corobox.common.adapters;
 
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
 
 public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Box> boxes;
+    private List<Box> boxes;
     private HashSet<Integer> selected;
     private IBoxesFragmentPresenter presenter;
 
-    public BoxesAdapter(ArrayList<Box> boxes, IBoxesFragmentPresenter presenter) {
+    public BoxesAdapter(List<Box> boxes, IBoxesFragmentPresenter presenter) {
         this.boxes = boxes;
         this.presenter = presenter;
         this.selected = new HashSet<>();
@@ -34,7 +43,8 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        BoxHolder boxHolder = (BoxHolder) holder;
+        boxHolder.bind();
     }
 
     @Override
@@ -44,11 +54,19 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private class BoxHolder extends RecyclerView.ViewHolder {
 
-        ImageView addDelete;
+        private ImageView addDelete;
+        private ImageView imageView;
+        private TextView numberView;
+        private TextView titleView;
 
         public BoxHolder(View itemView) {
             super(itemView);
+
             addDelete = (ImageView) itemView.findViewById(R.id.add_or_delete);
+            imageView = (ImageView) itemView.findViewById(R.id.image);
+            numberView = (TextView) itemView.findViewById(R.id.number);
+            titleView = (TextView) itemView.findViewById(R.id.title);
+
             addDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -62,6 +80,18 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     presenter.readyForOrder(selected);
                 }
             });
+
+
+//            numberView.setText(boxes.get(getAdapterPosition()).getCategory().getPrice());
+        }
+
+        public void bind() {
+            Picasso.with(itemView.getContext())
+                    .load(boxes.get(getAdapterPosition()).getImageUrl())
+                    .into(imageView);
+
+            numberView.setText(boxes.get(getAdapterPosition()).getCategory().getPrice()+"р");
+            titleView.setText(boxes.get(getAdapterPosition()).getTitle());
         }
     }
 }

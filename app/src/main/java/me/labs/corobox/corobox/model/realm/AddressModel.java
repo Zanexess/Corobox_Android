@@ -29,7 +29,8 @@ public class AddressModel extends RealmObject {
     @SerializedName("flat")
     @Expose
     private String flat;
-
+    @SerializedName("useAsDefault")
+    @Expose
     private boolean useAsDefault;
 
     public Integer getId() {

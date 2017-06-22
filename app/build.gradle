@@ -87,6 +87,7 @@ android {
 
         debug {
             applicationIdSuffix '.debug'
+            debuggable true
             versionNameSuffix "${gitBranchDebug}" + '-debug' + "${gitCommitCount}"
         }
 
