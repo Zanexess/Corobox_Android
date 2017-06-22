@@ -1,4 +1,7 @@
 package me.labs.corobox.corobox.model.realm;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -8,14 +11,31 @@ import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 @RealmClass
 public class OrderModelTo extends RealmObject {
 
+    @SerializedName("uuid")
+    @Expose
     private String UUID;
-    private RealmList<Category> list = new RealmList<>();
-    private RealmList<IntegerWrap> count = new RealmList<>();
+    @SerializedName("order_id")
+    @Expose
+    private Integer orderId;
+    @SerializedName("created")
+    @Expose
+    private Integer created;
+    @SerializedName("till")
+    @Expose
+    private Integer till;
+    @SerializedName("address")
+    @Expose
     private AddressModel addressModel;
-    private CardModel cardModel;
+    @SerializedName("status")
+    @Expose
     private String status;
-    private String type;
-    private String date;
+    @SerializedName("order")
+    @Expose
+    private RealmList<CategoryNumberModel> categoryNumberModel = new RealmList<>();
+
+    private transient CardModel cardModel;
+    private transient String type;
+    private transient String date;
 
     public String getDate() {
         return date;
@@ -31,14 +51,6 @@ public class OrderModelTo extends RealmObject {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public RealmList<IntegerWrap> getCount() {
-        return count;
-    }
-
-    public void setCount(RealmList<IntegerWrap> count) {
-        this.count = count;
     }
 
     public String getStatus() {
@@ -57,12 +69,36 @@ public class OrderModelTo extends RealmObject {
         this.UUID = UUID;
     }
 
-    public RealmList<Category> getList() {
-        return list;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setList(RealmList<Category> list) {
-        this.list = list;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    public Integer getCreated() {
+        return created;
+    }
+
+    public void setCreated(Integer created) {
+        this.created = created;
+    }
+
+    public Integer getTill() {
+        return till;
+    }
+
+    public void setTill(Integer till) {
+        this.till = till;
+    }
+
+    public RealmList<CategoryNumberModel> getCategoryNumberModel() {
+        return categoryNumberModel;
+    }
+
+    public void setCategoryNumberModel(RealmList<CategoryNumberModel> categoryNumberModel) {
+        this.categoryNumberModel = categoryNumberModel;
     }
 
     public AddressModel getAddressModel() {

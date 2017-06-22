@@ -6,8 +6,6 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,16 +17,22 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.UUID;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.common.BaseActivity;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.common.adapters.CategoriesOrderRealmAdapter;
+import me.labs.corobox.corobox.common.serializers.AddressSerializer;
 import me.labs.corobox.corobox.di.IHasComponent;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.activities.DaggerIMakeOrderActivityComponent;
@@ -43,17 +47,17 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
     private IMakeOrderActivityComponent makeOrderActivityComponent;
 
-    @Inject
-    IMakeOrderActivityPresenter presenter;
+    @Inject IMakeOrderActivityPresenter presenter;
 
-    private RecyclerView recyclerView;
-    private EditText addressStreet;
-    private EditText addressFlat;
-    private EditText addressAccess;
-    private EditText addressFloorl;
-    private TextView price;
-    private TextView date;
-    private TextView time;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.address_street) EditText addressStreet;
+    @BindView(R.id.address_flat) EditText addressFlat;
+    @BindView(R.id.address_access) EditText addressAccess;
+    @BindView(R.id.address_floor) EditText addressFloor;
+    @BindView(R.id.price) TextView price;
+    @BindView(R.id.date) TextView date;
+    @BindView(R.id.time) TextView time;
+
     private String uuid;
     private CategoriesOrderRealmAdapter categoriesOrderRealmAdapter;
 
@@ -61,26 +65,18 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_order);
+        ButterKnife.bind(this);
+        makeOrderActivityComponent.inject(this);
+
         setTitle("Новый заказ");
 
         uuid = getIntent().getExtras().getString("uuid");
-        Toast.makeText(this, uuid, Toast.LENGTH_SHORT).show();
 
-        makeOrderActivityComponent.inject(this);
         initComponents();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private void initComponents() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        addressAccess = (EditText) findViewById(R.id.address_access);
-        addressFlat = (EditText) findViewById(R.id.address_flat);
-        addressFloorl = (EditText) findViewById(R.id.address_floor);
-        addressStreet = (EditText) findViewById(R.id.address_street);
-        price = (TextView) findViewById(R.id.price);
-        date = (TextView) findViewById(R.id.date);
-        time = (TextView) findViewById(R.id.time);
-
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,8 +109,8 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
         Realm realm = Realm.getDefaultInstance();
         AddressModel addressModel = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
         if (addressModel != null) {
-            addressStreet.setText(addressModel.getStreet());
-            addressFloorl.setText(addressModel.getFloor());
+            addressStreet.setText(addressModel.getAddress());
+            addressFloor.setText(addressModel.getFloor());
             addressFlat.setText(addressModel.getFlat());
             addressAccess.setText(addressModel.getAccess());
 
@@ -124,12 +120,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
         OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("UUID", uuid).findFirst();
 
-        for (int i = 0; i < orderModel.getList().size(); i++) {
-            Log.v(orderModel.getList().get(i).getCategory_id(), orderModel.getCount().get(i).getCount().toString());
-        }
-
-        categoriesOrderRealmAdapter = new CategoriesOrderRealmAdapter(orderModel.getList().createSnapshot(),
-                orderModel.getCount().createSnapshot(), presenter, false);
+        categoriesOrderRealmAdapter = new CategoriesOrderRealmAdapter(orderModel.getCategoryNumberModel().createSnapshot(), presenter, false);
 
         recyclerView.setAdapter(categoriesOrderRealmAdapter);
     }
@@ -162,13 +153,21 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                 orderModel.setUUID(UUID.randomUUID().toString());
                 AddressModel addressModel = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
                 orderModel.setAddressModel(addressModel);
-                CardModel cardModel = realm.where(CardModel.class).equalTo("useAsDefault", true).findFirst();
-                orderModel.setCardModel(cardModel);
                 orderModel.setType("FROM");
                 orderModel.setDate(date.getText().toString() + " " + time.getText().toString());
                 orderModel.setStatus("ORDERED");
                 realm.copyToRealm(orderModel);
                 realm.commitTransaction();
+
+                Gson gson = null;
+                try {
+                    gson = new GsonBuilder()
+                            .registerTypeAdapter(Class.forName("io.realm.AddressModelRealmProxy"), new AddressSerializer())
+                            .create();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 Toast.makeText(this, "Заказ передан в обработку", Toast.LENGTH_SHORT).show();
                 finish();
             }

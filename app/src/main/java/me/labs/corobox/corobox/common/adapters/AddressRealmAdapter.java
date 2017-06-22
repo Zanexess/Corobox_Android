@@ -56,7 +56,7 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    presenter.deleteAddress(addressModels.get(getAdapterPosition()).getUuid());
+                    presenter.deleteAddress(addressModels.get(getAdapterPosition()).getId());
                     return true;
                 }
             });
@@ -64,13 +64,13 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.setDefaultAddress(addressModels.get(getAdapterPosition()).getUuid());
+                    presenter.setDefaultAddress(addressModels.get(getAdapterPosition()).getId());
                 }
             });
         }
 
         private void bind(int position) {
-            number.setText(addressModels.get(position).getStreet());
+            number.setText(addressModels.get(position).getAddress());
             date.setText("Квартира " + addressModels.get(position).getFlat());
             if (addressModels.get(position).isUseAsDefault()) {
                 defaultCard.setVisibility(View.VISIBLE);

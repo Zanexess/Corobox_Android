@@ -78,11 +78,11 @@ public class OrderRealmAdapter extends RealmRecyclerViewAdapter<OrderModelTo, Re
             date.setText(orders.get(getAdapterPosition()).getDate());
             AddressModel addressModel = orders.get(getAdapterPosition()).getAddressModel();
             try {
-                address.setText(addressModel.getStreet() + " кв." + addressModel.getFlat());
+                address.setText(addressModel.getAddress() + " кв." + addressModel.getFlat());
             } catch (Exception e) {
 
             }
-            recyclerView.setAdapter(new CategoriesImagesAdapter(orders.get(getAdapterPosition()).getList().createSnapshot(), false));
+            recyclerView.setAdapter(new CategoriesImagesAdapter(orders.get(getAdapterPosition()).getCategoryNumberModel().createSnapshot(), false));
         }
     }
 }

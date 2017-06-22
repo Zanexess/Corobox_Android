@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -21,22 +22,21 @@ import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.realm.CardModel;
 import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardFragmentPresenter;
 import me.labs.corobox.corobox.presenter.make_order_screen.IMakeOrderActivityPresenter;
 
-public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Category, RecyclerView.ViewHolder> {
+public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<CategoryNumberModel, RecyclerView.ViewHolder> {
 
     private final IMakeOrderActivityPresenter presenter;
-    private OrderedRealmCollection<Category> categories;
-    private OrderedRealmCollection<IntegerWrap> count;
+    private OrderedRealmCollection<CategoryNumberModel> categoryNumberModels;
 
-    public CategoriesOrderRealmAdapter(@Nullable OrderedRealmCollection<Category> data, OrderedRealmCollection<IntegerWrap> count, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
+    public CategoriesOrderRealmAdapter(@Nullable OrderedRealmCollection<CategoryNumberModel> data, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
         super(data, autoUpdate);
-        this.categories = data;
-        this.count = count;
+        this.categoryNumberModels = data;
         this.presenter = presenter;
-        presenter.countAll(data, count);
+        presenter.countAll(data);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return categoryNumberModels.size();
     }
 
     private class CategoryHolder extends RecyclerView.ViewHolder {
@@ -81,10 +81,10 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
                     try {
                         Realm realm = Realm.getDefaultInstance();
                         realm.beginTransaction();
-                        IntegerWrap integerWrap = count.get(getAdapterPosition());
+                        IntegerWrap integerWrap = categoryNumberModels.get(getAdapterPosition()).getNumber();
                         integerWrap.setCount(integerWrap.getCount() + 1);
                         realm.commitTransaction();
-                        presenter.countAll(categories, count);
+                        presenter.countAll(categoryNumberModels);
                         presenter.updateList();
                     } catch (Exception e) {
 
@@ -98,16 +98,14 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
 
                     Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
-                    if (count.get(getAdapterPosition()).getCount() == 1) {
-                        count.get(getAdapterPosition()).setCount(count.get(getAdapterPosition()).getCount() - 1);
+                    IntegerWrap counter = categoryNumberModels.get(getAdapterPosition()).getNumber();
+                    if (counter.getCount() == 1) {
+                        counter.setCount(counter.getCount() - 1);
                     } else {
-                        count.get(getAdapterPosition()).setCount(count.get(getAdapterPosition()).getCount() - 1);
+                        counter.setCount(counter.getCount() - 1);
                     }
                     realm.commitTransaction();
-                    presenter.countAll(categories, count);
-                    if (categories.size() == 0) {
-                        presenter.finish();
-                    }
+                    presenter.countAll(categoryNumberModels);
                     presenter.updateList();
 
                 }
@@ -116,11 +114,11 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
         }
 
         private void bind(int position) {
-            Category category = categories.get(position);
-            Integer counter = count.get(position).getCount();
+            Category category = categoryNumberModels.get(position).getCategory();
+            Integer counter = categoryNumberModels.get(position).getNumber().getCount();
 
             Picasso.with(itemView.getContext())
-                    .load(categories.get(position).getPicture())
+                    .load(category.getPicture())
                     .error(R.drawable.error_placeholder)
                     .into(image);
 
@@ -128,9 +126,8 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
             price.setText(String.valueOf(category.getPrice() + "р месяц"));
             number.setText(String.valueOf(counter) + " шт.");
 
-            if (count.get(position).getCount() == 0) {
+            if (counter == 0) {
                 itemView.setVisibility(View.GONE);
-                presenter.finish();
             } else {
                 itemView.setVisibility(View.VISIBLE);
             }

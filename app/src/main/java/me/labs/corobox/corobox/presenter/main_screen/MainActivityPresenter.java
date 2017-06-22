@@ -23,6 +23,7 @@ import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.model.eventbus.UpdateCategoriesMessage;
 import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
@@ -152,8 +153,16 @@ public class MainActivityPresenter implements IMainActivityPresenter {
 
         OrderModelTo orderModelTo = new OrderModelTo();
         orderModelTo.setUUID(uuid);
-        orderModelTo.setList(realmList);
-        orderModelTo.setCount(realmList1);
+
+        RealmList<CategoryNumberModel> categoryNumberModels = new RealmList<>();
+        for (int i = 0; i < realmList.size(); i++) {
+            CategoryNumberModel categoryNumberModel = new CategoryNumberModel();
+            categoryNumberModel.setCategory(realmList.get(i));
+            categoryNumberModel.setNumber(realmList1.get(i));
+            categoryNumberModels.add(categoryNumberModel);
+        }
+
+        orderModelTo.setCategoryNumberModel(categoryNumberModels);
         orderModelTo.setStatus("STARTED");
 
         realm.beginTransaction();

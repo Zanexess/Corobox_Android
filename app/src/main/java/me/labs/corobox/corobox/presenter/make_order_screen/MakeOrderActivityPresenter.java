@@ -10,6 +10,7 @@ import io.realm.OrderedRealmCollection;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressActivityPresenter;
 import me.labs.corobox.corobox.view.main_screen.address_screen.AddressFragmentView;
@@ -27,10 +28,10 @@ public class MakeOrderActivityPresenter implements IMakeOrderActivityPresenter {
     }
 
     @Override
-    public void countAll(OrderedRealmCollection<Category> data, OrderedRealmCollection<IntegerWrap> count) {
+    public void countAll(OrderedRealmCollection<CategoryNumberModel> data) {
         Integer c = 0;
         for (int i = 0; i < data.size(); i++) {
-            c += data.get(i).getPrice() * count.get(i).getCount();
+            c += data.get(i).getCategory().getPrice() * data.get(i).getNumber().getCount();
         }
         String counter = String.valueOf(c);
         view.showPrice(counter);

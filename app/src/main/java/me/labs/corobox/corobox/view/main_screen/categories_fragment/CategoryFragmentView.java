@@ -14,13 +14,13 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.CategoriesAdapter;
@@ -29,20 +29,17 @@ import me.labs.corobox.corobox.model.eventbus.UpdateCategoriesMessage;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
-import retrofit2.Response;
-import rx.functions.Func1;
 
 public class CategoryFragmentView extends BaseFragment implements ICategoryFragmentView {
 
-    @Inject
-    ICategoryFragmentPresenter presenter;
-
-    @Inject
-    IMainActivityPresenter presenterActivity;
+    @Inject ICategoryFragmentPresenter presenter;
+    @Inject IMainActivityPresenter presenterActivity;
 
     private View view;
-    private SearchView searchView;
-    private RecyclerView recyclerView;
+
+    @BindView(R.id.search_view) SearchView searchView;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     private CategoriesAdapter categoriesAdapter;
     private EventBus bus = EventBus.getDefault();
 
@@ -67,22 +64,22 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_category, container, false);
+            ButterKnife.bind(this, view);
             initComponents();
         }
         return view;
     }
 
     private void initComponents() {
-        searchView = (SearchView) view.findViewById(R.id.search_view);
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchView.setIconified(false);
             }
         });
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -96,7 +93,6 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
             }
         });
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         StaggeredGridLayoutManager slm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(slm);
     }

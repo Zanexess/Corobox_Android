@@ -90,8 +90,8 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
             @Override
             public void onClick(View v) {
                 AddressModel addressModel = new AddressModel();
-                addressModel.setUuid(UUID.randomUUID().toString());
-                addressModel.setStreet(addressStreet.getText().toString());
+                addressModel.setId(UUID.randomUUID().toString());
+                addressModel.setAddress(addressStreet.getText().toString());
                 addressModel.setFlat(addressFlat.getText().toString());
                 addressModel.setAccess(addressAccess.getText().toString());
                 addressModel.setFloor(addressFloor.getText().toString());
@@ -101,7 +101,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
                 realm.copyToRealm(addressModel);
                 realm.commitTransaction();
 
-                setDefaultAddress(addressModel.getUuid());
+                setDefaultAddress(addressModel.getId());
 
                 RealmResults<AddressModel> addresses = realm.where(AddressModel.class).findAll();
                 addressAdapter = new AddressRealmAdapter(addresses.createSnapshot(), false, presenter);
@@ -146,7 +146,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
                 for (AddressModel addressModel : results)
                     addressModel.setUseAsDefault(false);
 
-                RealmResults<AddressModel> resultsuuid = realm.where(AddressModel.class).equalTo("uuid", uuid).findAll();
+                RealmResults<AddressModel> resultsuuid = realm.where(AddressModel.class).equalTo("id", uuid).findAll();
                 resultsuuid.get(0).setUseAsDefault(true);
 
                 RealmResults<AddressModel> addressModels = realm.where(AddressModel.class).findAll();

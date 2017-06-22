@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,17 +17,17 @@ import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 
-public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<Category, RecyclerView.ViewHolder> {
+public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<CategoryNumberModel, RecyclerView.ViewHolder> {
 
-    private OrderedRealmCollection<Category> categories;
+    private OrderedRealmCollection<CategoryNumberModel> categories;
 
-    public CategoriesImagesAdapter(@Nullable OrderedRealmCollection<Category> data, boolean autoUpdate) {
+    public CategoriesImagesAdapter(@Nullable OrderedRealmCollection<CategoryNumberModel> data, boolean autoUpdate) {
         super(data, autoUpdate);
         this.categories = data;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,14 +56,9 @@ public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<Category, 
         }
 
         private void bindModel(int position) {
-            try {
-                InputStream ims = imageView.getContext().getAssets().open(categories.get(position).getPicture());
-                Drawable d = Drawable.createFromStream(ims, null);
-                imageView.setImageDrawable(d);
-            }
-            catch(IOException ex) {
-                return;
-            }
+            Picasso.with(itemView.getContext())
+                    .load(categories.get(position).getCategory().getPicture())
+                    .into(imageView);
         }
     }
 }
