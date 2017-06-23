@@ -27,12 +27,12 @@ import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardFragmentPresenter;
 import me.labs.corobox.corobox.presenter.make_order_screen.IMakeOrderActivityPresenter;
 
-public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<CategoryNumberModel, RecyclerView.ViewHolder> {
+public class CategoriesOrderToRealmAdapter extends RealmRecyclerViewAdapter<CategoryNumberModel, RecyclerView.ViewHolder> {
 
     private final IMakeOrderActivityPresenter presenter;
     private OrderedRealmCollection<CategoryNumberModel> categoryNumberModels;
 
-    public CategoriesOrderRealmAdapter(@Nullable OrderedRealmCollection<CategoryNumberModel> data, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
+    public CategoriesOrderToRealmAdapter(@Nullable OrderedRealmCollection<CategoryNumberModel> data, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
         super(data, autoUpdate);
         this.categoryNumberModels = data;
         this.presenter = presenter;

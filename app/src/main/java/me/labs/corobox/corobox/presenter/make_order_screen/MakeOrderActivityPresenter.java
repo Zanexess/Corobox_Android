@@ -21,10 +21,13 @@ import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.common.serializers.AddressSerializer;
+import me.labs.corobox.corobox.common.serializers.BoxSerializer;
 import me.labs.corobox.corobox.common.serializers.CategoryNumberModelSerializer;
+import me.labs.corobox.corobox.common.serializers.OrderModelFromSerializer;
 import me.labs.corobox.corobox.common.serializers.OrderModelToSerializer;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
+import me.labs.corobox.corobox.model.realm.OrderModelFrom;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.network.ApiInterface;
@@ -97,6 +100,56 @@ public class MakeOrderActivityPresenter implements IMakeOrderActivityPresenter {
         Gson gson =  gsonBuilder.create();
 
         apiInterface.putOrderTo(CoroboxApp.AUTH_KEY, gson.toJson(orderModel))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showToast("Произошла ошибка, проверьте ваше интернет соединение");
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Response<Object> objectResponse) {
+                        if (objectResponse.code() == 201) {
+                            view.orderSuccessfullyAdded();
+                        } else {
+                            view.showToast(objectResponse.code() + "");
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void putOrderFrom(OrderModelFrom orderModelFrom) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getDeclaringClass().equals(RealmObject.class);
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        });
+        try {
+            gsonBuilder.registerTypeAdapter(Class.forName("io.realm.AddressModelRealmProxy"), new AddressSerializer());
+            gsonBuilder.registerTypeAdapter(Class.forName("io.realm.OrderModelFromRealmProxy"), new OrderModelFromSerializer());
+            gsonBuilder.registerTypeAdapter(Class.forName("io.realm.BoxRealmProxy"), new BoxSerializer());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+        Gson gson =  gsonBuilder.create();
+
+        apiInterface.putOrderFrom(CoroboxApp.AUTH_KEY, gson.toJson(orderModelFrom))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<Object>>() {

@@ -50,4 +50,7 @@ public interface ApiInterface {
 
     @GET("/order_from/")
     Observable<Response<List<OrderModelFrom>>> getOrderFrom(@Header("Authorization") String authKey);
+
+    @PUT("/order_from_put/")
+    Observable<Response<Object>> putOrderFrom(@Header("Authorization") String authKey, @Body String orderModelFrom);
 }

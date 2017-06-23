@@ -25,13 +25,13 @@ import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragme
 public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Box> boxes;
-    private HashSet<Integer> selected;
+    private HashSet<String> selected;
     private IBoxesFragmentPresenter presenter;
 
-    public BoxesAdapter(List<Box> boxes, IBoxesFragmentPresenter presenter) {
+    public BoxesAdapter(List<Box> boxes, IBoxesFragmentPresenter presenter, HashSet<String> selected) {
         this.boxes = boxes;
         this.presenter = presenter;
-        this.selected = new HashSet<>();
+        this.selected = selected;
     }
 
     @Override
@@ -70,12 +70,12 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             addDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!selected.contains(getAdapterPosition())) {
-                        selected.add(getAdapterPosition());
+                    if (!selected.contains(boxes.get(getAdapterPosition()).getUuid())) {
+                        selected.add(boxes.get(getAdapterPosition()).getUuid());
                         addDelete.setImageResource(R.drawable.ic_close_circle_outline);
                     } else {
                         addDelete.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
-                        selected.remove(getAdapterPosition());
+                        selected.remove(boxes.get(getAdapterPosition()).getUuid());
                     }
                     presenter.readyForOrder(selected);
                 }
@@ -89,6 +89,12 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             Picasso.with(itemView.getContext())
                     .load(boxes.get(getAdapterPosition()).getImageUrl())
                     .into(imageView);
+
+            if (!selected.contains(boxes.get(getAdapterPosition()).getUuid())) {
+                addDelete.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+            } else {
+                addDelete.setImageResource(R.drawable.ic_close_circle_outline);
+            }
 
             numberView.setText(boxes.get(getAdapterPosition()).getCategory().getPrice()+"р");
             titleView.setText(boxes.get(getAdapterPosition()).getTitle());

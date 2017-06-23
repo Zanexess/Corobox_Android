@@ -8,6 +8,6 @@ import me.labs.corobox.corobox.view.main_screen.boxes_fragment.IBoxesFragmentVie
 public interface IBoxesFragmentPresenter extends BaseFragmentPresenter<IBoxesFragmentView> {
     void onResume();
     void onPause();
-    void readyForOrder(HashSet<Integer> selected);
+    void readyForOrder(HashSet<String> selected);
     void fetchData();
 }

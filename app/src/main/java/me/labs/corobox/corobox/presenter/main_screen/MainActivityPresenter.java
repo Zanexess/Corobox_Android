@@ -179,6 +179,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         EventBus.getDefault().post(new UpdateCategoriesMessage());
 
         Intent intent = new Intent(view.getActivity(), MakeOrderActivityView.class);
+        intent.putExtra("type", "TO");
         intent.putExtra("uuid", uuid);
         view.getActivity().startActivity(intent);
     }

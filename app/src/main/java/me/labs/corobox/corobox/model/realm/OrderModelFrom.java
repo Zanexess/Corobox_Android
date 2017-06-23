@@ -26,7 +26,7 @@ public class OrderModelFrom extends RealmObject {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("order")
+    @SerializedName("stuff")
     @Expose
     private RealmList<Box> categoryNumberModel = new RealmList<>();
 
@@ -66,8 +66,8 @@ public class OrderModelFrom extends RealmObject {
         return categoryNumberModel;
     }
 
-    public void setCategoryNumberModel(RealmList<Box> categoryNumberModel) {
-        this.categoryNumberModel = categoryNumberModel;
+    public void setCategoryNumberModel(RealmList<Box> boxes) {
+        this.categoryNumberModel = boxes;
     }
 
     public AddressModel getAddressModel() {

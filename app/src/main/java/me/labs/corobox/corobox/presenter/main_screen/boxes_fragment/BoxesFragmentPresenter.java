@@ -45,7 +45,7 @@ public class BoxesFragmentPresenter implements IBoxesFragmentPresenter {
     }
 
     @Override
-    public void readyForOrder(HashSet<Integer> selected) {
+    public void readyForOrder(HashSet<String> selected) {
         if (selected.size() != 0) {
             view.setReadyButtonVisibility(View.VISIBLE);
         } else {

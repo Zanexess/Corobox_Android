@@ -1,6 +1,7 @@
 package me.labs.corobox.corobox.view.main_screen.boxes_fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,6 +27,7 @@ import me.labs.corobox.corobox.common.adapters.BoxesAdapter;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
+import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActivityView;
 
 public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentView {
 
@@ -32,8 +36,11 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
 
     private View view;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.button_ok) Button readyButton;
+    @BindView(R.id.button_ok) Button returnButton;
     @BindView(R.id.no_stuff) TextView noData;
+
+    private HashSet<String> selected = new HashSet<>();
+    private BoxesAdapter boxesAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +61,21 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     private void initComponents() {
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(llm);
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MakeOrderActivityView.class);
+                intent.putExtra("type", "FROM");
+                ArrayList<String> list = new ArrayList<String>();
+                list.addAll(selected);
+                selected.clear();
+                if (boxesAdapter != null)
+                    boxesAdapter.notifyDataSetChanged();
+                presenter.readyForOrder(selected);
+                intent.putStringArrayListExtra("list", list);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -83,14 +105,15 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
 
     @Override
     public void setReadyButtonVisibility(int visible) {
-        readyButton.setVisibility(visible);
+        returnButton.setVisibility(visible);
     }
 
     @Override
     public void showData(List<Box> boxes) {
         recyclerView.setVisibility(View.VISIBLE);
         noData.setVisibility(View.GONE);
-        recyclerView.setAdapter(new BoxesAdapter(boxes, presenter));
+        boxesAdapter = new BoxesAdapter(boxes, presenter, selected);
+        recyclerView.setAdapter(boxesAdapter);
     }
 
     @Override
