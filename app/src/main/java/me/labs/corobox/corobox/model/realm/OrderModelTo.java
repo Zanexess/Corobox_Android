@@ -11,10 +11,10 @@ import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 @RealmClass
 public class OrderModelTo extends RealmObject {
 
+    @PrimaryKey
     @SerializedName("uuid")
     @Expose
     private String UUID;
-    @PrimaryKey
     @SerializedName("order_id")
     @Expose
     private Integer orderId;
@@ -37,6 +37,7 @@ public class OrderModelTo extends RealmObject {
     private CardModel cardModel;
     private String type;
     private String date;
+    private String uuid_inner;
 
     public String getDate() {
         return date;
@@ -116,5 +117,13 @@ public class OrderModelTo extends RealmObject {
 
     public void setCardModel(CardModel cardModel) {
         this.cardModel = cardModel;
+    }
+
+    public String getUuid_inner() {
+        return uuid_inner;
+    }
+
+    public void setUuid_inner(String uuid_inner) {
+        this.uuid_inner = uuid_inner;
     }
 }

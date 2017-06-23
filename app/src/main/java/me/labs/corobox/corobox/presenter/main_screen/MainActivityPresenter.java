@@ -145,6 +145,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                 realmList1.add(integerWrap);
             }
         }
+
         String uuid = UUID.randomUUID().toString();
 
         realm.beginTransaction();
@@ -152,7 +153,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         realm.commitTransaction();
 
         OrderModelTo orderModelTo = new OrderModelTo();
-        orderModelTo.setUUID(uuid);
+        orderModelTo.setUuid_inner(uuid);
 
         RealmList<CategoryNumberModel> categoryNumberModels = new RealmList<>();
         for (int i = 0; i < realmList.size(); i++) {

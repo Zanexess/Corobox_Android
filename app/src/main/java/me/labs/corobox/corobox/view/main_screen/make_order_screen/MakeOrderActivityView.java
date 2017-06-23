@@ -142,7 +142,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
             Toast.makeText(this, "Адрес по умолчанию не найден", Toast.LENGTH_SHORT).show();
         }
 
-        OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("UUID", uuid).findFirst();
+        OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("uuid_inner", uuid).findFirst();
 
         categoriesOrderRealmAdapter = new CategoriesOrderRealmAdapter(orderModel.getCategoryNumberModel().createSnapshot(), presenter, false);
 
@@ -172,10 +172,10 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                 Toast.makeText(this, "Заполнены не все поля", Toast.LENGTH_SHORT).show();
             } else {
                 realm.beginTransaction();
-                OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("UUID", uuid).findFirst();
-                orderModel.setUUID(UUID.randomUUID().toString());
+                OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("uuid_inner", uuid).findFirst();
+                orderModel.setUuid_inner(UUID.randomUUID().toString());
                 AddressModel addressModel = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
-//                orderModel.setOrderId(100000 + (5 + (int)(Math.random() * ((999999 - 100000) + 1))));
+                orderModel.setOrderId(100000 + (5 + (int)(Math.random() * ((999999 - 100000) + 1))));
                 try {
                     orderModel.setTill(dateToTimestamp(stringToDate(
                             date.getText().toString().trim() + " " +
