@@ -6,18 +6,14 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
-import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 
 @RealmClass
-public class OrderModelTo extends RealmObject {
+public class OrderModelFrom extends RealmObject {
 
+    @PrimaryKey
     @SerializedName("uuid")
     @Expose
     private String UUID;
-    @PrimaryKey
-    @SerializedName("order_id")
-    @Expose
-    private Integer orderId;
     @SerializedName("created")
     @Expose
     private Integer created;
@@ -32,27 +28,7 @@ public class OrderModelTo extends RealmObject {
     private String status;
     @SerializedName("order")
     @Expose
-    private RealmList<CategoryNumberModel> categoryNumberModel = new RealmList<>();
-
-    private CardModel cardModel;
-    private String type;
-    private String date;
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    private RealmList<Box> categoryNumberModel = new RealmList<>();
 
     public String getStatus() {
         return status;
@@ -68,14 +44,6 @@ public class OrderModelTo extends RealmObject {
 
     public void setUUID(String UUID) {
         this.UUID = UUID;
-    }
-
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
     }
 
     public Integer getCreated() {
@@ -94,11 +62,11 @@ public class OrderModelTo extends RealmObject {
         this.till = till;
     }
 
-    public RealmList<CategoryNumberModel> getCategoryNumberModel() {
+    public RealmList<Box> getCategoryNumberModel() {
         return categoryNumberModel;
     }
 
-    public void setCategoryNumberModel(RealmList<CategoryNumberModel> categoryNumberModel) {
+    public void setCategoryNumberModel(RealmList<Box> categoryNumberModel) {
         this.categoryNumberModel = categoryNumberModel;
     }
 
@@ -108,13 +76,5 @@ public class OrderModelTo extends RealmObject {
 
     public void setAddressModel(AddressModel addressModel) {
         this.addressModel = addressModel;
-    }
-
-    public CardModel getCardModel() {
-        return cardModel;
-    }
-
-    public void setCardModel(CardModel cardModel) {
-        this.cardModel = cardModel;
     }
 }

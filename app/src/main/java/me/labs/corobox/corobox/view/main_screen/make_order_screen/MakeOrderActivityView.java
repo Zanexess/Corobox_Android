@@ -175,7 +175,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                 OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("UUID", uuid).findFirst();
                 orderModel.setUUID(UUID.randomUUID().toString());
                 AddressModel addressModel = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
-                orderModel.setOrderId(100000 + (5 + (int)(Math.random() * ((999999 - 100000) + 1))));
+//                orderModel.setOrderId(100000 + (5 + (int)(Math.random() * ((999999 - 100000) + 1))));
                 try {
                     orderModel.setTill(dateToTimestamp(stringToDate(
                             date.getText().toString().trim() + " " +

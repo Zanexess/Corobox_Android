@@ -15,7 +15,8 @@ import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragme
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.CategoryFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.ICategoryFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.orders_screen.IOrdersFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.orders_screen.OrdersFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.orders_screen.OrdersFromFragmentPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.orders_screen.OrdersToFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.settings.ISettingsFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.settings.SettingsFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.terms_of_use.ITermsFragmentPresenter;
@@ -81,6 +82,18 @@ public class MainActivityModule {
     @Provides
     @ActivityScope
     public IOrdersFragmentPresenter provideOrderFragmentPresenter() {
-        return new OrdersFragmentPresenter();
+        return new OrdersToFragmentPresenter();
+    }
+
+    @Provides
+    @ActivityScope
+    public OrdersToFragmentPresenter provideOrderToFragmentPresenter() {
+        return new OrdersToFragmentPresenter();
+    }
+
+    @Provides
+    @ActivityScope
+    public OrdersFromFragmentPresenter provideOrderFromFragmentPresenter() {
+        return new OrdersFromFragmentPresenter();
     }
 }

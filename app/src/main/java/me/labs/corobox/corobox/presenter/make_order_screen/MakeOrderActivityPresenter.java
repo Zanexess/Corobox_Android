@@ -56,7 +56,7 @@ public class MakeOrderActivityPresenter implements IMakeOrderActivityPresenter {
     public void countAll(OrderedRealmCollection<CategoryNumberModel> data) {
         Integer c = 0;
         for (int i = 0; i < data.size(); i++) {
-            c += data.get(i).getCategory().getPrice() * data.get(i).getNumber().getCount();
+            c += data.get(i).getCategory().getPrice() * data.get(i).getNumber();
         }
         String counter = String.valueOf(c);
         view.showPrice(counter);

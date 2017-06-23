@@ -5,6 +5,7 @@ import java.util.List;
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.OrderModelFrom;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressFragmentPresenter;
 import retrofit2.Response;
@@ -44,4 +45,9 @@ public interface ApiInterface {
     @PUT("/order_to_put/")
     Observable<Response<Object>> putOrderTo(@Header("Authorization") String authKey, @Body String orderModelTo);
 
+    @GET("/order_to/")
+    Observable<Response<List<OrderModelTo>>> getOrderTo(@Header("Authorization") String authKey);
+
+    @GET("/order_from/")
+    Observable<Response<List<OrderModelFrom>>> getOrderFrom(@Header("Authorization") String authKey);
 }

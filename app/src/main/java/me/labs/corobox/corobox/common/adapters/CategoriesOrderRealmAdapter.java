@@ -81,8 +81,7 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
                     try {
                         Realm realm = Realm.getDefaultInstance();
                         realm.beginTransaction();
-                        IntegerWrap integerWrap = categoryNumberModels.get(getAdapterPosition()).getNumber();
-                        integerWrap.setCount(integerWrap.getCount() + 1);
+                        categoryNumberModels.get(getAdapterPosition()).setNumber(categoryNumberModels.get(getAdapterPosition()).getNumber() + 1);
                         realm.commitTransaction();
                         presenter.countAll(categoryNumberModels);
                         presenter.updateList();
@@ -98,11 +97,11 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
 
                     Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
-                    IntegerWrap counter = categoryNumberModels.get(getAdapterPosition()).getNumber();
-                    if (counter.getCount() == 1) {
-                        counter.setCount(counter.getCount() - 1);
+                    Integer counter = categoryNumberModels.get(getAdapterPosition()).getNumber();
+                    if (counter == 1) {
+                        categoryNumberModels.get(getAdapterPosition()).setNumber(counter - 1);
                     } else {
-                        counter.setCount(counter.getCount() - 1);
+                        categoryNumberModels.get(getAdapterPosition()).setNumber(counter - 1);
                     }
                     realm.commitTransaction();
                     presenter.countAll(categoryNumberModels);
@@ -115,7 +114,7 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
 
         private void bind(int position) {
             Category category = categoryNumberModels.get(position).getCategory();
-            Integer counter = categoryNumberModels.get(position).getNumber().getCount();
+            Integer counter = categoryNumberModels.get(position).getNumber();
 
             Picasso.with(itemView.getContext())
                     .load(category.getPicture())

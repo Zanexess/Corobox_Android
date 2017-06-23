@@ -10,22 +10,19 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import io.realm.OrderedRealmCollection;
+import java.util.List;
+
 import io.realm.Realm;
-import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.eventbus.UpdateOrdersMessage;
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
-import me.labs.corobox.corobox.presenter.main_screen.orders_screen.IOrdersFragmentPresenter;
 
-public class OrderRealmAdapter extends RealmRecyclerViewAdapter<OrderModelTo, RecyclerView.ViewHolder> {
+public class OrderToAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private OrderedRealmCollection<OrderModelTo> orders;
+    private List<OrderModelTo> orders;
 
-
-    public OrderRealmAdapter(@Nullable OrderedRealmCollection<OrderModelTo> data, boolean autoUpdate) {
-        super(data, autoUpdate);
+    public OrderToAdapter(List<OrderModelTo> data) {
         this.orders = data;
     }
 
@@ -74,7 +71,7 @@ public class OrderRealmAdapter extends RealmRecyclerViewAdapter<OrderModelTo, Re
         }
 
         private void bind(int position) {
-            number.setText("Заказ #" + orders.get(getAdapterPosition()).getUUID().substring(0, 7));
+            number.setText("Заказ #" + orders.get(getAdapterPosition()).getOrderId().toString());
             date.setText(orders.get(getAdapterPosition()).getDate());
             AddressModel addressModel = orders.get(getAdapterPosition()).getAddressModel();
             try {
@@ -82,7 +79,7 @@ public class OrderRealmAdapter extends RealmRecyclerViewAdapter<OrderModelTo, Re
             } catch (Exception e) {
 
             }
-            recyclerView.setAdapter(new CategoriesImagesAdapter(orders.get(getAdapterPosition()).getCategoryNumberModel().createSnapshot(), false));
+            recyclerView.setAdapter(new CategoriesImagesAdapter(orders.get(getAdapterPosition()).getCategoryNumberModel().subList(0, orders.get(getAdapterPosition()).getCategoryNumberModel().size())));
         }
     }
 }

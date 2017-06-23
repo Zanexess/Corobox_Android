@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
@@ -20,13 +22,19 @@ import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 
-public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<CategoryNumberModel, RecyclerView.ViewHolder> {
+public class CategoriesImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private OrderedRealmCollection<CategoryNumberModel> categories;
+    private List<CategoryNumberModel> categories;
+    private List<String> pictures;
 
-    public CategoriesImagesAdapter(@Nullable OrderedRealmCollection<CategoryNumberModel> data, boolean autoUpdate) {
-        super(data, autoUpdate);
+    public CategoriesImagesAdapter(@Nullable List<CategoryNumberModel> data) {
         this.categories = data;
+        pictures = new ArrayList<>();
+        for (int i = 0; i < categories.size(); i++) {
+            for (int j = 0; j < categories.get(i).getNumber(); j++) {
+                pictures.add(categories.get(i).getCategory().getPicture());
+            }
+        }
     }
 
     @Override
@@ -43,7 +51,7 @@ public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<CategoryNu
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return pictures.size();
     }
 
     private class CategoryPictureHolder extends RecyclerView.ViewHolder {
@@ -57,7 +65,8 @@ public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<CategoryNu
 
         private void bindModel(int position) {
             Picasso.with(itemView.getContext())
-                    .load(categories.get(position).getCategory().getPicture())
+                    .load(pictures.get(position))
+                    .error(R.drawable.error_placeholder)
                     .into(imageView);
         }
     }

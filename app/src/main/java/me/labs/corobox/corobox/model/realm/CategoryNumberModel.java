@@ -12,13 +12,13 @@ public class CategoryNumberModel extends RealmObject {
     private Category category;
     @SerializedName("number")
     @Expose
-    IntegerWrap number;
+    Integer number;
 
     public Category getCategory() {
         return category;
     }
 
-    public IntegerWrap getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
@@ -26,7 +26,7 @@ public class CategoryNumberModel extends RealmObject {
         this.category = category;
     }
 
-    public void setNumber(IntegerWrap number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 }

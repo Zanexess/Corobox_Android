@@ -158,7 +158,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         for (int i = 0; i < realmList.size(); i++) {
             CategoryNumberModel categoryNumberModel = new CategoryNumberModel();
             categoryNumberModel.setCategory(realmList.get(i));
-            categoryNumberModel.setNumber(realmList1.get(i));
+            categoryNumberModel.setNumber(realmList1.get(i).getCount());
             categoryNumberModels.add(categoryNumberModel);
         }
 

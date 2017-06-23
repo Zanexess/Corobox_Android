@@ -18,7 +18,7 @@ public class CategoryNumberModelSerializer implements JsonSerializer<CategoryNum
         final JsonObject jsonObject = new JsonObject();
         IdWrap idWrap = new IdWrap(src.getCategory().getCategory_id());
         jsonObject.add("category", context.serialize(idWrap));
-        jsonObject.addProperty("number", src.getNumber().getCount());
+        jsonObject.addProperty("number", src.getNumber());
         return jsonObject;
     }
 }
