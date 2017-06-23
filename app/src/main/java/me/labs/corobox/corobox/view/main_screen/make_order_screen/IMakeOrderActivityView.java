@@ -7,5 +7,7 @@ public interface IMakeOrderActivityView {
     void showPrice(String count);
     void updateList();
     void finishActivity();
+    void showToast(String s);
+    void orderSuccessfullyAdded();
 }
 

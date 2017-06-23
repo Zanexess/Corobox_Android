@@ -22,7 +22,7 @@ public class OrderModelTo extends RealmObject {
     private Integer created;
     @SerializedName("till")
     @Expose
-    private Integer till;
+    private Long till;
     @SerializedName("address")
     @Expose
     private AddressModel addressModel;
@@ -85,11 +85,11 @@ public class OrderModelTo extends RealmObject {
         this.created = created;
     }
 
-    public Integer getTill() {
+    public Long getTill() {
         return till;
     }
 
-    public void setTill(Integer till) {
+    public void setTill(Long till) {
         this.till = till;
     }
 
