@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
@@ -29,7 +31,7 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.address_item, parent, false);
         return new AddressHolder(v);
     }
 
@@ -43,17 +45,16 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
         return addressModels.size();
     }
 
-    private class AddressHolder extends RecyclerView.ViewHolder {
+    class AddressHolder extends RecyclerView.ViewHolder {
 
-        private TextView number;
-        private TextView date;
-        private ImageView defaultCard;
+        @BindView(R.id.address) TextView address;
+        @BindView(R.id.access)  TextView access;
+        @BindView(R.id.floor) TextView floor;
+        @BindView(R.id.flat) TextView flat;
 
         private AddressHolder(final View itemView) {
             super(itemView);
-            number = (TextView) itemView.findViewById(R.id.card_number);
-            date = (TextView) itemView.findViewById(R.id.date);
-            defaultCard = (ImageView) itemView.findViewById(R.id.defaultCard);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -89,13 +90,12 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
         }
 
         private void bind(int position) {
-            number.setText(addressModels.get(position).getAddress());
-            date.setText("Квартира " + addressModels.get(position).getFlat());
-            if (addressModels.get(position).isUseAsDefault()) {
-                defaultCard.setVisibility(View.VISIBLE);
-            } else {
-                defaultCard.setVisibility(View.GONE);
-            }
+            AddressModel addressModel = addressModels.get(getAdapterPosition());
+
+            address.setText(addressModel.getAddress());
+            access.setText(addressModel.getAccess());
+            flat.setText(addressModel.getFlat());
+            floor.setText(addressModel.getFloor());
         }
     }
 }

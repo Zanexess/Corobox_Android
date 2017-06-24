@@ -173,4 +173,7 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+
+    compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    compile 'com.google.android.gms:play-services:11.0.1'
 }
