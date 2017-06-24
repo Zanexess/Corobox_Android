@@ -20,18 +20,18 @@
 
         <TextView
             android:id="@+id/title_category"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="16dp"
             android:text="Сноуборд"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp" />
 
         <android.support.constraint.ConstraintLayout
-            android:visibility="gone"
             android:id="@+id/constraint_layout"
             android:orientation="horizontal"
+            android:layout_marginTop="-16dp"
             android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -39,17 +39,18 @@
             <ImageView
                 android:id="@+id/deleteObject"
                 android:src="@drawable/ic_minus_circle_outline"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="8dp"
-                android:layout_marginLeft="7dp"
+                android:layout_marginLeft="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="8dp"
                 app:layout_constraintRight_toLeftOf="@+id/number"
                 android:layout_marginRight="8dp"
-                app:layout_constraintHorizontal_bias="0.75" />
+                app:layout_constraintHorizontal_bias="0.198"
+                app:layout_constraintVertical_bias="0.5" />
 
             <TextView
                 android:textSize="16sp"
@@ -73,20 +74,20 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:text="250р"
+                android:text="250"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.503" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/addObject"
                 android:src="@drawable/ic_add_circle_outline_black_24dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginRight="8dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -95,7 +96,8 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toRightOf="@+id/number"
                 android:layout_marginLeft="8dp"
-                app:layout_constraintHorizontal_bias="0.25" />
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintVertical_bias="0.5" />
 
         </android.support.constraint.ConstraintLayout>
 

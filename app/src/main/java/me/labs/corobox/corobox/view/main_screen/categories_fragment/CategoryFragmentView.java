@@ -9,6 +9,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -89,6 +91,16 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
             @Override
             public boolean onQueryTextChange(String newText) {
                 categoriesAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+        searchView.setIconified(false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchView.setQuery("", false);
                 return true;
             }
         });

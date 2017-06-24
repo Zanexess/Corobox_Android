@@ -1,6 +1,8 @@
 package me.labs.corobox.corobox.common.adapters;
 
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +35,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private ICategoryFragmentPresenter presenter;
     private IMainActivityPresenter presenterActivity;
     private CategoriesFilter categoriesFilter;
+    private RecyclerView recyclerView;
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
 
     public CategoriesAdapter(List<Category> categories, HashMap<String, Integer> hashMap, ICategoryFragmentPresenter presenter, IMainActivityPresenter presenterActivity) {
         this.categories = categories;
@@ -104,6 +113,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         constraintLayout.setVisibility(View.VISIBLE);
                         number.setText("1 шт.");
                     }
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.getLayoutManager().scrollToPosition(getAdapterPosition());
+                        }
+                    }, 30);
                 }
             });
 

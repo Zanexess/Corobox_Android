@@ -12,7 +12,8 @@
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view"
-            android:queryHint="@string/what_do_you_want_to_store"
+            android:iconifiedByDefault="true"
+            app:defaultQueryHint="@string/what_do_you_want_to_store"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF" />
@@ -21,8 +22,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
+        android:padding="4dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
