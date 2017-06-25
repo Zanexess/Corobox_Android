@@ -81,8 +81,6 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             });
 
-
-//            numberView.setText(boxes.get(getAdapterPosition()).getCategory().getPrice());
         }
 
         public void bind() {
@@ -96,7 +94,7 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 addDelete.setImageResource(R.drawable.ic_close_circle_outline);
             }
 
-            numberView.setText(boxes.get(getAdapterPosition()).getCategory().getPrice()+"р");
+            numberView.setText(boxes.get(getAdapterPosition()).getCategory().getPrice()+" рублей");
             titleView.setText(boxes.get(getAdapterPosition()).getTitle());
         }
     }

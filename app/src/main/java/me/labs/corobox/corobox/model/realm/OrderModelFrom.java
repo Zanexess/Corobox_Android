@@ -14,6 +14,9 @@ public class OrderModelFrom extends RealmObject {
     @SerializedName("uuid")
     @Expose
     private String UUID;
+    @SerializedName("order_id")
+    @Expose
+    private Integer order_id;
     @SerializedName("created")
     @Expose
     private Integer created;
@@ -76,5 +79,13 @@ public class OrderModelFrom extends RealmObject {
 
     public void setAddressModel(AddressModel addressModel) {
         this.addressModel = addressModel;
+    }
+
+    public Integer getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Integer order_id) {
+        this.order_id = order_id;
     }
 }

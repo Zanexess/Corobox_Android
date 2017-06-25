@@ -151,6 +151,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
     private OrderModelFrom generateOrderFrom() {
         orderModelFrom = new OrderModelFrom();
+        orderModelFrom.setOrder_id(100000 + (5 + (int) (Math.random() * ((999999 - 100000) + 1))));
 
         AddressModel address = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
         orderModelFrom.setAddressModel(address);

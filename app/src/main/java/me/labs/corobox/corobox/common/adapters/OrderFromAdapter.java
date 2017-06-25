@@ -11,8 +11,11 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import me.labs.corobox.corobox.R;
+import me.labs.corobox.corobox.common.Utils.Utils;
 import me.labs.corobox.corobox.model.eventbus.UpdateOrdersMessage;
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.OrderModelFrom;
@@ -42,32 +45,31 @@ public class OrderFromAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return orders.size();
     }
 
-    private class OrderHolder extends RecyclerView.ViewHolder {
+    class OrderHolder extends RecyclerView.ViewHolder {
 
-        private TextView number;
-        private TextView date;
-        private RecyclerView recyclerView;
-        private TextView address;
+        @BindView(R.id.number) TextView number;
+        @BindView(R.id.date) TextView date;
+        @BindView(R.id.recyclerView) RecyclerView recyclerView;
+        @BindView(R.id.address) TextView address;
+        @BindView(R.id.status) TextView status;
 
         private OrderHolder(View itemView) {
             super(itemView);
-            number = (TextView) itemView.findViewById(R.id.number);
-            date = (TextView) itemView.findViewById(R.id.date);
-            recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerView);
-            address = (TextView) itemView.findViewById(R.id.address);
+            ButterKnife.bind(this, itemView);
             recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
 
         private void bind(int position) {
-//            number.setText("Заказ #" + orders.get(getAdapterPosition()).getOrderId().toString());
-//            date.setText(orders.get(getAdapterPosition()).getDate());
+            number.setText("Заказ №" + orders.get(getAdapterPosition()).getOrder_id().toString());
+            date.setText(Utils.getDate(orders.get(getAdapterPosition()).getTill() * 1000));
+            status.setText(Utils.getStatus(orders.get(getAdapterPosition()).getStatus()));
             AddressModel addressModel = orders.get(getAdapterPosition()).getAddressModel();
             try {
                 address.setText(addressModel.getAddress() + " кв." + addressModel.getFlat());
             } catch (Exception e) {
 
             }
-//            recyclerView.setAdapter(new CategoriesImagesAdapter(orders.get(getAdapterPosition()).getCategoryNumberModel().subList(0, orders.get(getAdapterPosition()).getCategoryNumberModel().size())));
+            recyclerView.setAdapter(new BoxImagesAdapter(orders.get(getAdapterPosition()).getCategoryNumberModel().subList(0, orders.get(getAdapterPosition()).getCategoryNumberModel().size())));
         }
     }
 }

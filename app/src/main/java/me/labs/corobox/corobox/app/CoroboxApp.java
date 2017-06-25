@@ -75,5 +75,5 @@ public class CoroboxApp extends Application {
         return apiComponent;
     }
 
-    public static final String AUTH_KEY = "Token e4668dfe95fab640344fe580f543ef3e56d3a7c5";
+    public static final String AUTH_KEY = "Token 79036a9576257e07ebc9ffa05c0280afeeedd6bf";
 }

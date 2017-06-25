@@ -95,7 +95,7 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
             }
         });
 
-        searchView.setIconified(false);
+        searchView.setIconified(true);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
