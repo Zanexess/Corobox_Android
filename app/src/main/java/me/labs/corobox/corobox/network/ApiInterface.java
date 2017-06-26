@@ -1,6 +1,7 @@
 package me.labs.corobox.corobox.network;
 
 import java.util.List;
+import java.util.Objects;
 
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.Box;
@@ -35,6 +36,9 @@ public interface ApiInterface {
     @DELETE("/address_del/{id}/")
     Observable<Response<Object>> deleteAddress(@Header("Authorization") String authKey, @Path("id") Integer id);
 
+    @PUT("address_set_default/{id}/")
+    Observable<Response<Object>> setDefaultAddress(@Header("Authorization") String authKey, @Path("id") Integer id);
+
     // Stuff
 
     @GET("/stuff/")
@@ -53,4 +57,5 @@ public interface ApiInterface {
 
     @PUT("/order_from_put/")
     Observable<Response<Object>> putOrderFrom(@Header("Authorization") String authKey, @Body String orderModelFrom);
+
 }

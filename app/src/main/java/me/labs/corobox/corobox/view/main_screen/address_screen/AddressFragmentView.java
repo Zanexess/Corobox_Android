@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.braintreepayments.cardform.view.ErrorEditText;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -51,7 +52,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
     IAddressFragmentPresenter presenter;
 
     private View view;
-    @BindView(R.id.address_floor) EditText addressFloor;
+    @BindView(R.id.address_floor) ErrorEditText addressFloor;
     @BindView(R.id.address_access) EditText addressAccess;
     @BindView(R.id.address_flat) EditText addressFlat;
     @BindView(R.id.button) Button saveButton;
@@ -84,7 +85,8 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
         autocompleteFragment = (SupportPlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         ((View)view.findViewById(R.id.place_autocomplete_search_button)).setVisibility(View.GONE);
-        ((EditText)view.findViewById(R.id.place_autocomplete_search_input)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.0f);
+        final EditText editText = ((EditText)view.findViewById(R.id.place_autocomplete_search_input));
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.0f);
 
         autocompleteFragment.setHint("Введите улицу");
         autocompleteFragment.setFilter(new AutocompleteFilter.Builder()
@@ -129,7 +131,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
                 AddressModel addressModel = new AddressModel();
 
                 addressModel.setCity("Москва");
-                addressModel.setAddress(autocompleteFragment.toString().replace("Москва, ", ""));
+                addressModel.setAddress(editText.getText().toString().replace("Москва, ", ""));
                 addressModel.setFlat(addressFlat.getText().toString());
                 addressModel.setAccess(addressAccess.getText().toString());
                 addressModel.setFloor(addressFloor.getText().toString());
@@ -154,23 +156,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
 
     @Override
     public void setDefaultAddress(final Integer id) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmResults<AddressModel> results = realm.where(AddressModel.class).findAll();
-                for (AddressModel addressModel : results)
-                    addressModel.setUseAsDefault(false);
-
-                RealmResults<AddressModel> resultsuuid = realm.where(AddressModel.class).equalTo("id", id).findAll();
-                resultsuuid.get(0).setUseAsDefault(true);
-
-                RealmResults<AddressModel> addressModels = realm.where(AddressModel.class).findAll();
-                addressAdapter = new AddressRealmAdapter(addressModels.createSnapshot(), false, presenter);
-                recyclerView.setAdapter(addressAdapter);
-                addressAdapter.notifyDataSetChanged();
-            }
-        });
+        presenter.fetchData();
     }
 
     @Override
@@ -215,6 +201,8 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
         addressFloor.setText("");
         addressAccess.setText("");
         autocompleteFragment.setText("");
+
+        addressAdapter.notifyDataSetChanged();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 

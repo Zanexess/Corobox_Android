@@ -1,6 +1,7 @@
 package me.labs.corobox.corobox.common.adapters;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,14 +54,17 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
         @BindView(R.id.access)  TextView access;
         @BindView(R.id.floor) TextView floor;
         @BindView(R.id.flat) TextView flat;
+        @BindView(R.id.delete_address) ImageView deleteAddress;
+        @BindView(R.id.home_address) ImageView homeAddress;
+        @BindView(R.id.default_layout) LinearLayout default_layout;
 
         private AddressHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            deleteAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
+                public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                     builder.setTitle("Удалить адрес")
                             .setMessage("Вы действительно хотите удалить этот адрес?")
@@ -77,11 +83,10 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
                                     });
                     AlertDialog alert = builder.create();
                     alert.show();
-                    return true;
                 }
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            homeAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     presenter.setDefaultAddress(addressModels.get(getAdapterPosition()).getId());
@@ -91,6 +96,16 @@ public class AddressRealmAdapter extends RealmRecyclerViewAdapter<AddressModel, 
 
         private void bind(int position) {
             AddressModel addressModel = addressModels.get(getAdapterPosition());
+
+            if (!addressModel.isUseAsDefault()) {
+                default_layout.setVisibility(View.GONE);
+                homeAddress.setVisibility(View.VISIBLE);
+                itemView.setBackgroundColor(Color.WHITE);
+            } else {
+                default_layout.setVisibility(View.VISIBLE);
+                itemView.setBackgroundColor(Color.parseColor("#40808080"));
+                homeAddress.setVisibility(View.GONE);
+            }
 
             address.setText(addressModel.getAddress());
             access.setText(addressModel.getAccess());

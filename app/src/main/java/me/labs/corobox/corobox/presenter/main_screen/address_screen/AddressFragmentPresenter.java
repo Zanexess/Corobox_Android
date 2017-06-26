@@ -62,8 +62,30 @@ public class AddressFragmentPresenter implements IAddressFragmentPresenter {
     }
 
     @Override
-    public void setDefaultAddress(Integer id) {
-        view.setDefaultAddress(id);
+    public void setDefaultAddress(final Integer id) {
+        apiInterface.setDefaultAddress(CoroboxApp.AUTH_KEY, id)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.setDefaultAddress(id);
+                    }
+
+                    @Override
+                    public void onNext(Response<Object> objectResponse) {
+                        if (objectResponse.code() == 201) {
+                            view.setDefaultAddress(id);
+                        } else {
+                            view.showToast("Не удалось обновить адрес по умолчанию");
+                        }
+                    }
+                });
     }
 
     @Override
