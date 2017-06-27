@@ -1,6 +1,7 @@
 package me.labs.corobox.corobox.presenter.main_screen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,8 @@ import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActiv
 import me.labs.corobox.corobox.view.main_screen.orders_screen.OrdersFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
 import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MainActivityPresenter implements IMainActivityPresenter {
 
@@ -179,8 +182,8 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         EventBus.getDefault().post(new UpdateCategoriesMessage());
 
         Intent intent = new Intent(view.getActivity(), MakeOrderActivityView.class);
-        intent.putExtra("type", "TO");
-        intent.putExtra("uuid", uuid);
+        SharedPreferences sp = view.getActivity().getSharedPreferences("order_info", MODE_PRIVATE);
+        sp.edit().putString("type", "TO").putString("uuid", uuid).apply();
         view.getActivity().startActivity(intent);
     }
 

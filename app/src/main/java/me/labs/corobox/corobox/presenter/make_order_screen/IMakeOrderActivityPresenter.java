@@ -1,5 +1,7 @@
 package me.labs.corobox.corobox.presenter.make_order_screen;
 
+import java.util.List;
+
 import io.realm.OrderedRealmCollection;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.model.realm.Category;

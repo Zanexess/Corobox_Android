@@ -1,7 +1,5 @@
 package me.labs.corobox.corobox.common.adapters;
 
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,21 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
-import me.labs.corobox.corobox.model.realm.CardModel;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
-import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
-import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardFragmentPresenter;
 import me.labs.corobox.corobox.presenter.make_order_screen.IMakeOrderActivityPresenter;
 
 public class CategoriesOrderToRealmAdapter extends RealmRecyclerViewAdapter<CategoryNumberModel, RecyclerView.ViewHolder> {

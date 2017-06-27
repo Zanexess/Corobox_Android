@@ -18,6 +18,7 @@ public class OrderModelToSerializer implements JsonSerializer<OrderModelTo> {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("order_id", src.getOrderId());
         jsonObject.addProperty("till", src.getTill());
+        jsonObject.addProperty("paid_till", src.getPaid_till());
         jsonObject.add("address", context.serialize(src.getAddressModel()));
         jsonObject.add("order", context.serialize(src.getCategoryNumberModel()));
         return jsonObject;

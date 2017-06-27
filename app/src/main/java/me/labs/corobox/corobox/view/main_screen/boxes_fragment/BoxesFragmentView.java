@@ -2,6 +2,7 @@ package me.labs.corobox.corobox.view.main_screen.boxes_fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -28,6 +30,8 @@ import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
 import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActivityView;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentView {
 
@@ -65,14 +69,19 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), MakeOrderActivityView.class);
-                intent.putExtra("type", "FROM");
-                ArrayList<String> list = new ArrayList<String>();
-                list.addAll(selected);
+                Set<String> set = new HashSet<String>();
+                set.addAll(selected);
                 selected.clear();
+
+                v.getContext().getSharedPreferences("order_info", MODE_PRIVATE)
+                        .edit()
+                        .putString("type", "FROM")
+                        .putStringSet("set", set)
+                        .apply();
+
                 if (boxesAdapter != null)
                     boxesAdapter.notifyDataSetChanged();
                 presenter.readyForOrder(selected);
-                intent.putStringArrayListExtra("list", list);
                 startActivity(intent);
             }
         });

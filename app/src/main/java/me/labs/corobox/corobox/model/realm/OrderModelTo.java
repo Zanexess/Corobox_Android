@@ -24,6 +24,9 @@ public class OrderModelTo extends RealmObject {
     @SerializedName("till")
     @Expose
     private Long till;
+    @SerializedName("paid_till")
+    @Expose
+    private Long paid_till;
     @SerializedName("address")
     @Expose
     private AddressModel addressModel;
@@ -125,5 +128,13 @@ public class OrderModelTo extends RealmObject {
 
     public void setUuid_inner(String uuid_inner) {
         this.uuid_inner = uuid_inner;
+    }
+
+    public Long getPaid_till() {
+        return paid_till;
+    }
+
+    public void setPaid_till(Long paid_till) {
+        this.paid_till = paid_till;
     }
 }

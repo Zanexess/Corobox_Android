@@ -1,10 +1,6 @@
 package me.labs.corobox.corobox.presenter.make_order_screen;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -12,12 +8,12 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.realm.OrderedRealmCollection;
-import io.realm.Realm;
 import io.realm.RealmObject;
-import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.common.serializers.AddressSerializer;
@@ -25,15 +21,10 @@ import me.labs.corobox.corobox.common.serializers.BoxSerializer;
 import me.labs.corobox.corobox.common.serializers.CategoryNumberModelSerializer;
 import me.labs.corobox.corobox.common.serializers.OrderModelFromSerializer;
 import me.labs.corobox.corobox.common.serializers.OrderModelToSerializer;
-import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.OrderModelFrom;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
-import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.network.ApiInterface;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressActivityPresenter;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressFragmentView;
-import me.labs.corobox.corobox.view.main_screen.address_screen.IAddressActivityView;
 import me.labs.corobox.corobox.view.main_screen.make_order_screen.IMakeOrderActivityView;
 import retrofit2.Response;
 import rx.Subscriber;
