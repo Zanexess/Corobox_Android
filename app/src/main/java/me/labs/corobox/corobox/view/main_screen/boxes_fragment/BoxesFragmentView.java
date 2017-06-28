@@ -96,6 +96,7 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     public void onResume() {
         super.onResume();
         presenter.onResume();
+        presenter.fetchData();
     }
 
     @Override
