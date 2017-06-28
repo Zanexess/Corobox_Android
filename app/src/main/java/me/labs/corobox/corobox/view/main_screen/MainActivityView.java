@@ -74,7 +74,7 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
         navigationView.setNavigationItemSelectedListener(this);
 
         presenter.changeFragment(CoroboxApp.type);
-        navigationView.setCheckedItem(R.id.nav_my_boxes);
+        navigationView.setCheckedItem(R.id.nav_new_box);
     }
 
     @Override

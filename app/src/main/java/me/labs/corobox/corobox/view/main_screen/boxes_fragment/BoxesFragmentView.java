@@ -2,7 +2,6 @@ package me.labs.corobox.corobox.view.main_screen.boxes_fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +26,7 @@ import me.labs.corobox.corobox.common.adapters.BoxesAdapter;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
-import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActivityView;
+import me.labs.corobox.corobox.view.make_order_screen.MakeOrderActivityView;
 
 import static android.content.Context.MODE_PRIVATE;
 

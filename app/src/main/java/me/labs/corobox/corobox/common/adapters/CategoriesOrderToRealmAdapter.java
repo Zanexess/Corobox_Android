@@ -10,24 +10,28 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
+import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.presenter.make_order_screen.IMakeOrderActivityPresenter;
 
-public class CategoriesOrderToRealmAdapter extends RealmRecyclerViewAdapter<CategoryNumberModel, RecyclerView.ViewHolder> {
+public class CategoriesOrderToRealmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final IMakeOrderActivityPresenter presenter;
-    private OrderedRealmCollection<CategoryNumberModel> categoryNumberModels;
+    private final OrderModelTo orderModel;
+    private List<CategoryNumberModel> categoryNumberModels;
 
-    public CategoriesOrderToRealmAdapter(@Nullable OrderedRealmCollection<CategoryNumberModel> data, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
-        super(data, autoUpdate);
-        this.categoryNumberModels = data;
+    public CategoriesOrderToRealmAdapter(OrderModelTo orderModel, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
+        this.categoryNumberModels = orderModel.getCategoryNumberModel().createSnapshot();
         this.presenter = presenter;
-        presenter.countAll(data);
+        this.orderModel = orderModel;
+        presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
     }
 
     @Override
@@ -74,7 +78,7 @@ public class CategoriesOrderToRealmAdapter extends RealmRecyclerViewAdapter<Cate
                         realm.beginTransaction();
                         categoryNumberModels.get(getAdapterPosition()).setNumber(categoryNumberModels.get(getAdapterPosition()).getNumber() + 1);
                         realm.commitTransaction();
-                        presenter.countAll(categoryNumberModels);
+                        presenter.countAll(categoryNumberModels, presenter.countDays());
                         presenter.updateList();
                     } catch (Exception e) {
 
@@ -89,13 +93,21 @@ public class CategoriesOrderToRealmAdapter extends RealmRecyclerViewAdapter<Cate
                     Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
                     Integer counter = categoryNumberModels.get(getAdapterPosition()).getNumber();
-                    if (counter == 1) {
-                        categoryNumberModels.get(getAdapterPosition()).setNumber(counter - 1);
-                    } else {
-                        categoryNumberModels.get(getAdapterPosition()).setNumber(counter - 1);
+                    categoryNumberModels.get(getAdapterPosition()).setNumber(counter - 1);
+
+
+                    if (categoryNumberModels.get(getAdapterPosition()).getNumber() == 0) {
+                        categoryNumberModels.get(getAdapterPosition()).deleteFromRealm();
+                        categoryNumberModels = orderModel.getCategoryNumberModel().createSnapshot();
+                        notifyItemRemoved(getAdapterPosition());
+
+                        if (categoryNumberModels.size() == 0) {
+                            presenter.finish();
+                        }
                     }
+
                     realm.commitTransaction();
-                    presenter.countAll(categoryNumberModels);
+                    presenter.countAll(categoryNumberModels, presenter.countDays());
                     presenter.updateList();
 
                 }

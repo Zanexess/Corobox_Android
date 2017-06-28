@@ -49,6 +49,7 @@ public class CategoriesOrderFromRealmAdapter extends RecyclerView.Adapter<Recycl
     }
 
     public void setTill(long date_arr, long date_t) {
+
     }
 
     private class CategoryHolder extends RecyclerView.ViewHolder {

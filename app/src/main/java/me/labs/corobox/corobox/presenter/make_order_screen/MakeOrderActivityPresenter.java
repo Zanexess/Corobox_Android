@@ -8,14 +8,16 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
-import io.realm.OrderedRealmCollection;
 import io.realm.RealmObject;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.common.FragmentType;
+import me.labs.corobox.corobox.common.Utils.Utils;
 import me.labs.corobox.corobox.common.serializers.AddressSerializer;
 import me.labs.corobox.corobox.common.serializers.BoxSerializer;
 import me.labs.corobox.corobox.common.serializers.CategoryNumberModelSerializer;
@@ -25,7 +27,7 @@ import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.OrderModelFrom;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.network.ApiInterface;
-import me.labs.corobox.corobox.view.main_screen.make_order_screen.IMakeOrderActivityView;
+import me.labs.corobox.corobox.view.make_order_screen.IMakeOrderActivityView;
 import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -39,6 +41,9 @@ public class MakeOrderActivityPresenter implements IMakeOrderActivityPresenter {
 
     @Inject ApiInterface apiInterface;
 
+    private long date_till;
+    private long date_from;
+
     @Inject
     public MakeOrderActivityPresenter(IMakeOrderActivityView view) {
         this.view = view;
@@ -47,10 +52,10 @@ public class MakeOrderActivityPresenter implements IMakeOrderActivityPresenter {
     }
 
     @Override
-    public void countAll(OrderedRealmCollection<CategoryNumberModel> data) {
-        Integer c = 0;
+    public void countAll(List<CategoryNumberModel> data, long numDays) {
+        long c = 0;
         for (int i = 0; i < data.size(); i++) {
-            c += data.get(i).getCategory().getPrice() * data.get(i).getNumber();
+            c += data.get(i).getCategory().getDaily_price() * data.get(i).getNumber() * numDays;
         }
         String counter = String.valueOf(c);
         view.showPrice(counter);
@@ -164,5 +169,20 @@ public class MakeOrderActivityPresenter implements IMakeOrderActivityPresenter {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void setTill(String toString, String fromString) {
+        try {
+            date_from = Utils.dateToTimestamp(Utils.stringToDate(toString, "dd.MM.yyyy", Locale.getDefault()));
+            date_till = Utils.dateToTimestamp(Utils.stringToDate(fromString, "dd.MM.yyyy", Locale.getDefault()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public long countDays() {
+        return (date_till - date_from) / 24 / 60 / 60;
     }
 }

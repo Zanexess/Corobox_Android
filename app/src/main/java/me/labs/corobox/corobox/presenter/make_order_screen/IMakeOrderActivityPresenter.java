@@ -11,9 +11,11 @@ import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 
 public interface IMakeOrderActivityPresenter {
-    void countAll(OrderedRealmCollection<CategoryNumberModel> data);
+    void countAll(List<CategoryNumberModel> data, long numDays);
     void updateList();
     void finish();
     void putOrder(OrderModelTo orderModel);
     void putOrderFrom(OrderModelFrom orderModelFrom);
+    void setTill(String toString, String fromString);
+    long countDays();
 }

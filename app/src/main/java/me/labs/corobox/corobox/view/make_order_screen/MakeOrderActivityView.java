@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.view.main_screen.make_order_screen;
+package me.labs.corobox.corobox.view.make_order_screen;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -8,23 +8,19 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.security.Timestamp;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
@@ -101,6 +97,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
     private CategoriesOrderToRealmAdapter categoriesOrderToRealmAdapter;
     private CategoriesOrderFromRealmAdapter categoriesOrderFromRealmAdapter;
 
+    private OrderModelTo orderModel;
     private OrderModelFrom orderModelFrom;
 
     @Override
@@ -125,7 +122,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
         final Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_MONTH, 1);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
-        final int mMonth = c.get(Calendar.MONTH);
+        final int mMonth = c.get(Calendar.MONTH) + 1;
         final int mYear = c.get(Calendar.YEAR);
 
         date_arrive.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +145,9 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                             date.setText(iday + "." + imonth + "." + mYear);
                             date_from.setText(date.getText().toString());
 
+
+                            presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
+                            presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
 
                             TimePickerDialog tpd = new TimePickerDialog(MakeOrderActivityView.this, new TimePickerDialog.OnTimeSetListener() {
                                 @Override
@@ -175,6 +175,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
         date.setText(iday + "." + imonth + "." + mYear);
         date_from.setText(date.getText());
+        date_till.setText(iday + ".0" + (mMonth + 1) + "." + mYear);
 
         date_store.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +197,8 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
 
                                     date_till.setText(iday + "." + imonth + "." + mYear);
+                                    presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
+                                    presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
                                 } else {
                                     Toast.makeText(MakeOrderActivityView.this, "Минимальный период хранения 1 день", Toast.LENGTH_SHORT).show();
                                 }
@@ -233,8 +236,10 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
         }
 
         if (type.equals("TO")) {
-            OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("uuid_inner", uuid).findFirst();
-            categoriesOrderToRealmAdapter = new CategoriesOrderToRealmAdapter(orderModel.getCategoryNumberModel().createSnapshot(), presenter, false);
+            orderModel = realm.where(OrderModelTo.class).equalTo("uuid_inner", uuid).findFirst();
+            presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
+            categoriesOrderToRealmAdapter = new CategoriesOrderToRealmAdapter(orderModel, presenter, false);
+            presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
             recyclerView.setAdapter(categoriesOrderToRealmAdapter);
         } else if (type.equals("FROM")) {
             OrderModelFrom orderModelFrom = generateOrderFrom();

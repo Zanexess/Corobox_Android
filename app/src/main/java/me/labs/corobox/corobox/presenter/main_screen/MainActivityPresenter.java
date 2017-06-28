@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,7 +16,6 @@ import javax.inject.Inject;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmResults;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.FragmentType;
@@ -33,7 +30,7 @@ import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityVi
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardActivityView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
-import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActivityView;
+import me.labs.corobox.corobox.view.make_order_screen.MakeOrderActivityView;
 import me.labs.corobox.corobox.view.main_screen.orders_screen.OrdersFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
 import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
