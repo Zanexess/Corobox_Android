@@ -1,11 +1,14 @@
 package me.labs.corobox.corobox.common.adapters;
 
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,13 +24,16 @@ import me.labs.corobox.corobox.common.Utils.Utils;
 import me.labs.corobox.corobox.model.eventbus.UpdateOrdersMessage;
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
+import me.labs.corobox.corobox.presenter.main_screen.orders_screen.OrdersToFragmentPresenter;
 
 public class OrderToAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<OrderModelTo> orders;
+    private OrdersToFragmentPresenter presenter;
 
-    public OrderToAdapter(List<OrderModelTo> data) {
+    public OrderToAdapter(List<OrderModelTo> data, OrdersToFragmentPresenter presenter) {
         this.orders = data;
+        this.presenter = presenter;
     }
 
     @Override
@@ -53,21 +59,34 @@ public class OrderToAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @BindView(R.id.recyclerView) RecyclerView recyclerView;
         @BindView(R.id.address) TextView address;
         @BindView(R.id.status) TextView status;
+        @BindView(R.id.cancel_button) ImageView cancel;
 
         private OrderHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    realm.where(OrderModelTo.class).equalTo("UUID", orders.get(getAdapterPosition()).getUUID()).findAll().deleteAllFromRealm();
-                    realm.commitTransaction();
-                    EventBus.getDefault().post(new UpdateOrdersMessage());
-                    return true;
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setTitle("Отменить заказ.")
+                            .setMessage("Вы действительно хотите отменить этот заказ?")
+                            .setCancelable(false)
+                            .setPositiveButton("Да, отменить", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    presenter.cancelOrderTo(orders.get(getAdapterPosition()).getUUID());
+                                }
+                            })
+                            .setNegativeButton("Нет",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
         }
@@ -75,6 +94,13 @@ public class OrderToAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private void bind(int position) {
             number.setText("Заказ №" + orders.get(getAdapterPosition()).getOrderId().toString());
             date.setText(Utils.getDate(orders.get(getAdapterPosition()).getTill() * 1000));
+
+            if (orders.get(getAdapterPosition()).getStatus().equals("pending")) {
+                cancel.setVisibility(View.VISIBLE);
+            } else {
+                cancel.setVisibility(View.GONE);
+            }
+
             status.setText(Utils.getStatus(orders.get(getAdapterPosition()).getStatus()));
             AddressModel addressModel = orders.get(getAdapterPosition()).getAddressModel();
             try {

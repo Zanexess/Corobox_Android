@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -102,6 +103,16 @@ public class OrdersFragmentView extends BaseFragment implements IOrdersFragmentV
     @Override
     public void showDataFrom(List<OrderModelFrom> ordersFrom) {
 
+    }
+
+    @Override
+    public void cancellSuccess() {
+
+    }
+
+    @Override
+    public void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 
 }

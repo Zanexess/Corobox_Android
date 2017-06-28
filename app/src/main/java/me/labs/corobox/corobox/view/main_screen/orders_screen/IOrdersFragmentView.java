@@ -12,4 +12,6 @@ public interface IOrdersFragmentView {
     void showDataTo(List<OrderModelTo> ordersTo);
     void showEmptyData();
     void showDataFrom(List<OrderModelFrom> ordersFrom);
+    void cancellSuccess();
+    void showToast(String s);
 }

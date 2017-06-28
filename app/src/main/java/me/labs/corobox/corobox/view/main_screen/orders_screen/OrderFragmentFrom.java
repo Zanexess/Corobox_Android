@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,8 +37,6 @@ public class OrderFragmentFrom extends BaseFragment implements IOrdersFragmentVi
     private View view;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.no_stuff) TextView textView;
-    private EventBus bus = EventBus.getDefault();
-    private OrderToAdapter adapter;
 
     @Inject OrdersFromFragmentPresenter presenter;
 
@@ -47,23 +46,6 @@ public class OrderFragmentFrom extends BaseFragment implements IOrdersFragmentVi
         fragment.setArguments(args);
         return fragment;
     }
-
-    @Subscribe
-    public void onMessage(UpdateOrdersMessage message) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (adapter != null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    RealmResults<OrderModelTo> orderModelTos = realm.where(OrderModelTo.class).equalTo("status", "ORDERED").equalTo("type", "FROM").findAll();
-                    adapter = new OrderToAdapter(orderModelTos.subList(0, orderModelTos.size()));
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
-    }
-
 
     @Nullable
     @Override
@@ -85,15 +67,12 @@ public class OrderFragmentFrom extends BaseFragment implements IOrdersFragmentVi
     }
 
     private void initComponents() {
-        bus.register(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (bus.isRegistered(this))
-            bus.unregister(this);
     }
 
     @Override
@@ -114,8 +93,18 @@ public class OrderFragmentFrom extends BaseFragment implements IOrdersFragmentVi
 
     @Override
     public void showDataFrom(List<OrderModelFrom> ordersFrom) {
-        recyclerView.setAdapter(new OrderFromAdapter(ordersFrom));
+        recyclerView.setAdapter(new OrderFromAdapter(ordersFrom, presenter));
         recyclerView.setVisibility(View.VISIBLE);
         textView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void cancellSuccess() {
+        presenter.fetchData();
+    }
+
+    @Override
+    public void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 }

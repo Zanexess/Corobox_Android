@@ -146,7 +146,7 @@ public class CategoryFragmentView extends BaseFragment implements ICategoryFragm
         if (bus.isRegistered(this)) {
             bus.unregister(this);
         }
-        categoriesAdapter.clearAll();
+//        categoriesAdapter.clearAll();
         presenterActivity.setDeliveryBadgeCount(0);
     }
 }

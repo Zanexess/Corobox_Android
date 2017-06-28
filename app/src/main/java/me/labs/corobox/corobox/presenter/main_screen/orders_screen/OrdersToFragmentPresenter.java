@@ -15,6 +15,7 @@ import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.network.ApiInterface;
 import me.labs.corobox.corobox.view.main_screen.orders_screen.IOrdersFragmentView;
 import retrofit2.Response;
+import retrofit2.http.PUT;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -87,5 +88,31 @@ public class OrdersToFragmentPresenter implements IOrdersFragmentPresenter {
         RealmResults<OrderModelTo> orderTo = Realm.getDefaultInstance()
                 .where(OrderModelTo.class).findAll();
         return orderTo.subList(0, orderTo.size());
+    }
+
+    public void cancelOrderTo(String uuid) {
+        apiInterface.cancelOrderTo(CoroboxApp.AUTH_KEY, uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showToast("Не удалось отменить заказ");
+                    }
+
+                    @Override
+                    public void onNext(Response<Object> objectResponse) {
+                        if (objectResponse.code() == 204) {
+                            view.cancellSuccess();
+                        } else {
+                            view.showToast("Не удалось отменить заказ");
+                        }
+                    }
+                });
     }
 }

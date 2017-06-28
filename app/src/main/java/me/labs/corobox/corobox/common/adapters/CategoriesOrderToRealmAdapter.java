@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
@@ -50,25 +52,18 @@ public class CategoriesOrderToRealmAdapter extends RecyclerView.Adapter<Recycler
         return categoryNumberModels.size();
     }
 
-    private class CategoryHolder extends RecyclerView.ViewHolder {
+    class CategoryHolder extends RecyclerView.ViewHolder {
 
-        View itemView;
-        ImageView image;
-        ImageView plus;
-        ImageView minus;
-        TextView title;
-        TextView price;
-        TextView number;
+        @BindView(R.id.imageView) ImageView image;
+        @BindView(R.id.plus) ImageView plus;
+        @BindView(R.id.minus) ImageView minus;
+        @BindView(R.id.title) TextView title;
+        @BindView(R.id.price) TextView price;
+        @BindView(R.id.count) TextView number;
 
         private CategoryHolder(View itemView) {
             super(itemView);
-            this.itemView = itemView;
-            plus = (ImageView) itemView.findViewById(R.id.plus);
-            minus = (ImageView) itemView.findViewById(R.id.minus);
-            image = (ImageView) itemView.findViewById(R.id.imageView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            price = (TextView) itemView.findViewById(R.id.price);
-            number = (TextView) itemView.findViewById(R.id.count);
+            ButterKnife.bind(this, itemView);
 
             plus.setOnClickListener(new View.OnClickListener() {
                 @Override

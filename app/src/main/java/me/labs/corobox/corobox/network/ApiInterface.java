@@ -36,7 +36,7 @@ public interface ApiInterface {
     @DELETE("/address_del/{id}/")
     Observable<Response<Object>> deleteAddress(@Header("Authorization") String authKey, @Path("id") Integer id);
 
-    @PUT("address_set_default/{id}/")
+    @PUT("/address_set_default/{id}/")
     Observable<Response<Object>> setDefaultAddress(@Header("Authorization") String authKey, @Path("id") Integer id);
 
     // Stuff
@@ -58,4 +58,9 @@ public interface ApiInterface {
     @PUT("/order_from_put/")
     Observable<Response<Object>> putOrderFrom(@Header("Authorization") String authKey, @Body String orderModelFrom);
 
+    @PUT("/order_to_cancel/{uuid}/")
+    Observable<Response<Object>> cancelOrderTo(@Header("Authorization") String authKey, @Path("uuid") String uuid);
+
+    @PUT("/order_from_cancel/{uuid}/")
+    Observable<Response<Object>> cancelOrderFrom(@Header("Authorization") String authKey, @Path("uuid") String uuid);
 }

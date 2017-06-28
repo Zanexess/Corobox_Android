@@ -87,4 +87,30 @@ public class OrdersFromFragmentPresenter implements IOrdersFragmentPresenter {
                 .where(OrderModelFrom.class).findAll();
         return orderFrom.subList(0, orderFrom.size());
     }
+
+    public void cancelOrderFrom(String uuid) {
+        apiInterface.cancelOrderFrom(CoroboxApp.AUTH_KEY, uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showToast("Не удалось отменить заказ");
+                    }
+
+                    @Override
+                    public void onNext(Response<Object> objectResponse) {
+                        if (objectResponse.code() == 204) {
+                            view.cancellSuccess();
+                        } else {
+                            view.showToast("Не удалось отменить заказ");
+                        }
+                    }
+                });
+    }
 }

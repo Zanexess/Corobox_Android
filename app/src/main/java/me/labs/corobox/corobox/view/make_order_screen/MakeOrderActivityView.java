@@ -89,6 +89,8 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
     LinearLayout date_arrive;
     @BindView(R.id.select_address)
     LinearLayout select_address;
+    @BindView(R.id.price_periods)
+    LinearLayout price_periods;
 
     private Realm realm;
 
@@ -242,6 +244,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
             presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
             recyclerView.setAdapter(categoriesOrderToRealmAdapter);
         } else if (type.equals("FROM")) {
+            price_periods.setVisibility(View.GONE);
             OrderModelFrom orderModelFrom = generateOrderFrom();
             categoriesOrderFromRealmAdapter = new CategoriesOrderFromRealmAdapter(orderModelFrom.getCategoryNumberModel(), presenter);
             recyclerView.setAdapter(categoriesOrderFromRealmAdapter);
