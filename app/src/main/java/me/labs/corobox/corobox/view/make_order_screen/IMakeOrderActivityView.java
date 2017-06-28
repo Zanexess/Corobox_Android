@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.view.main_screen.make_order_screen;
+package me.labs.corobox.corobox.view.make_order_screen;
 
 import android.app.Activity;
 
@@ -7,5 +7,7 @@ public interface IMakeOrderActivityView {
     void showPrice(String count);
     void updateList();
     void finishActivity();
+    void showToast(String s);
+    void orderSuccessfullyAdded();
 }
 

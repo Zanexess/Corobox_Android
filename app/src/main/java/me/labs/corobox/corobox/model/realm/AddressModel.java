@@ -1,5 +1,8 @@
 package me.labs.corobox.corobox.model.realm;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
@@ -8,27 +11,50 @@ import io.realm.annotations.RealmClass;
 public class AddressModel extends RealmObject {
 
     @PrimaryKey
-    private String uuid;
-    private String street;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("city")
+    @Expose
+    private String city;
+    @SerializedName("address")
+    @Expose
+    private String address;
+    @SerializedName("access")
+    @Expose
     private String access;
+    @SerializedName("floor")
+    @Expose
     private String floor;
+    @SerializedName("flat")
+    @Expose
     private String flat;
+    @SerializedName("useAsDefault")
+    @Expose
     private boolean useAsDefault;
 
-    public String getUuid() {
-        return uuid;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getStreet() {
-        return street;
+    public String getCity() {
+        return city;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getAccess() {

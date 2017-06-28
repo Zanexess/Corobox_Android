@@ -8,24 +8,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 
-public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<Category, RecyclerView.ViewHolder> {
+public class CategoriesImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private OrderedRealmCollection<Category> categories;
+    private List<CategoryNumberModel> categories;
+    private List<String> pictures;
 
-    public CategoriesImagesAdapter(@Nullable OrderedRealmCollection<Category> data, boolean autoUpdate) {
-        super(data, autoUpdate);
+    public CategoriesImagesAdapter(@Nullable List<CategoryNumberModel> data) {
         this.categories = data;
+        pictures = new ArrayList<>();
+        for (int i = 0; i < categories.size(); i++) {
+            for (int j = 0; j < categories.get(i).getNumber(); j++) {
+                pictures.add(categories.get(i).getCategory().getPicture());
+            }
+        }
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,7 +51,7 @@ public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<Category, 
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return pictures.size();
     }
 
     private class CategoryPictureHolder extends RecyclerView.ViewHolder {
@@ -54,14 +64,10 @@ public class CategoriesImagesAdapter extends RealmRecyclerViewAdapter<Category, 
         }
 
         private void bindModel(int position) {
-            try {
-                InputStream ims = imageView.getContext().getAssets().open(categories.get(position).getPicture());
-                Drawable d = Drawable.createFromStream(ims, null);
-                imageView.setImageDrawable(d);
-            }
-            catch(IOException ex) {
-                return;
-            }
+            Picasso.with(itemView.getContext())
+                    .load(pictures.get(position))
+                    .error(R.drawable.error_placeholder)
+                    .into(imageView);
         }
     }
 }

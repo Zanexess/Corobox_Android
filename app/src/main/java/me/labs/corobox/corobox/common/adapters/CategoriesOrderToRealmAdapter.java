@@ -1,7 +1,5 @@
 package me.labs.corobox.corobox.common.adapters;
 
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,31 +10,30 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import me.labs.corobox.corobox.R;
-import me.labs.corobox.corobox.model.realm.CardModel;
 import me.labs.corobox.corobox.model.realm.Category;
-import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
-import me.labs.corobox.corobox.presenter.main_screen.card_screen.ICardFragmentPresenter;
+import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
+import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.presenter.make_order_screen.IMakeOrderActivityPresenter;
 
-public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Category, RecyclerView.ViewHolder> {
+public class CategoriesOrderToRealmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final IMakeOrderActivityPresenter presenter;
-    private OrderedRealmCollection<Category> categories;
-    private OrderedRealmCollection<IntegerWrap> count;
+    private final OrderModelTo orderModel;
+    private List<CategoryNumberModel> categoryNumberModels;
 
-    public CategoriesOrderRealmAdapter(@Nullable OrderedRealmCollection<Category> data, OrderedRealmCollection<IntegerWrap> count, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
-        super(data, autoUpdate);
-        this.categories = data;
-        this.count = count;
+    public CategoriesOrderToRealmAdapter(OrderModelTo orderModel, IMakeOrderActivityPresenter presenter, boolean autoUpdate) {
+        this.categoryNumberModels = orderModel.getCategoryNumberModel().createSnapshot();
         this.presenter = presenter;
-        presenter.countAll(data, count);
+        this.orderModel = orderModel;
+        presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
     }
 
     @Override
@@ -52,28 +49,21 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return categoryNumberModels.size();
     }
 
-    private class CategoryHolder extends RecyclerView.ViewHolder {
+    class CategoryHolder extends RecyclerView.ViewHolder {
 
-        View itemView;
-        ImageView image;
-        ImageView plus;
-        ImageView minus;
-        TextView title;
-        TextView price;
-        TextView number;
+        @BindView(R.id.imageView) ImageView image;
+        @BindView(R.id.plus) ImageView plus;
+        @BindView(R.id.minus) ImageView minus;
+        @BindView(R.id.title) TextView title;
+        @BindView(R.id.price) TextView price;
+        @BindView(R.id.count) TextView number;
 
         private CategoryHolder(View itemView) {
             super(itemView);
-            this.itemView = itemView;
-            plus = (ImageView) itemView.findViewById(R.id.plus);
-            minus = (ImageView) itemView.findViewById(R.id.minus);
-            image = (ImageView) itemView.findViewById(R.id.imageView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            price = (TextView) itemView.findViewById(R.id.price);
-            number = (TextView) itemView.findViewById(R.id.count);
+            ButterKnife.bind(this, itemView);
 
             plus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,10 +71,9 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
                     try {
                         Realm realm = Realm.getDefaultInstance();
                         realm.beginTransaction();
-                        IntegerWrap integerWrap = count.get(getAdapterPosition());
-                        integerWrap.setCount(integerWrap.getCount() + 1);
+                        categoryNumberModels.get(getAdapterPosition()).setNumber(categoryNumberModels.get(getAdapterPosition()).getNumber() + 1);
                         realm.commitTransaction();
-                        presenter.countAll(categories, count);
+                        presenter.countAll(categoryNumberModels, presenter.countDays());
                         presenter.updateList();
                     } catch (Exception e) {
 
@@ -98,16 +87,22 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
 
                     Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
-                    if (count.get(getAdapterPosition()).getCount() == 1) {
-                        count.get(getAdapterPosition()).setCount(count.get(getAdapterPosition()).getCount() - 1);
-                    } else {
-                        count.get(getAdapterPosition()).setCount(count.get(getAdapterPosition()).getCount() - 1);
+                    Integer counter = categoryNumberModels.get(getAdapterPosition()).getNumber();
+                    categoryNumberModels.get(getAdapterPosition()).setNumber(counter - 1);
+
+
+                    if (categoryNumberModels.get(getAdapterPosition()).getNumber() == 0) {
+                        categoryNumberModels.get(getAdapterPosition()).deleteFromRealm();
+                        categoryNumberModels = orderModel.getCategoryNumberModel().createSnapshot();
+                        notifyItemRemoved(getAdapterPosition());
+
+                        if (categoryNumberModels.size() == 0) {
+                            presenter.finish();
+                        }
                     }
+
                     realm.commitTransaction();
-                    presenter.countAll(categories, count);
-                    if (categories.size() == 0) {
-                        presenter.finish();
-                    }
+                    presenter.countAll(categoryNumberModels, presenter.countDays());
                     presenter.updateList();
 
                 }
@@ -116,11 +111,11 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
         }
 
         private void bind(int position) {
-            Category category = categories.get(position);
-            Integer counter = count.get(position).getCount();
+            Category category = categoryNumberModels.get(position).getCategory();
+            Integer counter = categoryNumberModels.get(position).getNumber();
 
             Picasso.with(itemView.getContext())
-                    .load(categories.get(position).getPicture())
+                    .load(category.getPicture())
                     .error(R.drawable.error_placeholder)
                     .into(image);
 
@@ -128,9 +123,8 @@ public class CategoriesOrderRealmAdapter extends RealmRecyclerViewAdapter<Catego
             price.setText(String.valueOf(category.getPrice() + "р месяц"));
             number.setText(String.valueOf(counter) + " шт.");
 
-            if (count.get(position).getCount() == 0) {
+            if (counter == 0) {
                 itemView.setVisibility(View.GONE);
-                presenter.finish();
             } else {
                 itemView.setVisibility(View.VISIBLE);
             }

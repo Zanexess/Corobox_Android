@@ -28,20 +28,24 @@
         </activity>
 
         <activity android:name=".view.main_screen.card_screen.CardActivityView"
-            android:parentActivityName=".view.main_screen.make_order_screen.MakeOrderActivityView"
+            android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".view.main_screen.address_screen.AddressActivityView"
-            android:parentActivityName=".view.main_screen.make_order_screen.MakeOrderActivityView"
+            android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.main_screen.make_order_screen.MakeOrderActivityView"
-            android:parentActivityName=".view.main_screen.make_order_screen.MakeOrderActivityView"
+        <activity android:name=".view.make_order_screen.MakeOrderActivityView"
+            android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="eb30435776d7378abe1afbc4dfc6d5760c699990" />
+            android:value="eb30435776d7378abe1afbc4dfc6d5760c699990" />'
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBxnJII2Slr8_-9QqktQ75nIHrmfv1a4Ws"/>
     </application>
 
 </manifest>

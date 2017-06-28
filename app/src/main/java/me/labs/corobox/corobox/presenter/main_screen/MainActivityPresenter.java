@@ -1,11 +1,10 @@
 package me.labs.corobox.corobox.presenter.main_screen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,12 +16,12 @@ import javax.inject.Inject;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmResults;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.model.eventbus.UpdateCategoriesMessage;
 import me.labs.corobox.corobox.model.realm.Category;
+import me.labs.corobox.corobox.model.realm.CategoryNumberModel;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
@@ -31,10 +30,12 @@ import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityVi
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardActivityView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;
-import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActivityView;
+import me.labs.corobox.corobox.view.make_order_screen.MakeOrderActivityView;
 import me.labs.corobox.corobox.view.main_screen.orders_screen.OrdersFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
 import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MainActivityPresenter implements IMainActivityPresenter {
 
@@ -144,6 +145,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
                 realmList1.add(integerWrap);
             }
         }
+
         String uuid = UUID.randomUUID().toString();
 
         realm.beginTransaction();
@@ -151,9 +153,17 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         realm.commitTransaction();
 
         OrderModelTo orderModelTo = new OrderModelTo();
-        orderModelTo.setUUID(uuid);
-        orderModelTo.setList(realmList);
-        orderModelTo.setCount(realmList1);
+        orderModelTo.setUuid_inner(uuid);
+
+        RealmList<CategoryNumberModel> categoryNumberModels = new RealmList<>();
+        for (int i = 0; i < realmList.size(); i++) {
+            CategoryNumberModel categoryNumberModel = new CategoryNumberModel();
+            categoryNumberModel.setCategory(realmList.get(i));
+            categoryNumberModel.setNumber(realmList1.get(i).getCount());
+            categoryNumberModels.add(categoryNumberModel);
+        }
+
+        orderModelTo.setCategoryNumberModel(categoryNumberModels);
         orderModelTo.setStatus("STARTED");
 
         realm.beginTransaction();
@@ -169,7 +179,8 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         EventBus.getDefault().post(new UpdateCategoriesMessage());
 
         Intent intent = new Intent(view.getActivity(), MakeOrderActivityView.class);
-        intent.putExtra("uuid", uuid);
+        SharedPreferences sp = view.getActivity().getSharedPreferences("order_info", MODE_PRIVATE);
+        sp.edit().putString("type", "TO").putString("uuid", uuid).apply();
         view.getActivity().startActivity(intent);
     }
 

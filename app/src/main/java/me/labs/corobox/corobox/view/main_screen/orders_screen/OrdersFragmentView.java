@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,6 +20,8 @@ import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.ViewPagerAdapter;
 import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
+import me.labs.corobox.corobox.model.realm.OrderModelFrom;
+import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.orders_screen.IOrdersFragmentPresenter;
 
@@ -66,8 +71,8 @@ public class OrdersFragmentView extends BaseFragment implements IOrdersFragmentV
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(((AppCompatActivity)provideActivity()).getSupportFragmentManager());
-        adapter.addFragment(OrderFragment.newInstance("FROM"), "От меня");
-        adapter.addFragment(OrderFragment.newInstance("TO"), "Ко мне");
+        adapter.addFragment(OrderFragmentTo.newInstance(), "На склад");
+        adapter.addFragment(OrderFragmentFrom.newInstance(), "Со склада");
         viewPager.setAdapter(adapter);
     }
 
@@ -83,6 +88,31 @@ public class OrdersFragmentView extends BaseFragment implements IOrdersFragmentV
     @Override
     public Activity provideActivity() {
         return getActivity();
+    }
+
+    @Override
+    public void showDataTo(List<OrderModelTo> ordersTo) {
+
+    }
+
+    @Override
+    public void showEmptyData() {
+
+    }
+
+    @Override
+    public void showDataFrom(List<OrderModelFrom> ordersFrom) {
+
+    }
+
+    @Override
+    public void cancellSuccess() {
+
+    }
+
+    @Override
+    public void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 
 }

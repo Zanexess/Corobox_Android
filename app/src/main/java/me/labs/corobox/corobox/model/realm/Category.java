@@ -36,6 +36,9 @@ public class Category extends RealmObject {
     @SerializedName("monthly_price")
     @Expose
     private Integer price;
+    @SerializedName("daily_price")
+    @Expose
+    Float daily_price;
     @SerializedName("image_url")
     @Expose
     private String picture;
@@ -101,5 +104,13 @@ public class Category extends RealmObject {
 
     public void setWeight(Float weight) {
         this.weight = weight;
+    }
+
+    public Float getDaily_price() {
+        return daily_price;
+    }
+
+    public void setDaily_price(Float daily_price) {
+        this.daily_price = daily_price;
     }
 }

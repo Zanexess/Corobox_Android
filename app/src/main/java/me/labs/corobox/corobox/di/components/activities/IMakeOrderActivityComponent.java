@@ -2,12 +2,9 @@ package me.labs.corobox.corobox.di.components.activities;
 
 import dagger.Component;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
-import me.labs.corobox.corobox.di.modules.activities.AddressActivityModule;
 import me.labs.corobox.corobox.di.modules.activities.MakeOrderActivityModule;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityView;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressFragmentView;
-import me.labs.corobox.corobox.view.main_screen.make_order_screen.MakeOrderActivityView;
+import me.labs.corobox.corobox.view.make_order_screen.MakeOrderActivityView;
 
 @ActivityScope
 @Component(
