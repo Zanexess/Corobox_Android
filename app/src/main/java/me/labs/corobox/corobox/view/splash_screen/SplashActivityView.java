@@ -2,9 +2,14 @@ package me.labs.corobox.corobox.view.splash_screen;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.view.Window;
+import android.view.WindowManager;
 
+import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.BaseActivity;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;

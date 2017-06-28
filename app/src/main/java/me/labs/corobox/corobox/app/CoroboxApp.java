@@ -3,10 +3,13 @@ package me.labs.corobox.corobox.app;
 import android.app.Application;
 import android.content.Context;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
+import me.labs.corobox.corobox.common.FragmentType;
 import me.labs.corobox.corobox.di.components.DaggerIApiComponent;
 import me.labs.corobox.corobox.di.components.DaggerICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.DaggerINetworkComponent;
@@ -21,6 +24,7 @@ public class CoroboxApp extends Application {
     private ICoroboxAppComponent appComponent;
     private INetworkComponent networkComponent;
     private IApiComponent apiComponent;
+    public static FragmentType  type = FragmentType.NEW_BOX;
 
     public static CoroboxApp get(Context context) {
         return (CoroboxApp) context.getApplicationContext();
@@ -34,7 +38,7 @@ public class CoroboxApp extends Application {
 
 
         networkComponent = DaggerINetworkComponent.builder()
-                .networkModule(new NetworkModule("TODO"))
+                .networkModule(new NetworkModule("http://185.143.172.79:8000/"))
                 .coroboxAppModule(new CoroboxAppModule(this))
                 .build();
 
@@ -48,6 +52,8 @@ public class CoroboxApp extends Application {
         Fabric.with(this, new Crashlytics());
 
         buildGraphAndInject();
+        Realm.init(getApplicationContext());
+
 
         try {
             Picasso picasso = new Picasso.Builder(getApplicationContext()).downloader(new OkHttp3Downloader(getApplicationContext(), 10 * 1024 * 1024)).build();
@@ -68,4 +74,6 @@ public class CoroboxApp extends Application {
     public IApiComponent getApiComponent() {
         return apiComponent;
     }
+
+    public static final String AUTH_KEY = "Token 79036a9576257e07ebc9ffa05c0280afeeedd6bf";
 }

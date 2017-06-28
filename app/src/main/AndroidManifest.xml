@@ -3,6 +3,7 @@
     package="me.labs.corobox.corobox">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".app.CoroboxApp"
@@ -14,6 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".view.main_screen.MainActivityView"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".view.splash_screen.SplashActivityView"
@@ -25,9 +27,25 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".view.main_screen.card_screen.CardActivityView"
+            android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".view.main_screen.address_screen.AddressActivityView"
+            android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".view.make_order_screen.MakeOrderActivityView"
+            android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
+            android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="eb30435776d7378abe1afbc4dfc6d5760c699990" />
+            android:value="eb30435776d7378abe1afbc4dfc6d5760c699990" />'
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBxnJII2Slr8_-9QqktQ75nIHrmfv1a4Ws"/>
     </application>
 
 </manifest>

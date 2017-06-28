@@ -1,8 +1,10 @@
 package me.labs.corobox.corobox.view.main_screen;
 
-import android.content.Context;
+import android.app.Activity;
 
 public interface IMainActivityView {
-    Context getContext();
+    Activity getActivity();
+    void updateMenu(int badgeCount);
+    void setVisibilityDeliveryMenu(boolean isVisible);
 }
 

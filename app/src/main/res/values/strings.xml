@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Corobox</string>
+    <string name="navigation_drawer_open">Открыть навигационное меню</string>
+    <string name="navigation_drawer_close">Закрыть навигационное меню</string>
+    <string name="new_box">Отправить на склад</string>
+    <string name="cart">Корзина</string>
+    <string name="my_boxes_title">Мои вещи</string>
+    <string name="history">История заказов</string>
+    <string name="settings">Настройки</string>
+    <string name="terms_of_use">Условия использования</string>
+    <string name="ready">Вернуть</string>
+    <string name="sent_to_stock_title">Отправить на склад</string>
+    <string name="what_do_you_want_to_store">Что вы хотите найти?</string>
+    <string name="terms_title">Условия использования</string>
+    <string name="settings_title">Настройки</string>
+    <string name="notifications">Уведомления</string>
+    <string name="add_address">Добавить адрес</string>
+    <string name="add_card">Добавить способ оплаты</string>
+    <string name="change_avatar">Сменить аватар</string>
+    <string name="add_card_title">Добавление карты</string>
+    <string name="add_address_title">Добавление адреса</string>
+    <string name="save_card">Сохранить карту</string>
 </resources>

@@ -12,6 +12,8 @@ import org.ajoberstar.grgit.Grgit
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'realm-android'
+
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -53,11 +55,15 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "me.labs.corobox.corobox"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName ""
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        disable
     }
 
     signingConfigs {
@@ -81,6 +87,7 @@ android {
 
         debug {
             applicationIdSuffix '.debug'
+            debuggable true
             versionNameSuffix "${gitBranchDebug}" + '-debug' + "${gitCommitCount}"
         }
 
@@ -116,6 +123,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 dependencies {
@@ -129,11 +137,12 @@ dependencies {
     }
 
     // Support
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:cardview-v7:25.3.1'
     // Dagger
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
     compile 'com.google.dagger:dagger:2.8'
@@ -153,4 +162,20 @@ dependencies {
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
     // okhttp3
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+
+    compile 'com.mikepenz:actionitembadge:3.3.1@aar'
+    compile 'com.mikepenz:iconics-core:2.8.1@aar'
+    compile 'com.braintreepayments:card-form:3.0.5'
+
+    compile 'io.realm:android-adapters:2.0.0'
+
+    compile 'com.facebook.stetho:stetho:1.5.0'
+
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+
+    compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    compile 'com.google.android.gms:play-services:11.0.1'
+
+    compile 'com.squareup:android-times-square:1.6.5@aar'
 }

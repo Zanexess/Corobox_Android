@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.compat.BuildConfig;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,17 +15,22 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.RealmObject;
+import me.labs.corobox.corobox.common.serializers.AddressSerializer;
+import me.labs.corobox.corobox.common.serializers.CategoryNumberModelSerializer;
+import me.labs.corobox.corobox.common.serializers.OrderModelToSerializer;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 @Module
 public class NetworkModule {
 
-    String mBaseUrl;
+    private String mBaseUrl;
 
     public NetworkModule(String mBaseUrl) {
         this.mBaseUrl = mBaseUrl;
@@ -47,6 +54,24 @@ public class NetworkModule {
     @Singleton
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getDeclaringClass().equals(RealmObject.class);
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        });
+        try {
+            gsonBuilder.registerTypeAdapter(Class.forName("io.realm.AddressModelRealmProxy"), new AddressSerializer());
+            gsonBuilder.registerTypeAdapter(Class.forName("io.realm.OrderModelToRealmProxy"), new OrderModelToSerializer());
+            gsonBuilder.registerTypeAdapter(Class.forName("io.realm.CategoryNumberModelRealmProxy"), new CategoryNumberModelSerializer());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         return gsonBuilder.create();
     }
@@ -55,11 +80,11 @@ public class NetworkModule {
     @Singleton
     OkHttpClient provideOkHttpClient(Cache cache) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        if (BuildConfig.BUILD_TYPE.contentEquals("release")) {
-            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
-        } else {
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        }
+//        if (BuildConfig.BUILD_TYPE.contentEquals("release")) {
+//            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+//        } else {
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        }
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .cache(cache)
@@ -72,6 +97,7 @@ public class NetworkModule {
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(mBaseUrl)
                 .client(okHttpClient)
