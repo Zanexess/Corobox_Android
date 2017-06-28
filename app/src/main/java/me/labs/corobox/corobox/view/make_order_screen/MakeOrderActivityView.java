@@ -149,7 +149,8 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
 
                             presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
-                            presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
+                            if (type.equals("TO"))
+                                presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
 
                             TimePickerDialog tpd = new TimePickerDialog(MakeOrderActivityView.this, new TimePickerDialog.OnTimeSetListener() {
                                 @Override
@@ -347,7 +348,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
     @Override
     public void showPrice(String count) {
-        price.setText(count);
+        price.setText(count + " руб");
     }
 
     @Override

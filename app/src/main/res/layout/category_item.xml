@@ -87,7 +87,7 @@
 
             <ImageView
                 android:id="@+id/addObject"
-                android:src="@drawable/ic_add_circle_outline_black_24dp"
+                android:src="@drawable/ic_plus_circle_outline"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginRight="8dp"
