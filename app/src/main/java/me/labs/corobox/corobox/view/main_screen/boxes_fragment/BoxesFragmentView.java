@@ -37,7 +37,6 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
 
     private View view;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.button_ok) Button returnButton;
     @BindView(R.id.no_stuff) TextView noData;
 
     private HashSet<String> selected = new HashSet<>();
@@ -62,26 +61,6 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     private void initComponents() {
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(llm);
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MakeOrderActivityView.class);
-                Set<String> set = new HashSet<String>();
-                set.addAll(selected);
-                selected.clear();
-
-                v.getContext().getSharedPreferences("order_info", MODE_PRIVATE)
-                        .edit()
-                        .putString("type", "FROM")
-                        .putStringSet("set", set)
-                        .apply();
-
-                if (boxesAdapter != null)
-                    boxesAdapter.notifyDataSetChanged();
-                presenter.readyForOrder(selected);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -111,21 +90,39 @@ public class BoxesFragmentView extends BaseFragment implements IBoxesFragmentVie
     }
 
     @Override
-    public void setReadyButtonVisibility(int visible) {
-        returnButton.setVisibility(visible);
-    }
-
-    @Override
     public void showData(List<Box> boxes) {
         recyclerView.setVisibility(View.VISIBLE);
         noData.setVisibility(View.GONE);
-        boxesAdapter = new BoxesAdapter(boxes, presenter, selected);
-        recyclerView.setAdapter(boxesAdapter);
+        if (boxes.size() > 0) {
+            boxesAdapter = new BoxesAdapter(boxes, presenter, selected);
+            recyclerView.setAdapter(boxesAdapter);
+        } else {
+            showEmptyData();
+        }
     }
 
     @Override
     public void showEmptyData() {
         recyclerView.setVisibility(View.GONE);
         noData.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void deliveryClicked() {
+        Intent intent = new Intent(getContext(), MakeOrderActivityView.class);
+        Set<String> set = new HashSet<String>();
+        set.addAll(selected);
+        selected.clear();
+
+        view.getContext().getSharedPreferences("order_info", MODE_PRIVATE)
+                .edit()
+                .putString("type", "FROM")
+                .putStringSet("set", set)
+                .apply();
+
+        if (boxesAdapter != null)
+            boxesAdapter.notifyDataSetChanged();
+        presenter.readyForOrder(selected);
+        startActivity(intent);
     }
 }

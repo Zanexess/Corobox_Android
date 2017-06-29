@@ -59,8 +59,6 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @BindView(R.id.image) ImageView imageView;
         @BindView(R.id.title) TextView titleView;
         @BindView(R.id.time_lost) TextView time;
-        @BindView(R.id.share) ImageView share;
-        @BindView(R.id.pay) ImageView pay;
 
         public BoxHolder(View itemView) {
             super(itemView);
@@ -96,20 +94,6 @@ public class BoxesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                     presenter.readyForOrder(selected);
                     return true;
-                }
-            });
-
-            pay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Пополнение срока хранения", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Поделиться", Toast.LENGTH_SHORT).show();
                 }
             });
         }

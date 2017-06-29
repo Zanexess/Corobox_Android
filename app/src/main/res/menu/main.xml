@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:visible="false"
+        android:id="@+id/toolbar_share"
+        android:orderInCategory="100"
+        android:icon="@drawable/xml_share"
+        android:title="Поделиться"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:visible="false"
+        android:id="@+id/toolbar_pay"
+        android:orderInCategory="100"
+        android:icon="@drawable/xml_credit_card"
+        android:title="Оплатить"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:visible="false"
+        android:id="@+id/toolbar_delivery"
+        android:orderInCategory="100"
+        android:icon="@drawable/xml_truck"
+        android:title="Доставить"
+        app:showAsAction="always">
+    </item>
+
     <item
         android:id="@+id/truck"
         android:orderInCategory="100"
         app:actionLayout="@layout/menu_action_item_badge"
-        android:icon="@drawable/ic_truck"
+        android:icon="@drawable/xml_truck"
         android:title="Доставка"
         app:showAsAction="always" />
 </menu>

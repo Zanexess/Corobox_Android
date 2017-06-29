@@ -25,6 +25,7 @@ import com.crashlytics.android.Crashlytics;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.ActionItemBadgeAdder;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
@@ -44,16 +45,23 @@ import me.labs.corobox.corobox.di.components.activities.IMainActivityComponent;
 import me.labs.corobox.corobox.di.modules.activities.MainActivityModule;
 import me.labs.corobox.corobox.presenter.main_screen.IMainActivityPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.MainActivityPresenter;
+import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.IBoxesFragmentPresenter;
 
 public class MainActivityView extends BaseActivity implements IMainActivityView, IHasComponent<IMainActivityComponent>, NavigationView.OnNavigationItemSelectedListener {
 
     private IMainActivityComponent mainActivityComponent;
     private NavigationView navigationView;
     private MenuItem deliveryMenu;
+    private MenuItem shareMenu;
+    private MenuItem payMenu;
+    private MenuItem deliveryBoxMenu;
     private boolean visibilityDeliveryButton;
 
     @Inject
     IMainActivityPresenter presenter;
+
+    @Inject
+    IBoxesFragmentPresenter boxesFragmentPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +113,14 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        shareMenu = menu.findItem(R.id.toolbar_share);
+        deliveryBoxMenu = menu.findItem(R.id.toolbar_delivery);
+        payMenu = menu.findItem(R.id.toolbar_pay);
+
         if (presenter.getDeliveryBadgeCount() > 0 && visibilityDeliveryButton) {
             ActionItemBadge.update(this, menu.findItem(R.id.truck),
-                    ContextCompat.getDrawable(getActivity(), R.drawable.ic_truck),
+                    ContextCompat.getDrawable(getActivity(), R.drawable.xml_truck),
                     ActionItemBadge.BadgeStyles.DARK_GREY,
                     presenter.getDeliveryBadgeCount());
         } else {
@@ -119,6 +132,11 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+
+        if (id == R.id.toolbar_delivery) {
+            boxesFragmentPresenter.deliveryClicked();
+        }
 
         if (id == R.id.truck) {
             if (presenter.getDeliveryBadgeCount() > 0) {
@@ -170,5 +188,12 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     @Override
     public IMainActivityComponent getComponent() {
         return mainActivityComponent;
+    }
+
+    @Override
+    public void setVisibilityToolbarIcon(boolean visibilityToolbarIcons) {
+        shareMenu.setVisible(visibilityToolbarIcons);
+        payMenu.setVisible(visibilityToolbarIcons);
+        deliveryBoxMenu.setVisible(visibilityToolbarIcons);
     }
 }

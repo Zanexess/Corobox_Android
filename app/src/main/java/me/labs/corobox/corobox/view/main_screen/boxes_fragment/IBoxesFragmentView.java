@@ -8,7 +8,7 @@ import me.labs.corobox.corobox.model.realm.Box;
 
 public interface IBoxesFragmentView {
     Activity provideActivity();
-    void setReadyButtonVisibility(int visible);
     void showData(List<Box> body);
     void showEmptyData();
+    void deliveryClicked();
 }

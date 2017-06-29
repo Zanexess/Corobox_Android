@@ -14,6 +14,7 @@ import io.realm.RealmResults;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.network.ApiInterface;
+import me.labs.corobox.corobox.view.main_screen.MainActivityView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.IBoxesFragmentView;
 import retrofit2.Response;
 import rx.Subscriber;
@@ -47,9 +48,9 @@ public class BoxesFragmentPresenter implements IBoxesFragmentPresenter {
     @Override
     public void readyForOrder(HashSet<String> selected) {
         if (selected.size() != 0) {
-            view.setReadyButtonVisibility(View.VISIBLE);
+            ((MainActivityView) activity).setVisibilityToolbarIcon(true);
         } else {
-            view.setReadyButtonVisibility(View.GONE);
+            ((MainActivityView) activity).setVisibilityToolbarIcon(false);
         }
     }
 
@@ -80,6 +81,11 @@ public class BoxesFragmentPresenter implements IBoxesFragmentPresenter {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void deliveryClicked() {
+        view.deliveryClicked();
     }
 
     private void saveStuffResults(final List<Box> body) {
