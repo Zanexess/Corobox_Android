@@ -47,7 +47,7 @@ import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.model.realm.OrderModelFrom;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.presenter.make_order_screen.IMakeOrderActivityPresenter;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityView;
+import me.labs.corobox.corobox.view.address_screen.AddressActivityView;
 
 import static me.labs.corobox.corobox.common.Utils.Utils.dateToTimestamp;
 import static me.labs.corobox.corobox.common.Utils.Utils.stringToDate;

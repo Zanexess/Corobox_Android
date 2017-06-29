@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.presenter.main_screen.address_screen;
+package me.labs.corobox.corobox.presenter.address_screen;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.FragmentType;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressFragmentView;
-import me.labs.corobox.corobox.view.main_screen.address_screen.IAddressActivityView;
+import me.labs.corobox.corobox.view.address_screen.AddressFragmentView;
+import me.labs.corobox.corobox.view.address_screen.IAddressActivityView;
 
 public class AddressActivityPresenter implements IAddressActivityPresenter {
 

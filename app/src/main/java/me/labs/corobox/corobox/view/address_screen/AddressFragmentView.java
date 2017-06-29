@@ -1,16 +1,12 @@
-package me.labs.corobox.corobox.view.main_screen.address_screen;
+package me.labs.corobox.corobox.view.address_screen;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,14 +20,11 @@ import com.braintreepayments.cardform.view.ErrorEditText;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -44,7 +37,7 @@ import me.labs.corobox.corobox.common.BaseFragment;
 import me.labs.corobox.corobox.common.adapters.AddressRealmAdapter;
 import me.labs.corobox.corobox.di.components.activities.IAddressActivityComponent;
 import me.labs.corobox.corobox.model.realm.AddressModel;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.address_screen.IAddressFragmentPresenter;
 
 public class AddressFragmentView extends BaseFragment implements IAddressFragmentView {
 

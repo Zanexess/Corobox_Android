@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.view.main_screen.address_screen;
+package me.labs.corobox.corobox.view.address_screen;
 
 import android.app.Activity;
 

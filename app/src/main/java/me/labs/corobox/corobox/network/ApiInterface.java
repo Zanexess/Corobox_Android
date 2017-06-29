@@ -1,23 +1,19 @@
 package me.labs.corobox.corobox.network;
 
 import java.util.List;
-import java.util.Objects;
 
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.OrderModelFrom;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressFragmentPresenter;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.HEAD;
 import retrofit2.http.Header;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 public interface ApiInterface {

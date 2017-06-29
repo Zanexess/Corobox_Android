@@ -6,11 +6,11 @@ import dagger.Module;
 import dagger.Provides;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressFragmentPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressActivityPresenter;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressFragmentPresenter;
-import me.labs.corobox.corobox.view.main_screen.address_screen.IAddressActivityView;
+import me.labs.corobox.corobox.presenter.address_screen.AddressActivityPresenter;
+import me.labs.corobox.corobox.presenter.address_screen.AddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.address_screen.IAddressActivityPresenter;
+import me.labs.corobox.corobox.presenter.address_screen.IAddressFragmentPresenter;
+import me.labs.corobox.corobox.view.address_screen.IAddressActivityView;
 
 @Module
 public class AddressActivityModule {

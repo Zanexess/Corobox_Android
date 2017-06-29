@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.presenter.main_screen.address_screen;
+package me.labs.corobox.corobox.presenter.address_screen;
 
 import android.app.Activity;
 
@@ -10,11 +10,9 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import me.labs.corobox.corobox.app.CoroboxApp;
 import me.labs.corobox.corobox.model.realm.AddressModel;
-import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.network.ApiInterface;
-import me.labs.corobox.corobox.view.main_screen.address_screen.IAddressFragmentView;
+import me.labs.corobox.corobox.view.address_screen.IAddressFragmentView;
 import retrofit2.Response;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

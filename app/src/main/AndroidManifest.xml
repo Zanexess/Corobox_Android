@@ -31,7 +31,7 @@
             android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.main_screen.address_screen.AddressActivityView"
+        <activity android:name=".view.address_screen.AddressActivityView"
             android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>
 

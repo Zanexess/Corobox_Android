@@ -4,8 +4,8 @@ import dagger.Component;
 import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
 import me.labs.corobox.corobox.di.modules.activities.AddressActivityModule;
 import me.labs.corobox.corobox.di.scope.ActivityScope;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityView;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressFragmentView;
+import me.labs.corobox.corobox.view.address_screen.AddressActivityView;
+import me.labs.corobox.corobox.view.address_screen.AddressFragmentView;
 
 @ActivityScope
 @Component(

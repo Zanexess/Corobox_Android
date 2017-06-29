@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.presenter.main_screen.address_screen;
+package me.labs.corobox.corobox.presenter.address_screen;
 
 import me.labs.corobox.corobox.common.FragmentType;
 

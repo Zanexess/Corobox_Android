@@ -1,4 +1,4 @@
-package me.labs.corobox.corobox.view.main_screen.address_screen;
+package me.labs.corobox.corobox.view.address_screen;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import me.labs.corobox.corobox.di.components.ICoroboxAppComponent;
 import me.labs.corobox.corobox.di.components.activities.DaggerIAddressActivityComponent;
 import me.labs.corobox.corobox.di.components.activities.IAddressActivityComponent;
 import me.labs.corobox.corobox.di.modules.activities.AddressActivityModule;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.IAddressActivityPresenter;
+import me.labs.corobox.corobox.presenter.address_screen.IAddressActivityPresenter;
 
 public class AddressActivityView extends BaseActivity implements IAddressActivityView, IHasComponent<IAddressActivityComponent> {
 

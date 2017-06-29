@@ -26,7 +26,7 @@ import me.labs.corobox.corobox.model.realm.OrderModelTo;
 import me.labs.corobox.corobox.model.realm.common.IntegerWrap;
 import me.labs.corobox.corobox.view.main_screen.IMainActivityView;
 import me.labs.corobox.corobox.view.main_screen.MainActivityView;
-import me.labs.corobox.corobox.view.main_screen.address_screen.AddressActivityView;
+import me.labs.corobox.corobox.view.address_screen.AddressActivityView;
 import me.labs.corobox.corobox.view.main_screen.boxes_fragment.BoxesFragmentView;
 import me.labs.corobox.corobox.view.main_screen.card_screen.CardActivityView;
 import me.labs.corobox.corobox.view.main_screen.categories_fragment.CategoryFragmentView;

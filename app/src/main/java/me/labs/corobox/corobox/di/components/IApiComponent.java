@@ -3,7 +3,7 @@ package me.labs.corobox.corobox.di.components;
 import dagger.Component;
 import me.labs.corobox.corobox.di.modules.ApiModule;
 import me.labs.corobox.corobox.di.scope.ApiScope;
-import me.labs.corobox.corobox.presenter.main_screen.address_screen.AddressFragmentPresenter;
+import me.labs.corobox.corobox.presenter.address_screen.AddressFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.boxes_fragment.BoxesFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.card_screen.CardFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.categories_fragment.CategoryFragmentPresenter;
