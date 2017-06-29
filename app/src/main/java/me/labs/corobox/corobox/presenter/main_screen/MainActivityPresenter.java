@@ -34,6 +34,7 @@ import me.labs.corobox.corobox.view.make_order_screen.MakeOrderActivityView;
 import me.labs.corobox.corobox.view.main_screen.orders_screen.OrdersFragmentView;
 import me.labs.corobox.corobox.view.main_screen.settings_fragment.SettingsFragmentView;
 import me.labs.corobox.corobox.view.main_screen.terms_of_use_fragment.TermsFragmentView;
+import me.labs.corobox.corobox.view.profile_screen.ProfileActivityView;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -96,6 +97,10 @@ public class MainActivityPresenter implements IMainActivityPresenter {
             case CARD:
                 Intent intent1 = new Intent(view.getActivity(), CardActivityView.class);
                 view.getActivity().startActivity(intent1);
+                break;
+            case PROFILE:
+                Intent intent2 = new Intent(view.getActivity(), ProfileActivityView.class);
+                view.getActivity().startActivity(intent2);
                 break;
         }
     }

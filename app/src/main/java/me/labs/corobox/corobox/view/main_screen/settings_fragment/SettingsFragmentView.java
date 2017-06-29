@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.labs.corobox.corobox.R;
 import me.labs.corobox.corobox.common.ActivityType;
 import me.labs.corobox.corobox.common.BaseFragment;
@@ -35,11 +37,12 @@ public class SettingsFragmentView extends BaseFragment implements ISettingsFragm
     IMainActivityPresenter presenterActivity;
 
     private View view;
-    private TextView changeAvatar;
-    private TextView addCard;
-    private TextView addAddress;
-    private ImageView accountImage;
-    private SwitchCompat switcher;
+    @BindView(R.id.change_avatar) TextView changeAvatar;
+    @BindView(R.id.add_card) TextView addCard;
+    @BindView(R.id.add_address) TextView addAddress;
+    @BindView(R.id.account_image) ImageView accountImage;
+    @BindView(R.id.switcher) SwitchCompat switcher;
+    @BindView(R.id.profile) TextView profile;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,18 +54,13 @@ public class SettingsFragmentView extends BaseFragment implements ISettingsFragm
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_settings, container, false);
+            ButterKnife.bind(this, view);
             initComponents();
         }
         return view;
     }
 
     private void initComponents() {
-        changeAvatar = (TextView) view.findViewById(R.id.change_avatar);
-        addAddress = (TextView) view.findViewById(R.id.add_address);
-        addCard = (TextView) view.findViewById(R.id.add_card);
-        switcher = (SwitchCompat) view.findViewById(R.id.switcher);
-        accountImage = (ImageView) view.findViewById(R.id.account_image);
-
         changeAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +86,13 @@ public class SettingsFragmentView extends BaseFragment implements ISettingsFragm
             @Override
             public void onClick(View v) {
                 presenterActivity.changeActivity(ActivityType.ADDRESS);
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterActivity.changeActivity(ActivityType.PROFILE);
             }
         });
 

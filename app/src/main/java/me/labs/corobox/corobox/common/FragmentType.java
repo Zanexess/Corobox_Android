@@ -9,5 +9,6 @@ public enum FragmentType {
     TERMS,
 
     ADDRESS,
-    CARD
+    CARD,
+    PROFILE
 }

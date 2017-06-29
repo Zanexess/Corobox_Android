@@ -20,4 +20,5 @@
     <string name="add_card_title">Добавление карты</string>
     <string name="add_address_title">Добавление адреса</string>
     <string name="save_card">Сохранить карту</string>
+    <string name="profile_title">Профиль</string>
 </resources>

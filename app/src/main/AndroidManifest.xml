@@ -35,6 +35,10 @@
             android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".view.profile_screen.ProfileActivityView"
+            android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".view.make_order_screen.MakeOrderActivityView"
             android:parentActivityName=".view.make_order_screen.MakeOrderActivityView"
             android:screenOrientation="portrait"/>

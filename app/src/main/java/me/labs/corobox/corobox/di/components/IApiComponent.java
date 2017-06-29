@@ -12,6 +12,7 @@ import me.labs.corobox.corobox.presenter.main_screen.orders_screen.OrdersToFragm
 import me.labs.corobox.corobox.presenter.main_screen.settings.SettingsFragmentPresenter;
 import me.labs.corobox.corobox.presenter.main_screen.terms_of_use.TermsFragmentPresenter;
 import me.labs.corobox.corobox.presenter.make_order_screen.MakeOrderActivityPresenter;
+import me.labs.corobox.corobox.presenter.profile_screen.ProfileFragmentPresenter;
 
 @ApiScope
 @Component(
@@ -28,5 +29,6 @@ public interface IApiComponent {
     void inject(MakeOrderActivityPresenter makeOrderActivityPresenter);
     void inject(OrdersToFragmentPresenter ordersToFragmentPresenter);
     void inject(OrdersFromFragmentPresenter ordersFromFragmentPresenter);
+    void inject(ProfileFragmentPresenter profileFragmentPresenter);
 }
 
