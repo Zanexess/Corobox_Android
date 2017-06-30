@@ -8,6 +8,7 @@ import me.labs.corobox.corobox.di.scope.ActivityScope;
 import me.labs.corobox.corobox.view.address_screen.AddressActivityView;
 import me.labs.corobox.corobox.view.address_screen.AddressFragmentView;
 import me.labs.corobox.corobox.view.profile_screen.ProfileActivityView;
+import me.labs.corobox.corobox.view.profile_screen.ProfileFragmentView;
 
 @ActivityScope
 @Component(
@@ -16,5 +17,6 @@ import me.labs.corobox.corobox.view.profile_screen.ProfileActivityView;
 )
 public interface IProfileActivityComponent {
     void inject(ProfileActivityView profileActivityView);
+    void inject(ProfileFragmentView profileFragmentView);
 }
 

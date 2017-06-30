@@ -1,12 +1,14 @@
 package me.labs.corobox.corobox.network;
 
 import java.util.List;
+import java.util.Objects;
 
 import me.labs.corobox.corobox.model.realm.AddressModel;
 import me.labs.corobox.corobox.model.realm.Box;
 import me.labs.corobox.corobox.model.realm.Category;
 import me.labs.corobox.corobox.model.realm.OrderModelFrom;
 import me.labs.corobox.corobox.model.realm.OrderModelTo;
+import me.labs.corobox.corobox.model.realm.ProfileModel;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -59,4 +61,12 @@ public interface ApiInterface {
 
     @PUT("/order_from_cancel/{uuid}/")
     Observable<Response<Object>> cancelOrderFrom(@Header("Authorization") String authKey, @Path("uuid") String uuid);
+
+    // Profile
+
+    @GET("/profile/")
+    Observable<Response<List<ProfileModel>>> getProfile(@Header("Authorization") String authKey);
+
+    @PUT("/profile_upd/{id}/")
+    Observable<Response<Object>> putProfile(@Header("Authorization") String authKey, @Path("id") String id, @Body ProfileModel profileModel);
 }
