@@ -100,9 +100,13 @@ public class OrderFragmentFrom extends BaseFragment implements IOrdersFragmentVi
                 list.add(orderModelTo);
             }
         }
-        recyclerView.setAdapter(new OrderFromAdapter(list, presenter));
-        recyclerView.setVisibility(View.VISIBLE);
-        textView.setVisibility(View.GONE);
+        if (list.size() > 0) {
+            recyclerView.setAdapter(new OrderFromAdapter(list, presenter));
+            recyclerView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+        } else {
+            showEmptyData();
+        }
     }
 
     @Override

@@ -97,7 +97,7 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
             }
         });
 
-        addressFlat.addTextChangedListener(new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -105,7 +105,9 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals("")) {
+                if (!addressFlat.getText().toString().equals("") && !addressFloor.getText().toString().equals("") &&
+                        !addressAccess.getText().toString().equals("") &&
+                        !editText.getText().toString().equals("")) {
                     saveButton.setVisibility(View.VISIBLE);
                 } else {
                     saveButton.setVisibility(View.GONE);
@@ -116,7 +118,13 @@ public class AddressFragmentView extends BaseFragment implements IAddressFragmen
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        };
+
+        addressFlat.addTextChangedListener(textWatcher);
+        addressFloor.addTextChangedListener(textWatcher);
+        editText.addTextChangedListener(textWatcher);
+        addressAccess.addTextChangedListener(textWatcher);
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override

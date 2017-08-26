@@ -138,55 +138,59 @@ public class MainActivityPresenter implements IMainActivityPresenter {
 
     @Override
     public void openCart(HashMap<String, Integer> hashMap) {
-        Realm realm = Realm.getDefaultInstance();
+        try {
+            Realm realm = Realm.getDefaultInstance();
 
-        RealmList<Category> realmList = new RealmList<>();
-        RealmList<IntegerWrap> realmList1 = new RealmList<>();
-        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-            if (entry.getValue() != 0) {
-                realmList.add(realm.where(Category.class).equalTo("category_id", entry.getKey()).findFirst());
-                IntegerWrap integerWrap = new IntegerWrap();
-                integerWrap.setCount(entry.getValue());
-                realmList1.add(integerWrap);
+            RealmList<Category> realmList = new RealmList<>();
+            RealmList<IntegerWrap> realmList1 = new RealmList<>();
+            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                if (entry.getValue() != 0) {
+                    realmList.add(realm.where(Category.class).equalTo("category_id", entry.getKey()).findFirst());
+                    IntegerWrap integerWrap = new IntegerWrap();
+                    integerWrap.setCount(entry.getValue());
+                    realmList1.add(integerWrap);
+                }
             }
+
+            String uuid = UUID.randomUUID().toString();
+
+            realm.beginTransaction();
+            realm.where(OrderModelTo.class).equalTo("status", "STARTED").findAll().deleteAllFromRealm();
+            realm.commitTransaction();
+
+            OrderModelTo orderModelTo = new OrderModelTo();
+            orderModelTo.setUuid_inner(uuid);
+
+            RealmList<CategoryNumberModel> categoryNumberModels = new RealmList<>();
+            for (int i = 0; i < realmList.size(); i++) {
+                CategoryNumberModel categoryNumberModel = new CategoryNumberModel();
+                categoryNumberModel.setCategory(realmList.get(i));
+                categoryNumberModel.setNumber(realmList1.get(i).getCount());
+                categoryNumberModels.add(categoryNumberModel);
+            }
+
+            orderModelTo.setCategoryNumberModel(categoryNumberModels);
+            orderModelTo.setStatus("STARTED");
+
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(orderModelTo);
+            realm.commitTransaction();
+
+            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                entry.setValue(0);
+            }
+            badgeCount = 0;
+            setDeliveryBadgeCount(0);
+            updateBadgeCounter(0);
+            EventBus.getDefault().post(new UpdateCategoriesMessage());
+
+            Intent intent = new Intent(view.getActivity(), MakeOrderActivityView.class);
+            SharedPreferences sp = view.getActivity().getSharedPreferences("order_info", MODE_PRIVATE);
+            sp.edit().putString("type", "TO").putString("uuid", uuid).apply();
+            view.getActivity().startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        String uuid = UUID.randomUUID().toString();
-
-        realm.beginTransaction();
-        realm.where(OrderModelTo.class).equalTo("status", "STARTED").findAll().deleteAllFromRealm();
-        realm.commitTransaction();
-
-        OrderModelTo orderModelTo = new OrderModelTo();
-        orderModelTo.setUuid_inner(uuid);
-
-        RealmList<CategoryNumberModel> categoryNumberModels = new RealmList<>();
-        for (int i = 0; i < realmList.size(); i++) {
-            CategoryNumberModel categoryNumberModel = new CategoryNumberModel();
-            categoryNumberModel.setCategory(realmList.get(i));
-            categoryNumberModel.setNumber(realmList1.get(i).getCount());
-            categoryNumberModels.add(categoryNumberModel);
-        }
-
-        orderModelTo.setCategoryNumberModel(categoryNumberModels);
-        orderModelTo.setStatus("STARTED");
-
-        realm.beginTransaction();
-        realm.copyToRealm(orderModelTo);
-        realm.commitTransaction();
-
-        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-            entry.setValue(0);
-        }
-        badgeCount = 0;
-        setDeliveryBadgeCount(0);
-        updateBadgeCounter(0);
-        EventBus.getDefault().post(new UpdateCategoriesMessage());
-
-        Intent intent = new Intent(view.getActivity(), MakeOrderActivityView.class);
-        SharedPreferences sp = view.getActivity().getSharedPreferences("order_info", MODE_PRIVATE);
-        sp.edit().putString("type", "TO").putString("uuid", uuid).apply();
-        view.getActivity().startActivity(intent);
     }
 
     @Override
