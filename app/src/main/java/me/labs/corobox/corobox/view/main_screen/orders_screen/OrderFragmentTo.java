@@ -14,6 +14,8 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -84,10 +86,20 @@ public class OrderFragmentTo extends BaseFragment implements IOrdersFragmentView
 
     @Override
     public void showDataTo(List<OrderModelTo> ordersTo) {
-        adapter = new OrderToAdapter(ordersTo, presenter);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setVisibility(View.VISIBLE);
-        textView.setVisibility(View.GONE);
+        List<OrderModelTo> list = new ArrayList<>();
+        for (OrderModelTo orderModelTo : ordersTo) {
+            if (!orderModelTo.getStatus().equals("cancelled")) {
+                list.add(orderModelTo);
+            }
+        }
+        if (list.size() > 0) {
+            adapter = new OrderToAdapter(list, presenter);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+        } else {
+            showEmptyData();
+        }
     }
 
     @Override

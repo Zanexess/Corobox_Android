@@ -3,6 +3,7 @@ package me.labs.corobox.corobox.presenter.main_screen.orders_screen;
 import android.app.Activity;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -55,7 +56,11 @@ public class OrdersToFragmentPresenter implements IOrdersFragmentPresenter {
                     public void onNext(Response<List<OrderModelTo>> listResponse) {
                         if (listResponse.isSuccessful()) {
                             saveAddressList(listResponse.body());
-                            view.showDataTo(listResponse.body());
+                            if (listResponse.body().size() > 0) {
+                                view.showDataTo(listResponse.body());
+                            } else {
+                                loadDataFromDatabase();
+                            }
                         } else {
                             loadDataFromDatabase();
                         }
@@ -65,7 +70,7 @@ public class OrdersToFragmentPresenter implements IOrdersFragmentPresenter {
 
     private void loadDataFromDatabase() {
         List<OrderModelTo> ordersTo = getOrdersToListFromDatabase();
-        if (ordersTo.size() != 0) {
+        if (ordersTo.size() > 0) {
             view.showDataTo(ordersTo);
         } else {
             view.showEmptyData();

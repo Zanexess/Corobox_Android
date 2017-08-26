@@ -1,6 +1,8 @@
 package me.labs.corobox.corobox.presenter.profile_screen;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import java.util.List;
@@ -58,8 +60,8 @@ public class ProfileFragmentPresenter implements IProfileFragmentPresenter {
     }
 
     @Override
-    public void putProfile(ProfileModel profileModel) {
-        apiInterface.putProfile(CoroboxApp.AUTH_KEY, "1", profileModel)
+    public void putProfile(final ProfileModel profileModel) {
+        apiInterface.putProfile(CoroboxApp.AUTH_KEY, "10", profileModel)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<Object>>() {

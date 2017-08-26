@@ -2,6 +2,7 @@ package me.labs.corobox.corobox.view.main_screen;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -52,10 +53,11 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     private IMainActivityComponent mainActivityComponent;
     private NavigationView navigationView;
     private MenuItem deliveryMenu;
-    private MenuItem shareMenu;
-    private MenuItem payMenu;
+//    private MenuItem shareMenu;
+//    private MenuItem payMenu;
     private MenuItem deliveryBoxMenu;
     private boolean visibilityDeliveryButton;
+    private TextView name;
 
     @Inject
     IMainActivityPresenter presenter;
@@ -114,9 +116,9 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
-        shareMenu = menu.findItem(R.id.toolbar_share);
+//        shareMenu = menu.findItem(R.id.toolbar_share);
         deliveryBoxMenu = menu.findItem(R.id.toolbar_delivery);
-        payMenu = menu.findItem(R.id.toolbar_pay);
+//        payMenu = menu.findItem(R.id.toolbar_pay);
 
         if (presenter.getDeliveryBadgeCount() > 0 && visibilityDeliveryButton) {
             ActionItemBadge.update(this, menu.findItem(R.id.truck),
@@ -192,8 +194,8 @@ public class MainActivityView extends BaseActivity implements IMainActivityView,
 
     @Override
     public void setVisibilityToolbarIcon(boolean visibilityToolbarIcons) {
-        shareMenu.setVisible(visibilityToolbarIcons);
-        payMenu.setVisible(visibilityToolbarIcons);
+//        shareMenu.setVisible(visibilityToolbarIcons);
+//        payMenu.setVisible(visibilityToolbarIcons);
         deliveryBoxMenu.setVisible(visibilityToolbarIcons);
     }
 }

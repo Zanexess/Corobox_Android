@@ -61,19 +61,6 @@ public class SettingsFragmentView extends BaseFragment implements ISettingsFragm
     }
 
     private void initComponents() {
-        changeAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Открываем галерею, меняем аватар", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        accountImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Открываем галерею, меняем аватар", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,16 +80,6 @@ public class SettingsFragmentView extends BaseFragment implements ISettingsFragm
             @Override
             public void onClick(View v) {
                 presenterActivity.changeActivity(ActivityType.PROFILE);
-            }
-        });
-
-        switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    Toast.makeText(getContext(), "Вы подписаны на уведомления", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getContext(), "Уведомления отключены", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
@@ -96,6 +97,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
     private String uuid;
     private String type;
+    private double count = 0;
     private CategoriesOrderToRealmAdapter categoriesOrderToRealmAdapter;
     private CategoriesOrderFromRealmAdapter categoriesOrderFromRealmAdapter;
 
@@ -124,7 +126,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
         final Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_MONTH, 1);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
-        final int mMonth = c.get(Calendar.MONTH) + 1;
+        final int mMonth = c.get(Calendar.MONTH);
         final int mYear = c.get(Calendar.YEAR);
 
         date_arrive.setOnClickListener(new View.OnClickListener() {
@@ -139,26 +141,37 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                             final long date_t = dateToTimestamp(stringToDate(date_till.getText().toString(), "dd.MM.yyyy", Locale.getDefault()));
                             String iday = String.valueOf(dayOfMonth);
                             String imonth = String.valueOf(month + 1);
+                            String iYear = String.valueOf(year);
                             if (month + 1 < 10 && month + 1 > 1)
                                 imonth = "0" + String.valueOf(month + 1);
                             if (dayOfMonth < 10 && dayOfMonth > 1)
                                 iday = "0" + String.valueOf(dayOfMonth);
+                            if (year >= mYear) {
+                                iYear = String.valueOf(year);
+                            }
 
-                            date.setText(iday + "." + imonth + "." + mYear);
-                            date_from.setText(date.getText().toString());
+                            Date dateA = new GregorianCalendar(year, month, dayOfMonth).getTime();
+
+                            if (dateA.getTime() > dateNow.getTime()) {
+
+                                date.setText(iday + "." + imonth + "." + iYear);
+                                date_from.setText(date.getText().toString());
 
 
-                            presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
-                            if (type.equals("TO"))
-                                presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
+                                presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
+                                if (type.equals("TO"))
+                                    presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
 
-                            TimePickerDialog tpd = new TimePickerDialog(MakeOrderActivityView.this, new TimePickerDialog.OnTimeSetListener() {
-                                @Override
-                                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                    time.setText(hourOfDay + ":" + ((minute > 10) ? minute : "0" + minute));
-                                }
-                            }, 10, 00, true);
-                            tpd.show();
+                                TimePickerDialog tpd = new TimePickerDialog(MakeOrderActivityView.this, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        time.setText(hourOfDay + ":" + ((minute > 10) ? minute : "0" + minute));
+                                    }
+                                }, 10, 00, true);
+                                tpd.show();
+                            } else {
+                                Toast.makeText(MakeOrderActivityView.this, "Мы не путешествуем в прошлое :(", Toast.LENGTH_SHORT).show();
+                            }
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -174,11 +187,11 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
         if (mDay < 10 && mDay > 1)
             iday = "0" + String.valueOf(mDay);
         if (mMonth < 10 && mMonth > 1)
-            imonth = "0" + String.valueOf(mMonth);
+            imonth = "0" + String.valueOf(mMonth + 1);
 
         date.setText(iday + "." + imonth + "." + mYear);
         date_from.setText(date.getText());
-        date_till.setText(iday + ".0" + (mMonth + 1) + "." + mYear);
+        date_till.setText(iday + ".0" + (mMonth + 2) + "." + mYear);
 
         date_store.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,19 +202,30 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                             try {
+
+                                Date dateNow = new Date();
                                 long date_t = dateToTimestamp(stringToDate((dayOfMonth + "." + (month + 1) + "." + year), "dd.MM.yyyy", Locale.getDefault()));
                                 if (date_t - 60 * 60 * 24 >= date_arr) {
                                     String iday = String.valueOf(dayOfMonth);
                                     String imonth = String.valueOf(month + 1);
+                                    String iYear = String.valueOf(year);
                                     if (month + 1 < 10 && month + 1 > 1)
                                         imonth = "0" + String.valueOf(month + 1);
                                     if (dayOfMonth < 10 && dayOfMonth > 1)
                                         iday = "0" + String.valueOf(dayOfMonth);
+                                    if (year >= mYear) {
+                                        iYear = String.valueOf(year);
+                                    }
+                                    Date dateA = new GregorianCalendar(year, month, dayOfMonth).getTime();
 
+                                    if (dateA.getTime() > dateNow.getTime()) {
+                                        date_till.setText(iday + "." + imonth + "." + iYear);
+                                        presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
+                                        presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
 
-                                    date_till.setText(iday + "." + imonth + "." + mYear);
-                                    presenter.setTill(date_from.getText().toString(), date_till.getText().toString());
-                                    presenter.countAll(orderModel.getCategoryNumberModel().createSnapshot(), presenter.countDays());
+                                    } else {
+                                        Toast.makeText(MakeOrderActivityView.this, "Мы не путешествуем в прошлое :(", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
                                     Toast.makeText(MakeOrderActivityView.this, "Минимальный период хранения 1 день", Toast.LENGTH_SHORT).show();
                                 }
@@ -209,7 +233,7 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
                                 e.printStackTrace();
                             }
                         }
-                    }, mYear, mMonth, mDay);
+                    }, mYear, mMonth + 1, mDay);
                     dpd.show();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -302,37 +326,50 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
         if (id == R.id.order) {
             if (type.equals("TO")) {
-                if (addressFlat.getText().toString().length() == 0) {
-                    Toast.makeText(this, "Заполнены не все поля", Toast.LENGTH_SHORT).show();
-                } else {
-                    realm.beginTransaction();
-                    OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("uuid_inner", uuid).findFirst();
-                    orderModel.setUuid_inner(UUID.randomUUID().toString());
-                    AddressModel addressModel = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
-                    orderModel.setOrderId(100000 + (5 + (int) (Math.random() * ((999999 - 100000) + 1))));
-                    try {
-                        orderModel.setTill(dateToTimestamp(stringToDate(
-                                date.getText().toString().trim() + " " +
-                                        time.getText().toString().trim(),
-                                "dd.MM.yyyy HH:mm", Locale.getDefault())));
+                if (count >= 0) {
+                    if (addressFlat.getText().toString().length() == 0) {
+                        Toast.makeText(this, "Заполнены не все поля", Toast.LENGTH_SHORT).show();
+                    } else {
+                        realm.beginTransaction();
+                        OrderModelTo orderModel = realm.where(OrderModelTo.class).equalTo("uuid_inner", uuid).findFirst();
+                        orderModel.setUuid_inner(UUID.randomUUID().toString());
+                        AddressModel addressModel = realm.where(AddressModel.class).equalTo("useAsDefault", true).findFirst();
+                        orderModel.setOrderId(100000 + (5 + (int) (Math.random() * ((999999 - 100000) + 1))));
+                        try {
+                            orderModel.setTill(dateToTimestamp(stringToDate(
+                                    date_till.getText().toString().trim() + " " +
+                                            time.getText().toString().trim(),
+                                    "dd.MM.yyyy HH:mm", Locale.getDefault())));
 
-                        orderModel.setPaid_till(dateToTimestamp(stringToDate(
-                                date_till.getText().toString(),
-                                "dd.MM.yyyy",
-                                Locale.getDefault())));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                            orderModel.setPaid_till(dateToTimestamp(stringToDate(
+                                    date_till.getText().toString(),
+                                    "dd.MM.yyyy",
+                                    Locale.getDefault())));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        orderModel.setAddressModel(addressModel);
+                        orderModel.setType("FROM");
+                        orderModel.setDate(date.getText().toString() + " " + time.getText().toString());
+                        orderModel.setStatus("ORDERED");
+                        realm.copyToRealm(orderModel);
+                        realm.commitTransaction();
+
+                        presenter.putOrder(orderModel);
+                        item.setEnabled(false);
                     }
-                    orderModel.setAddressModel(addressModel);
-                    orderModel.setType("FROM");
-                    orderModel.setDate(date.getText().toString() + " " + time.getText().toString());
-                    orderModel.setStatus("ORDERED");
-                    realm.copyToRealm(orderModel);
-                    realm.commitTransaction();
-
-                    presenter.putOrder(orderModel);
+                } else {
+                    Toast.makeText(this, "Некорректные данные. Проверьте даты и попробуйте еще раз", Toast.LENGTH_SHORT).show();
                 }
             } else if (type.equals("FROM")) {
+                try {
+                    orderModelFrom.setTill(dateToTimestamp(stringToDate(
+                            date.getText().toString().trim() + " " +
+                                    time.getText().toString().trim(),
+                            "dd.MM.yyyy HH:mm", Locale.getDefault())));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 presenter.putOrderFrom(orderModelFrom);
             }
             return true;
@@ -348,6 +385,9 @@ public class MakeOrderActivityView extends BaseActivity implements IMakeOrderAct
 
     @Override
     public void showPrice(String count) {
+        this.count = Double.valueOf(count);
+        if (Long.valueOf(count) < 0)
+            count = "0";
         price.setText(count + " руб");
     }
 

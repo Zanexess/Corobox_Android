@@ -2,6 +2,7 @@ package me.labs.corobox.corobox.presenter.main_screen.orders_screen;
 
 import android.app.Activity;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,7 +54,11 @@ public class OrdersFromFragmentPresenter implements IOrdersFragmentPresenter {
                     public void onNext(Response<List<OrderModelFrom>> listResponse) {
                         if (listResponse.isSuccessful()) {
                             saveOrderFromList(listResponse.body());
-                            view.showDataFrom(listResponse.body());
+                            if (listResponse.body().size() > 0) {
+                                view.showDataFrom(listResponse.body());
+                            } else {
+                                loadDataFromDatabase();
+                            }
                         } else {
                             loadDataFromDatabase();
                         }
@@ -63,7 +68,7 @@ public class OrdersFromFragmentPresenter implements IOrdersFragmentPresenter {
 
     private void loadDataFromDatabase() {
         List<OrderModelFrom> ordersFrom = getOrdersFromListFromDatabase();
-        if (ordersFrom.size() != 0) {
+        if (ordersFrom.size() > 0) {
             view.showDataFrom(ordersFrom);
         } else {
             view.showEmptyData();
